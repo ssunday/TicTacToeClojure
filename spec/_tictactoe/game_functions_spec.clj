@@ -55,3 +55,20 @@
                             "O" "O" "X"])))
   )
 )
+
+(describe "game-is-won-or-tied"
+  (it "returns true when game has been tied"
+      (game-is-won-or-tied ["O" "X" "O"
+                         "O" "X" "X"
+                         "X" "O" "O"]))
+
+  (it "returns true when game has been won"
+      (game-is-won-or-tied ["O" "X" "O"
+                     "O" "X" "X"
+                     "O" "O" "X"]))
+  (it "returns false when game neither been won or tied"
+     (not (game-is-won-or-tied ["O" "X" 2
+                    3 "X" 5
+                    "O" 7 "X"])))
+
+)
