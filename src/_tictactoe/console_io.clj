@@ -17,14 +17,16 @@
     (if (nil? (find board spot))
       (do
         (println "Spot must be open.")
-        (recur (read-line) board))
+        (recur (convert_string_to_number (read-line)) board))
       spot)
   )
 )
 
 
 (defn display-game-board [board]
-  (println board)
+  (apply println (subvec board 0 3))
+  (apply println (subvec board 3 6))
+  (apply println (subvec board 6 9))
 )
 
 (defn get-player-one-marker []
@@ -42,17 +44,11 @@
           (recur (read-line) player-one-marker))
         player-two-marker)))
 
-(defn player_one_won_message
-  "Displays message when player one has won"
-  []
+(defn player-one-won-message []
   (println "Player One Won!"))
 
-(defn player_two_won_message
-  "Displays message when player two has won"
-  []
+(defn player-two-won-message []
   (println "Player Two Won!"))
 
-(defn game_tied_message
-  "Displays message when game has been tied"
-  []
+(defn game-is-tied-message []
   (println "Tied!"))
