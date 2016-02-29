@@ -2,4 +2,7 @@
   :description "Tic Tac Toe Command line game written in Clojure"
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.7.0"]]
-  :main -tictactoe.core)
+  :main -tictactoe.core
+  :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
+  :plugins [[speclj "3.3.1"]]
+  :test-paths ["spec"])
