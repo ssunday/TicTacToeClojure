@@ -1,7 +1,10 @@
-(ns -tictactoe.ai_player)
+(ns -tictactoe.ai_player
+  (:require [-tictactoe.game_functions :as gf]))
 
+(defn get-available-locations [board]
+  (filter number? board))
 
-(def move
-  [board current_player depth]
-  
+(defn move
+  [board player-marker other-player-marker]
+
 )

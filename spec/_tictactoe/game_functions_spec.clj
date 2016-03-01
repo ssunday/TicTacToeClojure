@@ -7,7 +7,7 @@
     (should= (make-default-board) [0 1 2 3 4 5 6 7 8])))
 
 (describe "mark-board-location"
-  (it "Mark board location correctly marks given board given spot and marker."
+  (it "correctly marks given board given spot and marker."
     (should= (mark-board-location (make-default-board) 3 "X") [0 1 2 "X" 4 5 6 7 8])))
 
 (describe "game-is-won"

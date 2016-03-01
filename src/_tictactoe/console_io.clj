@@ -27,8 +27,7 @@
   (apply println (subvec board 0 3))
   (apply println (subvec board 3 6))
   (apply println (subvec board 6 9))
-  (println)
-)
+  (println))
 
 (defn get-player-one-marker []
   (println "Please input player one's marker. Marker must be a single character long and not a number.")
@@ -60,17 +59,45 @@
              (do
               (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
               (recur (read-line)))
-              first-player-marker))
-)
+              first-player-marker)))
+(defn get-whether-player-one-is-ai []
+  (println "Please input y if you would like player one to be an AI or n for a human player")
+  (loop [one-ai (read-line)]
+    (if (and (not (= one-ai "y"))
+             (not (= one-ai "n")))
+        (do
+             (println "Please input y if you would like player one to be an AI or n for a human player")
+             (recur (read-line)))
+        (= one-ai "y"))))
+
+(defn get-whether-player-one-is-ai []
+  (println "Please input y if you would like player two to be an AI or n for a human player")
+  (loop [two-ai (read-line)]
+    (if (and (not (= two-ai "y"))
+             (not (= two-ai "n")))
+        (do
+             (println "Please input y if you would like player two to be an AI or n for a human player")
+             (recur (read-line)))
+        (= two-ai "y"))))
 
 (defn display-current-player-marker [current-player-marker]
   (println "\nCurrent Player Marker:" current-player-marker))
 
 (defn player-one-won-message []
-  (println "Player One Won!"))
+  (println "\nPlayer One Won!"))
 
 (defn player-two-won-message []
-  (println "Player Two Won!"))
+  (println "\nPlayer Two Won!"))
 
 (defn game-is-tied-message []
-  (println "Tied!"))
+  (println "\nTied!"))
+
+(defn ask-if-player-wants-to-play-again []
+  (println "\nPlay Again? (y/n)")
+  (loop [play-again (read-line)]
+    (if (and (not (= play-again "y"))
+             (not (= play-again "n")))
+        (do
+             (println "Please input either y or n.")
+             (recur (read-line)))
+        (= play-again "y"))))
