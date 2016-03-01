@@ -60,6 +60,7 @@
               (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
               (recur (read-line)))
               first-player-marker)))
+              
 (defn get-whether-player-one-is-ai []
   (println "Please input y if you would like player one to be an AI or n for a human player")
   (loop [one-ai (read-line)]
@@ -70,7 +71,7 @@
              (recur (read-line)))
         (= one-ai "y"))))
 
-(defn get-whether-player-one-is-ai []
+(defn get-whether-player-two-is-ai []
   (println "Please input y if you would like player two to be an AI or n for a human player")
   (loop [two-ai (read-line)]
     (if (and (not (= two-ai "y"))
