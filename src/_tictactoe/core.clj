@@ -13,9 +13,7 @@
 (defn get-move [board current-player-marker other-player-marker current-player-is-ai]
   (if current-player-is-ai
     (gf/mark-board-location board (ai/best-move board current-player-marker other-player-marker) current-player-marker)
-    (gf/mark-board-location board (io/get-player-spot-to-be-marked board) current-player-marker)
-  )
-)
+    (gf/mark-board-location board (io/get-player-spot-to-be-marked board) current-player-marker)))
 
 (defn -main []
   (io/start-game-message)
