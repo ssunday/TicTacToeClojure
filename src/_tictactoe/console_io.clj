@@ -1,16 +1,25 @@
 (ns -tictactoe.console_io)
 
-(defn start-game-message []
-  (println "Welcome to the Tic Tac Toe Game!"))
-
-(defn end-game-message []
-  (println "Thank you for playing!"))
-
 (defn convert-string-to-number [str]
   (try
     (let [spot (read-string str)]
        (if (number? spot) spot nil))
     (catch Exception e nil)))
+
+(defn check-if-marker-is-invalid [marker]
+  (or (> (count marker) 1)
+      (clojure.string/blank? marker)
+      (not (nil? (convert-string-to-number marker)))))
+
+(defn check-if-yes-or-no-response-is-invalid [response]
+  (and (not (= response "y"))
+       (not (= response "n"))))
+
+(defn start-game-message []
+  (println "Welcome to the Tic Tac Toe Game!"))
+
+(defn end-game-message []
+  (println "Thank you for playing!"))
 
 (defn get-player-spot-to-be-marked [board]
   (println "Please input spot to be marked. Must be 0-8 and open.")
@@ -21,22 +30,20 @@
       (do
         (println "Spot must be open.")
         (recur (convert-string-to-number (read-line)) board))
-      spot))
-)
+      spot)))
 
 (defn display-game-board [board]
   (println)
   (apply println (subvec board 0 3))
   (apply println (subvec board 3 6))
   (apply println (subvec board 6 9))
-  (println))
+  (println)
+)
 
 (defn get-player-one-marker []
   (println "Please input player one's marker. Marker must be a single character long and not a number.")
   (loop [player-one-marker (read-line)]
-    (if (or (> (count player-one-marker) 1)
-            (clojure.string/blank? player-one-marker)
-            (not (nil? (convert-string-to-number player-one-marker))))
+    (if (check-if-marker-is-invalid player-one-marker)
         (do
           (println "Marker must be a single character and not a number.")
           (recur (read-line)))
@@ -47,9 +54,7 @@
   (loop [player-two-marker (read-line)
         player-one-marker player-one-marker]
     (if (or  (= player-two-marker player-one-marker)
-             (> (count player-two-marker) 1)
-             (clojure.string/blank? player-two-marker)
-             (not (nil? (convert-string-to-number player-two-marker))))
+             (check-if-marker-is-invalid player-two-marker))
         (do
           (println "Marker must be unique, single length, and not a number.")
           (recur (read-line) player-one-marker))
@@ -60,16 +65,15 @@
   (loop [first-player-marker (read-line)]
     (if (and (not (= first-player-marker player-one-marker))
              (not (= first-player-marker player-two-marker)))
-             (do
-              (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
-              (recur (read-line)))
-              first-player-marker)))
+          (do
+            (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
+            (recur (read-line)))
+          first-player-marker)))
 
 (defn get-whether-player-one-is-ai []
   (println "Input y/n for player one being an AI.")
   (loop [one-ai (read-line)]
-    (if (and (not (= one-ai "y"))
-             (not (= one-ai "n")))
+    (if (check-if-yes-or-no-response-is-invalid one-ai)
         (do
              (println "Please input y if you would like player one to be an AI or n for a human player")
              (recur (read-line)))
@@ -78,8 +82,7 @@
 (defn get-whether-player-two-is-ai []
   (println "Input y/n for player two being an AI.")
   (loop [two-ai (read-line)]
-    (if (and (not (= two-ai "y"))
-             (not (= two-ai "n")))
+    (if (check-if-yes-or-no-response-is-invalid two-ai)
         (do
              (println "Please input y if you would like player two to be an AI or n for a human player")
              (recur (read-line)))
@@ -100,8 +103,7 @@
 (defn ask-if-player-wants-to-play-again []
   (println "\nPlay Again? (y/n)")
   (loop [play-again (read-line)]
-    (if (and (not (= play-again "y"))
-             (not (= play-again "n")))
+    (if (check-if-yes-or-no-response-is-invalid play-again)
         (do
              (println "Please input either y or n.")
              (recur (read-line)))

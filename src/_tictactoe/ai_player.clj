@@ -22,8 +22,7 @@
         (inc depth)
         (first (get-available-locations board))
         (* multiplier -1)
-        best-moves)
-  )
+        best-moves))
 )
 
 (defn best-move [board player-marker other-player-marker]
