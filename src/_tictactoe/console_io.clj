@@ -56,7 +56,7 @@
         (clojure.string/upper-case player-two-marker))))
 
 (defn get-first-player [player-one-marker player-two-marker]
-  (println "Please input marker of playing going first. Either:" player-one-marker "or" player-two-marker)
+  (println "Please input marker of player going first. Either:" player-one-marker "or" player-two-marker)
   (loop [first-player-marker (read-line)]
     (if (and (not (= first-player-marker player-one-marker))
              (not (= first-player-marker player-two-marker)))
