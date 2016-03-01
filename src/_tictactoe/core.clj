@@ -37,7 +37,8 @@
                       (recur other-player-marker player-marker
                             (get-move board player-marker other-player-marker
                                 (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
-                  (display-end-game-messages board player-marker player-one-marker))))
+                  (do (io/display-game-board board)
+                      (display-end-game-messages board player-marker player-one-marker)))))
         (recur (io/ask-if-player-wants-to-play-again)))
         (io/end-game-message)))
 )

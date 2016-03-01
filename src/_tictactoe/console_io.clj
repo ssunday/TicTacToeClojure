@@ -7,11 +7,13 @@
   (println "Thank you for playing!"))
 
 (defn convert-string-to-number [str]
-  (let [spot (read-string str)]
-       (if (number? spot) spot nil)))
+  (try
+    (let [spot (read-string str)]
+       (if (number? spot) spot nil))
+    (catch Exception e nil)))
 
 (defn get-player-spot-to-be-marked [board]
-  (println "Please input spot to be marked. Must be 0-8 and available.")
+  (println "Please input spot to be marked. Must be 0-8 and open.")
   (loop [spot (convert-string-to-number (read-line))
         board board]
     (if (or (nil? (find board spot))
@@ -33,6 +35,7 @@
   (println "Please input player one's marker. Marker must be a single character long and not a number.")
   (loop [player-one-marker (read-line)]
     (if (or (> (count player-one-marker) 1)
+            (clojure.string/blank? player-one-marker)
             (not (nil? (convert-string-to-number player-one-marker))))
         (do
           (println "Marker must be a single character and not a number.")
@@ -43,9 +46,10 @@
   (println "Please input player two's marker. Marker must be a single character long, not a number, and different from player one's marker.")
   (loop [player-two-marker (read-line)
         player-one-marker player-one-marker]
-    (if (or (= player-two-marker player-one-marker)
+    (if (or  (= player-two-marker player-one-marker)
              (> (count player-two-marker) 1)
-             (not (nil? (convert-string-to-number player-one-marker))))
+             (clojure.string/blank? player-two-marker)
+             (not (nil? (convert-string-to-number player-two-marker))))
         (do
           (println "Marker must be unique, single length, and not a number.")
           (recur (read-line) player-one-marker))
@@ -60,9 +64,9 @@
               (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
               (recur (read-line)))
               first-player-marker)))
-              
+
 (defn get-whether-player-one-is-ai []
-  (println "Please input y if you would like player one to be an AI or n for a human player")
+  (println "Input y/n for player one being an AI.")
   (loop [one-ai (read-line)]
     (if (and (not (= one-ai "y"))
              (not (= one-ai "n")))
@@ -72,7 +76,7 @@
         (= one-ai "y"))))
 
 (defn get-whether-player-two-is-ai []
-  (println "Please input y if you would like player two to be an AI or n for a human player")
+  (println "Input y/n for player two being an AI.")
   (loop [two-ai (read-line)]
     (if (and (not (= two-ai "y"))
              (not (= two-ai "n")))

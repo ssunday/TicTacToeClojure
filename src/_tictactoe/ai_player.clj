@@ -8,7 +8,7 @@
   (cond (and (gf/game-is-won board)
               (= current-player player-marker)) (- 10 depth)
         (and (gf/game-is-won board)
-                    (not (= current-player player-marker))) (- depth 10)
+             (not (= current-player player-marker))) (- depth 10)
         (gf/game-is-tied board) 0)
 )
 
@@ -19,13 +19,16 @@
          current-player player-marker
          other-player other-player-marker
          depth 0
-         previous-move nil]
+         previous-move nil
+         multiplier 1]
         (if (gf/game-is-won-or-tied board)
-            (swap! best-moves assoc previous-move (score board current-player player-marker depth))
+            (swap! best-moves assoc previous-move (* multiplier (score board current-player player-marker depth)))
             (recur (gf/mark-board-location board (first (get-available-locations board)) current-player)
             other-player
             current-player
             (inc depth)
-            (first (get-available-locations board)))))
+            (first (get-available-locations board))
+            (* multiplier -1)
+            )))
   (key (apply max-key val @best-moves)))
 )
