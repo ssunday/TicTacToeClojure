@@ -22,37 +22,14 @@
         (inc depth)
         (first (get-available-locations board))
         (* multiplier -1)
-        best-moves))
-)
+        best-moves)))
 
 (defn best-move [board player-marker other-player-marker]
   (let [best-moves (atom {})
     depth 0
     previous-move nil
-    multiplier 1]
-      (move board player-marker player-marker other-player-marker depth previous-move multiplier best-moves)
-    ; (println @best-moves)
-    (key (apply max-key val @best-moves)))
-)
-
-; (defn best-move
-;   [board player-marker other-player-marker]
-;   (let [best-moves (atom {})]
-;   (loop [board board
-;          current-player player-marker
-;          other-player other-player-marker
-;          depth 0
-;          previous-move nil
-;          multiplier 1]
-;         (if (gf/game-is-won-or-tied board)
-;             (swap! best-moves assoc previous-move (* multiplier (score board current-player player-marker depth)))
-;             (recur (gf/mark-board-location board (first (get-available-locations board)) current-player)
-;             other-player
-;             current-player
-;             (inc depth)
-;             (first (get-available-locations board))
-;             (* multiplier -1)
-;             )))
-;   (println @best-moves)
-;   (key (apply max-key val @best-moves)))
-; )
+    multiplier -1]
+      (doseq [spot (get-available-locations board)]
+        (move (gf/mark-board-location board spot player-marker)
+        player-marker other-player-marker player-marker depth spot multiplier best-moves))
+    (key (apply max-key val @best-moves))))

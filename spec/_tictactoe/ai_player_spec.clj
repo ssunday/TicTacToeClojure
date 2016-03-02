@@ -12,6 +12,14 @@
     (should= 6 (best-move [0 1 2 3 4 5 6 7 8] "X" "O")))
   (it "returns winning spot on board where it has two in a row"
     (should= 2 (best-move ["X" "X" 2 3 4 5 6 7 8] "X" "O")))
+  (it "returns winning spot on board where it has two in a row"
+    (should= 6 (best-move ["X" "O" "O" "X" 4 5 6 7 8] "X" "O")))
   (it "blocks winning spot on board where opponent has two in a row"
     (should= 2 (best-move ["O" "O" 2 3 4 5 6 7 8] "X" "O")))
+  (it "returns winning spot on board where opponent has two in a row"
+    (should= 7 (best-move ["X" "O" "X"
+                           "X" "O" 5
+                           "O" 7 "X"] "O" "X")))
+  (it "priotizes winning over blocking"
+    (should= 6 (best-move ["X" "O" "O" "X" "O" 5 6 7 8] "X" "O")))
 )
