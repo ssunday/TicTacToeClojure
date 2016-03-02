@@ -13,19 +13,18 @@
 (describe "game-is-won"
   (context "Game is won with horizontal match"
     (it "returns true"
-      (game-is-won [0 1 2 "X" "X" "X" 6 7 8]))
-  )
+      (game-is-won [0 1 2 "X" "X" "X" 6 7 8])))
 
   (context "Game is won with vertical match"
     (it "returns true"
-      (game-is-won [0 "X" 2 3 "X" 5 6 "X" 8]))
-  )
+      (game-is-won [0 "X" 2 3 "X" 5 6 "X" 8])))
 
   (context "Game is won with diagonal match"
     (it "returns true"
              (game-is-won ["X" 1 2
                            3 "X" 5
                            6 7 "X"])))
+
   (context "game has not been won or tied"
     (it "returns false"
     (not (game-is-won [0 "X" 2
@@ -52,9 +51,7 @@
     (it "returns false"
         (not (game-is-tied ["O" "X" "O"
                             "O" "X" "X"
-                            "O" "O" "X"])))
-  )
-)
+                            "O" "O" "X"])))))
 
 (describe "game-is-won-or-tied"
   (it "returns true when game has been tied"
