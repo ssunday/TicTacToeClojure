@@ -20,10 +20,11 @@
         player-two-marker (io/get-player-two-marker player-one-marker)
         first-player (io/get-first-player player-one-marker player-two-marker)
         player-one-is-ai (io/get-whether-player-one-is-ai)
-        player-two-is-ai (io/get-whether-player-two-is-ai)]
+        player-two-is-ai (io/get-whether-player-two-is-ai)
+        board-dimension (io/ask-for-either-3x3-or-4x4-board)]
       (loop [player-marker first-player
              other-player-marker (if (= first-player player-one-marker) player-two-marker player-one-marker)
-             board (gf/make-default-board)]
+             board (gf/make-default-board board-dimension)]
           (if (not (gf/game-is-won-or-tied board))
               (do (io/display-current-player-marker player-marker)
                   (io/display-game-board board)
@@ -34,7 +35,7 @@
                   (display-end-game-messages board player-marker player-one-marker)
                   (if (io/ask-if-player-wants-to-play-again-with-same-input)
                     (recur first-player (if (= first-player player-one-marker) player-two-marker player-one-marker)
-                                        (gf/make-default-board))))))))
+                                        (gf/make-default-board board-dimension))))))))
 
 (defn run []
   (io/start-game-message)

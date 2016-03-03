@@ -27,9 +27,33 @@
     (not (check-if-first-player-marker-is-invalid "A" "A" "B"))))
 
 (describe "check-if-spot-is-not-open"
-  (it "returns true for spot not in board"
+  (it "returns true for spot not in 3x3 board"
     (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8] 9))
-  (it "returns true for spot not open in board"
+
+  (it "returns true for spot not in 4x4 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8] 20))
+
+  (it "returns true for spot in 3x3 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8] 3))
+
+  (it "returns true for spot in 4x4 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] 14))
+
+  (it "returns true for spot not open in 3x3 board"
     (check-if-spot-is-not-open ["X" 1 2 3 4 5 6 7 8] 0))
-  (it "returns true for spot that is not a number"
-    (check-if-spot-is-not-open [9 1 2 3 4 5 6 7 8] "A")))
+
+  (it "returns true for spot not open in 4x4 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8 9 10 "X" 12 13 14 15] 11))
+
+  (it "returns false for spot open in 3x3 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8] 0))
+
+  (it "returns false for spot open in 4x4 board"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] 0))
+
+  (it "returns true for spot that is not a number for 3x3"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8] "A"))
+
+  (it "returns true for spot that is not a number for 4x4"
+    (check-if-spot-is-not-open [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] "A"))
+)

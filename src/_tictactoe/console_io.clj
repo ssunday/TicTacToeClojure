@@ -7,12 +7,24 @@
 (defn display-current-player-marker [current-player-marker]
   (println "\nCurrent Player Marker:" current-player-marker))
 
-(defn display-game-board [board]
+(defn display-game-board-3x3 [board]
   (println)
   (apply println (subvec board 0 3))
   (apply println (subvec board 3 6))
   (apply println (subvec board 6 9))
   (println))
+
+(defn display-game-board-4x4 [board]
+  (println)
+  (apply println (subvec board 0 4))
+  (apply println (subvec board 4 8))
+  (apply println (subvec board 8 12))
+  (apply println (subvec board 12 16))
+  (println))
+
+(defn display-game-board [board]
+  (cond (= (count board) 9) (display-game-board-3x3 board)
+        (= (count board) 16) (display-game-board-4x4 board)))
 
 (defn player-one-won-message []
   (println "\nPlayer One Won!"))
@@ -27,7 +39,7 @@
   (println "\nThank you for playing!"))
 
 (defn get-player-spot-to-be-marked [board]
-  (println "Please input spot to be marked. Must be 0-8 and open.")
+  (println "Please input spot to be marked. Must be 0 -" (dec (count board)) "and open.")
   (loop [spot (convert-string-to-number (read-line))
          board board]
     (if (check-if-spot-is-not-open board spot)
@@ -35,8 +47,6 @@
         (println "Spot must be open.")
         (recur (convert-string-to-number (read-line)) board))
       spot)))
-
-
 
 (defn get-player-one-marker []
   (println "Please input player one's marker. Marker must be a single character long and not a number.")
@@ -66,6 +76,16 @@
           (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
           (recur (read-line)))
         first-player-marker)))
+
+(defn ask-for-either-3x3-or-4x4-board []
+  (println "Choose either 3x3 or 4x4 board. Type 3 for 3x3 and 4 for 4x4.")
+  (loop [board-type (read-line)]
+    (if (and (not (= board-type "3"))
+                 (not (= board-type "4")))
+        (do
+          (println "Type 3 for 3x3 and 4 for 4x4.")
+          (recur (read-line)))
+        (convert-string-to-number board-type))))
 
 (defn check-if-yes-or-no-response-is-invalid [response]
   (and (not (= response "y"))
