@@ -23,15 +23,16 @@
         (* multiplier -1)
         best-moves)))
 
+(defn get-best-move [best-moves]
+  (first (first (filter (fn [[k v]] (= v (val (apply max-key val best-moves)))) best-moves))))
+
 (defn best-move [board player-marker other-player-marker]
   (let [best-moves (atom (zipmap (get-available-locations board) (replicate (count (get-available-locations board)) -500)))
     depth 0
     multiplier 1]
       (doseq [spot (get-available-locations board)]
-        (move (gf/mark-board-location board spot other-player-marker)
+      (move (gf/mark-board-location board spot other-player-marker)
               player-marker player-marker other-player-marker depth spot multiplier best-moves)
-        (move (gf/mark-board-location board spot player-marker)
+      (move (gf/mark-board-location board spot player-marker)
               player-marker other-player-marker player-marker depth spot multiplier best-moves))
-    ; (println @best-moves)
-    ; (println (key (apply max-key val @best-moves)))
-    (key (apply max-key val @best-moves))))
+    (get-best-move @best-moves)))

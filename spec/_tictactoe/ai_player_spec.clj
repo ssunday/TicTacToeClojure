@@ -27,7 +27,7 @@
                             6 7 8] "X" "O")))
 
   (it "returns winning spot on board when it has two in a row"
-    (should= 7 (best-move ["X" "O" "X"
+    (should= 5 (best-move ["X" "O" "X"
                            "X" "O" 5
                            "O" 7 "X"] "X" "O")))
 
@@ -39,11 +39,11 @@
   (it "blocks opponent from winning"
     (should= 8 (best-move ["O" "X" 2
                             3 "O" 5
-                            6    7  8] "X" "O")))
+                            6  7  8] "X" "O")))
 
-  (it "priotizes winning over blocking"
-    (should= 8 (best-move ["O" "O" "X"
-                            3 "O" "X"
+  (it "blocks an opponent from winning"
+    (should= 7 (best-move ["O" "O" "X"
+                            "X" "O" 5
                             6 7 8] "X" "O")))
 
 )
