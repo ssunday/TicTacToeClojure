@@ -27,18 +27,15 @@
 
   (context "game has not been won or tied"
     (it "returns false"
-    (not (game-is-won [0 "X" 2
-                          "O" "X" 5
-                          6 "O" 8])))
-  )
+     (not (game-is-won [0 "X" 2
+                           "O" "X" 5
+                           6 "O" 8]))))
+
   (context "game has been tied"
     (it "returns false"
         (not (game-is-won ["O" "X" "O"
                            "O" "X" "X"
-                           "X" "O" "O"])))
-  )
-)
-
+                           "X" "O" "O"])))))
 
 (describe "game-is-tied"
   (context "game is tied"
@@ -56,16 +53,14 @@
 (describe "game-is-won-or-tied"
   (it "returns true when game has been tied"
       (game-is-won-or-tied ["O" "X" "O"
-                         "O" "X" "X"
-                         "X" "O" "O"]))
+                            "O" "X" "X"
+                            "X" "O" "O"]))
 
   (it "returns true when game has been won"
       (game-is-won-or-tied ["O" "X" "O"
-                     "O" "X" "X"
-                     "O" "O" "X"]))
+                            "O" "X" "X"
+                            "O" "O" "X"]))
   (it "returns false when game neither been won or tied"
      (not (game-is-won-or-tied ["O" "X" 2
-                    3 "X" 5
-                    "O" 7 "X"])))
-
-)
+                                3 "X" 5
+                                "O" 7 "X"]))))

@@ -21,17 +21,20 @@
         first-player (io/get-first-player player-one-marker player-two-marker)
         player-one-is-ai (io/get-whether-player-one-is-ai)
         player-two-is-ai (io/get-whether-player-two-is-ai)]
-    (loop [player-marker first-player
-          other-player-marker (if (= first-player player-one-marker) player-two-marker player-one-marker)
-          board (gf/make-default-board)]
-        (if (not (gf/game-is-won-or-tied board))
-            (do (io/display-current-player-marker player-marker)
-                (io/display-game-board board)
-                (recur other-player-marker player-marker
-                      (get-move board player-marker other-player-marker
-                          (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
-            (do (io/display-game-board board)
-                (display-end-game-messages board player-marker player-one-marker))))))
+      (loop [player-marker first-player
+             other-player-marker (if (= first-player player-one-marker) player-two-marker player-one-marker)
+             board (gf/make-default-board)]
+          (if (not (gf/game-is-won-or-tied board))
+              (do (io/display-current-player-marker player-marker)
+                  (io/display-game-board board)
+                  (recur other-player-marker player-marker
+                        (get-move board player-marker other-player-marker
+                            (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
+              (do (io/display-game-board board)
+                  (display-end-game-messages board player-marker player-one-marker)
+                  (if (io/ask-if-player-wants-to-play-again-with-same-input)
+                    (recur first-player (if (= first-player player-one-marker) player-two-marker player-one-marker)
+                                        (gf/make-default-board))))))))
 
 (defn run []
   (io/start-game-message)
@@ -39,4 +42,4 @@
     (if play-again
         (do (play-game)
             (recur (io/ask-if-player-wants-to-play-again)))
-  (io/end-game-message))))
+     (io/end-game-message))))

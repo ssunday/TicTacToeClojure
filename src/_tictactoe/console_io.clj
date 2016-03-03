@@ -29,7 +29,7 @@
 (defn get-player-spot-to-be-marked [board]
   (println "Please input spot to be marked. Must be 0-8 and open.")
   (loop [spot (convert-string-to-number (read-line))
-        board board]
+         board board]
     (if (check-if-spot-is-not-open board spot)
       (do
         (println "Spot must be open.")
@@ -50,7 +50,7 @@
 (defn get-player-two-marker [player-one-marker]
   (println "Please input player two's marker. Marker must be a single character long, not a number, and different from player one's marker.")
   (loop [player-two-marker (read-line)
-        player-one-marker player-one-marker]
+         player-one-marker player-one-marker]
     (if (or  (= player-two-marker player-one-marker)
              (check-if-marker-is-invalid player-two-marker))
         (do
@@ -62,10 +62,10 @@
   (println "Please input marker of player going first. Either:" player-one-marker "or" player-two-marker)
   (loop [first-player-marker (read-line)]
     (if (check-if-first-player-marker-is-invalid first-player-marker player-one-marker player-two-marker)
-          (do
-            (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
-            (recur (read-line)))
-          first-player-marker)))
+        (do
+          (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
+          (recur (read-line)))
+        first-player-marker)))
 
 (defn check-if-yes-or-no-response-is-invalid [response]
   (and (not (= response "y"))
@@ -89,8 +89,17 @@
              (recur (read-line)))
         (= two-ai "y"))))
 
+(defn ask-if-player-wants-to-play-again-with-same-input []
+  (println "\nPlay Again with same input? (y/n)")
+  (loop [play-again (read-line)]
+    (if (check-if-yes-or-no-response-is-invalid play-again)
+        (do
+             (println "Please input either y or n.")
+             (recur (read-line)))
+        (= play-again "y"))))
+
 (defn ask-if-player-wants-to-play-again []
-  (println "\nPlay Again? (y/n)")
+  (println "\nPlay Again with new input? (y/n)")
   (loop [play-again (read-line)]
     (if (check-if-yes-or-no-response-is-invalid play-again)
         (do

@@ -17,4 +17,4 @@
 
 (defn check-if-spot-is-not-open [board spot]
   (or (nil? (find board spot))
-          (not  (number? (get board spot)))))
+      (not  (number? (get board spot)))))
