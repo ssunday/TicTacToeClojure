@@ -90,7 +90,7 @@
         (= two-ai "y"))))
 
 (defn ask-if-player-wants-to-play-again-with-same-input []
-  (println "\nPlay Again with same input? (y/n)")
+  (println "\nPlay again with same input? (y/n)")
   (loop [play-again (read-line)]
     (if (check-if-yes-or-no-response-is-invalid play-again)
         (do
@@ -99,7 +99,7 @@
         (= play-again "y"))))
 
 (defn ask-if-player-wants-to-play-again []
-  (println "\nPlay Again with new input? (y/n)")
+  (println "\nPlay again with new input? (y/n)")
   (loop [play-again (read-line)]
     (if (check-if-yes-or-no-response-is-invalid play-again)
         (do
