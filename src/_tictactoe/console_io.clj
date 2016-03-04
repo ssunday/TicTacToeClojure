@@ -1,25 +1,28 @@
 (ns -tictactoe.console_io
-  (:require [-tictactoe.input_validation :refer :all]))
+  (:require [-tictactoe.input_validation :refer :all])
+  (:use clojure.pprint))
 
 (defn start-game-message []
   (println "Welcome to the Tic Tac Toe Game!"))
 
 (defn display-current-player-marker [current-player-marker]
   (println "\nCurrent Player Marker:" current-player-marker))
+(defn print-row [row]
+  (println (clojure.string/join "\t" row)))
 
 (defn display-game-board-3x3 [board]
   (println)
-  (apply println (subvec board 0 3))
-  (apply println (subvec board 3 6))
-  (apply println (subvec board 6 9))
+  (print-row (subvec board 0 3))
+  (print-row (subvec board 3 6))
+  (print-row (subvec board 6 9))
   (println))
 
 (defn display-game-board-4x4 [board]
   (println)
-  (apply println (subvec board 0 4))
-  (apply println (subvec board 4 8))
-  (apply println (subvec board 8 12))
-  (apply println (subvec board 12 16))
+  (print-row (subvec board 0 4))
+  (print-row (subvec board 4 8))
+  (print-row (subvec board 8 12))
+  (print-row (subvec board 12 16))
   (println))
 
 (defn display-game-board [board]
