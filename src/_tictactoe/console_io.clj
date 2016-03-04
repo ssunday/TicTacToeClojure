@@ -7,8 +7,25 @@
 (defn display-current-player-marker [current-player-marker]
   (println "\nCurrent Player Marker:" current-player-marker))
 
+(def colors {:end-marker "\u001b[0m"
+                  :default "\u001b[39m"
+                  :white   "\u001b[37m"
+                  :black   "\u001b[30m"
+                  :red     "\u001b[31m"
+                  :green   "\u001b[32m"
+                  :blue    "\u001b[34m"
+                  :yellow  "\u001b[33m"
+                  :magenta "\u001b[35m"
+                  :cyan    "\u001b[36m"})
+
+(defn colorize-markers [row]
+  (map (fn [spot]
+        (if (number? spot) (str (get colors :cyan) spot (get colors :end-marker))
+            (str (get colors :red) spot (get colors :end-marker)))) 
+        row))
+
 (defn print-row [row]
-  (println (clojure.string/join "\t" row)))
+  (println (clojure.string/join "\t" (colorize-markers row))))
 
 (defn display-game-board-3x3 [board]
   (println)
