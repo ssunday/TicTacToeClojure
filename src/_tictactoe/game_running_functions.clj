@@ -3,6 +3,11 @@
             [-tictactoe.console_io :as io]
             [-tictactoe.ai_player :as ai]))
 
+
+(defn update-player-scores-for-win [player-scores whether_player_one]
+  (let [player (if whether_player_one (first (first @player-scores)) (first (second @player-scores)))]
+  (swap! player-scores update player inc)))
+
 (defn display-end-game-messages [board player-marker player-one-marker]
   (if (gf/game-is-won board)
       (if (= player-marker player-one-marker)
@@ -10,12 +15,21 @@
           (io/player-one-won-message))
       (io/game-is-tied-message)))
 
+(defn end-game-round [board player-scores current-player-marker player-one-marker]
+  (if (gf/game-is-won board)
+      (if (= current-player-marker player-one-marker)
+          (do (io/player-two-won-message)
+              (update-player-scores-for-win player-scores false))
+          (do (io/player-one-won-message)
+              (update-player-scores-for-win player-scores true)))
+      (io/game-is-tied-message)))
+
 (defn get-move [board current-player-marker other-player-marker current-player-is-ai]
   (if current-player-is-ai
     (gf/mark-board-location board (ai/best-move board current-player-marker other-player-marker) current-player-marker)
     (gf/mark-board-location board (io/get-player-spot-to-be-marked board) current-player-marker)))
 
-(defn play-game []
+(defn play-game [player-scores]
   (let [player-one-marker (io/get-player-one-marker)
         player-two-marker (io/get-player-two-marker player-one-marker)
         first-player (io/get-first-player player-one-marker player-two-marker)
@@ -32,15 +46,19 @@
                         (get-move board player-marker other-player-marker
                             (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
               (do (io/display-game-board board)
-                  (display-end-game-messages board player-marker player-one-marker)
+                  (end-game-round board player-scores player-marker player-one-marker)
                   (if (io/ask-if-player-wants-to-play-again-with-same-input)
                     (recur first-player (if (= first-player player-one-marker) player-two-marker player-one-marker)
                                         (gf/make-default-board board-dimension))))))))
 
 (defn run []
   (io/start-game-message)
-  (loop [play-again true]
-    (if play-again
-        (do (play-game)
-            (recur (io/ask-if-player-wants-to-play-again)))
-     (io/end-game-message))))
+  (let [player-one-name (io/get-player-one-name)
+        player-two-name (io/get-player-two-name player-one-name)
+        player-scores (atom (zipmap [player-one-name player-two-name] [0 0]))]
+    (loop [play-again true]
+      (if play-again
+          (do (play-game player-scores)
+              (recur (io/ask-if-player-wants-to-play-again)))
+       (do (io/display-player-scores @player-scores)
+            (io/end-game-message))))))

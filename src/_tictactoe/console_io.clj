@@ -1,12 +1,12 @@
 (ns -tictactoe.console_io
-  (:require [-tictactoe.input_validation :refer :all])
-  (:use clojure.pprint))
+  (:require [-tictactoe.input_validation :refer :all]))
 
 (defn start-game-message []
   (println "Welcome to the Tic Tac Toe Game!"))
 
 (defn display-current-player-marker [current-player-marker]
   (println "\nCurrent Player Marker:" current-player-marker))
+
 (defn print-row [row]
   (println (clojure.string/join "\t" row)))
 
@@ -51,6 +51,25 @@
         (recur (convert-string-to-number (read-line)) board))
       spot)))
 
+(defn get-player-one-name []
+  (println "Please input player one's name.")
+    (loop [player-one-name (read-line)]
+      (if (clojure.string/blank? player-one-name)
+          (do
+            (println "Name must not be blank.")
+            (recur (read-line)))
+          player-one-name)))
+
+(defn get-player-two-name [player-one-name]
+  (println "Please input player two's name.")
+  (loop [player-two-name (read-line)]
+    (if (or (= player-two-name player-one-name)
+            (clojure.string/blank? player-two-name))
+        (do
+          (println "Player names cannot be identical or blank.")
+          (recur (read-line)))
+        player-two-name)))
+
 (defn get-player-one-marker []
   (println "Please input player one's marker. Marker must be a single character long and not a number.")
   (loop [player-one-marker (read-line)]
@@ -62,13 +81,12 @@
 
 (defn get-player-two-marker [player-one-marker]
   (println "Please input player two's marker. Marker must be a single character long, not a number, and different from player one's marker.")
-  (loop [player-two-marker (read-line)
-         player-one-marker player-one-marker]
+  (loop [player-two-marker (read-line)]
     (if (or  (= player-two-marker player-one-marker)
              (check-if-marker-is-invalid player-two-marker))
         (do
           (println "Marker must be unique, single length, and not a number.")
-          (recur (read-line) player-one-marker))
+          (recur (read-line)))
         (clojure.string/upper-case player-two-marker))))
 
 (defn get-first-player [player-one-marker player-two-marker]
@@ -129,3 +147,8 @@
              (println "Please input either y or n.")
              (recur (read-line)))
         (= play-again "y"))))
+
+(defn display-player-scores [player-scores]
+  (println "\nPlayer Scores:")
+  (doseq [[player-name score] player-scores]
+        (println (str player-name ": " score))))
