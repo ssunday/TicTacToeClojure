@@ -16,7 +16,7 @@
        (not (= first-player-marker player-two-marker))))
 
 (defn check-if-spot-is-invalid-input [board spot]
-  (nil? spot))
+  (nil? (convert-string-to-number spot)))
 
 (defn check-if-spot-is-already-marked [board spot]
   (string? (get board spot)))
