@@ -21,7 +21,7 @@
 (defn colorize-markers [row]
   (map (fn [spot]
         (if (number? spot) (str (get colors :cyan) spot (get colors :end-marker))
-            (str (get colors :red) spot (get colors :end-marker)))) 
+            (str (get colors :red) spot (get colors :end-marker))))
         row))
 
 (defn print-row [row]
@@ -62,10 +62,12 @@
   (println "Please input spot to be marked. Must be 0 -" (dec (count board)) "and open.")
   (loop [spot (convert-string-to-number (read-line))
          board board]
-    (if (check-if-spot-is-not-open board spot)
-      (do
-        (println "Spot must be open.")
-        (recur (convert-string-to-number (read-line)) board))
+    (if (check-if-spot-is-invalid board spot)
+      (do (cond (check-if-spot-is-invalid-input board spot) (println "Spot must be an integer corresponding to an open location.")
+                (check-if-spot-is-not-on-board board spot) (println "Spot must be a location on the game board.")
+                (check-if-spot-is-already-marked board spot) (println "Spot must be open and unmarked.")
+                :else (println "That spot is not valid."))
+          (recur (convert-string-to-number (read-line)) board))
       spot)))
 
 (defn get-player-one-name []
