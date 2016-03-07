@@ -2,7 +2,8 @@
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]
             [-tictactoe.ai_player :as ai]
-            [-tictactoe.score_recording :as score_recording]))
+            [-tictactoe.score_recording :as score_recording]
+            [-tictactoe.game_menu :as menu]))
 
 
 (defn update-player-scores-for-win [player-scores whether_player_one]
@@ -49,6 +50,9 @@
 
 (defn run []
   (io/start-game-message)
+  (loop [menu-option (io/select-menu-option (menu/get-menu-options))]
+    (if (not (menu/do_menu_option menu-option))
+      (recur (io/select-menu-option (menu/get-menu-options)))))
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
         player-scores (atom (zipmap [player-one-name player-two-name] [0 0]))]

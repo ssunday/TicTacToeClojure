@@ -171,3 +171,16 @@
   (println "\nPlayer Scores:")
   (doseq [[player-name score] player-scores]
         (println (str player-name ": " score))))
+
+(defn select-menu-option [menu-options]
+  (println "\nMenu:")
+  (doseq [[menu-number, menu-option] menu-options]
+        (println (str menu-number ". " menu-option)))
+  (println "Please select option by typing in number.")
+  (loop [option (convert-string-to-number (read-line))]
+        (if (and (number? option)
+                  (<= option (count menu-options))
+                  (> option 0))
+                  option
+                  (do (println "Option must be a number matched with one of the available options.")
+                    (recur (convert-string-to-number (read-line)))))))
