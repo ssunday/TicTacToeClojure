@@ -1,19 +1,15 @@
 (ns -tictactoe.game_running_functions
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]
-            [-tictactoe.ai_player :as ai]))
+            [-tictactoe.ai_player :as ai]
+            [-tictactoe.score_recording :as score_recording]))
 
 
 (defn update-player-scores-for-win [player-scores whether_player_one]
-  (let [player (if whether_player_one (first (first @player-scores)) (first (second @player-scores)))]
-  (swap! player-scores update player inc)))
-
-(defn display-end-game-messages [board player-marker player-one-marker]
-  (if (gf/game-is-won board)
-      (if (= player-marker player-one-marker)
-          (io/player-two-won-message)
-          (io/player-one-won-message))
-      (io/game-is-tied-message)))
+  (let [player-one-name (first (first @player-scores))
+        player-two-name (first (second @player-scores))
+        player-name (if whether_player_one player-one-name player-two-name)]
+  (swap! player-scores update player-name inc)))
 
 (defn end-game-round [board player-scores current-player-marker player-one-marker]
   (if (gf/game-is-won board)
@@ -61,4 +57,5 @@
           (do (play-game player-scores)
               (recur (io/ask-if-player-wants-to-play-again)))
        (do (io/display-player-scores @player-scores)
+            (score_recording/record-scores @player-scores)
             (io/end-game-message))))))

@@ -12,8 +12,9 @@
 (defn move
   [board player-marker current-player other-player-marker depth previous-move multiplier best-moves]
     (if (gf/game-is-won-or-tied board)
-        (if (< (get @best-moves previous-move) (* multiplier (score board current-player player-marker depth)))
-          (swap! best-moves assoc previous-move (* multiplier (score board current-player player-marker depth))))
+        (let [score (* multiplier (score board current-player player-marker depth))]
+          (if (< (get @best-moves previous-move) score)
+            (swap! best-moves assoc previous-move score)))
       (move (gf/mark-board-location board (first (get-available-locations board)) current-player)
         player-marker
         other-player-marker
