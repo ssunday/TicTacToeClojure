@@ -54,4 +54,4 @@
 
 (describe "check-if-spot-is-invalid-input"
   (it "returns true for nil spot"
-    (check-if-spot-is-invalid-input [0 1 2 3 4 5 6 7 8] "A")))
+    (check-if-spot-is-invalid-input [0 1 2 3 4 5 6 7 8] nil)))
