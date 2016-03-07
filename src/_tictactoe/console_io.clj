@@ -8,43 +8,44 @@
   (println "\nCurrent Player Marker:" current-player-marker))
 
 (def colors {:end-marker "\u001b[0m"
-                  :default "\u001b[39m"
-                  :white   "\u001b[37m"
-                  :black   "\u001b[30m"
-                  :red     "\u001b[31m"
-                  :green   "\u001b[32m"
-                  :blue    "\u001b[34m"
-                  :yellow  "\u001b[33m"
-                  :magenta "\u001b[35m"
-                  :cyan    "\u001b[36m"})
+             :default "\u001b[39m"
+             :white   "\u001b[37m"
+             :black   "\u001b[30m"
+             :red     "\u001b[31m"
+             :green   "\u001b[32m"
+             :blue    "\u001b[34m"
+             :yellow  "\u001b[33m"
+             :magenta "\u001b[35m"
+             :cyan    "\u001b[36m"})
 
-(defn colorize-markers [row]
+(defn colorize-markers [row player-one-marker]
   (map (fn [spot]
-        (if (number? spot) (str (get colors :cyan) spot (get colors :end-marker))
-            (str (get colors :red) spot (get colors :end-marker))))
+        (cond (number? spot) (str (get colors :cyan) spot (get colors :end-marker))
+              (= player-one-marker spot) (str (get colors :red) spot (get colors :end-marker))
+              :else (str (get colors :blue) spot (get colors :end-marker))))
         row))
 
-(defn print-row [row]
-  (println (clojure.string/join "\t" (colorize-markers row))))
+(defn print-row [row player-one-marker]
+  (println (clojure.string/join "\t" (colorize-markers row player-one-marker))))
 
-(defn display-game-board-3x3 [board]
+(defn display-game-board-3x3 [board player-one-marker]
   (println)
-  (print-row (subvec board 0 3))
-  (print-row (subvec board 3 6))
-  (print-row (subvec board 6 9))
+  (print-row (subvec board 0 3) player-one-marker)
+  (print-row (subvec board 3 6) player-one-marker)
+  (print-row (subvec board 6 9) player-one-marker)
   (println))
 
-(defn display-game-board-4x4 [board]
+(defn display-game-board-4x4 [board player-one-marker]
   (println)
-  (print-row (subvec board 0 4))
-  (print-row (subvec board 4 8))
-  (print-row (subvec board 8 12))
-  (print-row (subvec board 12 16))
+  (print-row (subvec board 0 4) player-one-marker)
+  (print-row (subvec board 4 8) player-one-marker)
+  (print-row (subvec board 8 12) player-one-marker)
+  (print-row (subvec board 12 16) player-one-marker)
   (println))
 
-(defn display-game-board [board]
-  (cond (= (count board) 9) (display-game-board-3x3 board)
-        (= (count board) 16) (display-game-board-4x4 board)))
+(defn display-game-board [board player-one-marker]
+  (cond (= (count board) 9) (display-game-board-3x3 board player-one-marker)
+        (= (count board) 16) (display-game-board-4x4 board player-one-marker)))
 
 (defn player-one-won-message []
   (println "\nPlayer One Won!"))
