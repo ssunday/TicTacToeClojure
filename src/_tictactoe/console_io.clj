@@ -1,11 +1,15 @@
 (ns -tictactoe.console_io
-  (:require [-tictactoe.input_validation :refer :all]))
+  (:require [-tictactoe.input_validation :refer :all])
+  (:use [-tictactoe.localization :only (translate)]))
+
+(def loc (or (keyword (System/getenv "LOC"))
+              :en))
 
 (defn start-game-message []
-  (println "Welcome to the Tic Tac Toe Game!"))
+  (println (translate loc :output/welcome-message)))
 
 (defn display-current-player-marker [current-player-marker]
-  (println "\nCurrent Player Marker:" current-player-marker))
+  (println (translate loc :output/current-player-marker current-player-marker)))
 
 (def colors {:end-marker "\u001b[0m"
              :default "\u001b[39m"
@@ -57,7 +61,7 @@
   (println "\nTied!"))
 
 (defn end-game-message []
-  (println "\nThank you for playing!"))
+  (println (translate loc :output/end-game-message)))
 
 (defn get-player-spot-to-be-marked [board]
   (println "Please input spot to be marked. Must be 0 -" (dec (count board)) "and open.")
