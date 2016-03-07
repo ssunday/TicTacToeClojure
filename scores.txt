@@ -2,3 +2,5 @@ sarah 1
 bob 2
 Fred 0
 George 0
+bobby 1
+sammy 2

@@ -1,5 +1,5 @@
 (ns -tictactoe.core
-  (:require [-tictactoe.game_running_functions :refer :all]))
+  (:require [-tictactoe.game_runner :refer :all]))
 
 (defn -main []
   (run))

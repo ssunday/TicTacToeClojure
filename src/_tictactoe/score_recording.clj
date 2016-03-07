@@ -3,6 +3,12 @@
 
 (def player-scores-file-name "scores.txt")
 
+(defn convert-string-to-number-if-number [str]
+  (try
+    (let [data (read-string str)]
+       (if (number? data) data str))
+    (catch Exception e nil)))
+
 (defn record-scores [player-scores]
   (doseq [[player, score] player-scores]
     (spit player-scores-file-name (str player " " score "\n") :append true)))
@@ -12,6 +18,5 @@
 
 (defn read-all-scores []
   (let [scores (slurp player-scores-file-name)
-        scores-split (re-seq #"\w+" scores)
-        hashed-scores (apply hash-map scores-split)]
-  (into {} (for [[name score] hashed-scores] [name (read-string score)]))))
+        scores-split (re-seq #"\w+" scores)]
+  (partition 2 (map #(convert-string-to-number-if-number %) scores-split))))

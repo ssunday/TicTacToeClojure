@@ -1,9 +1,8 @@
-(ns -tictactoe.game_running_functions
+(ns -tictactoe.play_game
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]
             [-tictactoe.ai_player :as ai]
             [-tictactoe.score_recording :as score_recording]))
-
 
 (defn update-player-scores-for-win [player-scores whether_player_one]
   (let [player-one-name (first (first @player-scores))
@@ -47,8 +46,7 @@
                     (recur first-player (if (= first-player player-one-marker) player-two-marker player-one-marker)
                                         (gf/make-default-board board-dimension))))))))
 
-(defn run []
-  (io/start-game-message)
+(defn run-game []
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
         player-scores (atom (zipmap [player-one-name player-two-name] [0 0]))]
