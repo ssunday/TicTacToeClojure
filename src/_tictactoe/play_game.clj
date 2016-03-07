@@ -36,11 +36,11 @@
              board (gf/make-default-board board-dimension)]
           (if (not (gf/game-is-won-or-tied board))
               (do (io/display-current-player-marker player-marker)
-                  (io/display-game-board board)
+                  (io/display-game-board board player-one-marker)
                   (recur other-player-marker player-marker
                         (get-move board player-marker other-player-marker
                             (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
-              (do (io/display-game-board board)
+              (do (io/display-game-board board player-one-marker)
                   (end-game-round board player-scores player-marker player-one-marker)
                   (if (io/ask-if-player-wants-to-play-again-with-same-input)
                     (recur first-player (if (= first-player player-one-marker) player-two-marker player-one-marker)
