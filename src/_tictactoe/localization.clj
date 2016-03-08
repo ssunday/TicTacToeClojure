@@ -15,7 +15,7 @@
                             :play-again-new-input "Play again with new input? (y/n)"}
                     :output {:welcome-message "Welcome to the Tic Tac Toe Game!"
                               :current-player-marker "Current Player Marker: %s"
-                              :player-names "These are the players with scores tallied from previous games. If you are one of these players, please choose that same name or else you will modify their scores."
+                              :player-names "These are the players with scores tallied from previous games. If you are one of these players, please choose that same name. If not you will modify their scores."
                               :player-tally "Player Tally"
                               :tally-header "W/L/D"
                               :player-one-has-won "Player One has Won!"
@@ -53,7 +53,7 @@
                              :play-again-new-input "Play wieder mit neuen Eingang? (y/n)"}
                     :output {:welcome-message "Willkommen in der Tic Tac Toe-Spiel!"
                               :current-player-marker "Aktuelle Spieler Marker: %s"
-                              :player-names "Dies sind die Spieler mit aus früheren Spielen ausgezählt Partituren. Wenn Sie einen dieser Spieler sind, wählen Sie bitte, dass die gleichen Namen oder sonst werden Sie ihre Noten zu ändern."
+                              :player-names "Dies sind die Spieler mit aus früheren Spielen ausgezählt Partituren. Wenn Sie einen dieser Spieler sind, wählen Sie bitte, dass die gleichen Namen. Wenn nicht, werden Sie ihre Noten zu ändern."
                               :player-tally "Spieler Tally:"
                               :tally-header "W/L/D"
                               :player-one-has-won "Erste Spieler hat Gewonnen!"
