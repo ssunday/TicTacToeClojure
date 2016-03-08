@@ -2,28 +2,41 @@
   (:require [speclj.core :refer :all]
             [-tictactoe.score_recording :refer :all]))
 
+(describe "record-tally"
+  (it "saves it to a file to be retrieved"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (clear-file)
+      (record-tally tally)
+      (should= tally (read-tally)))))
 
-(describe "record-scores"
-  (it "saves scores to file"
-    (let [scores {"sarah" 1 "bob" 2}]
-    (clear-file)
-    (record-scores scores)
-    (should= (lazy-seq scores) (read-all-scores))))
+(describe "player-names"
+  (it "gets a list of distinct player names"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                  ["John" {:wins 0, :losses 0, :draws 1}]
+                  ["Bob" {:wins 0, :losses 0, :draws 1}]
+                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (clear-file)
+      (record-tally tally)
+      (should= '("Sarah" "John" "Bob") (player-names)))))
 
-  (it "saves two scores to file"
-    (let [score1 {"sarah" 1 "bob" 2}
-          score2 {"Fred" 0 "George" 0}]
-    (clear-file)
-    (record-scores score1)
-    (record-scores score2)
-    (should= (lazy-seq (merge score1 score2)) (read-all-scores))))
+(describe "read-tally"
+  (it "gets a list of scores"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                  ["John" {:wins 0, :losses 0, :draws 1}]
+                  ["Bob" {:wins 0, :losses 0, :draws 1}]
+                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (clear-file)
+      (record-tally tally)
+      (should= tally (read-tally)))))
 
-  (it "saves two scores to file"
-    (let [score1 {"sarah" 1 "bob" 2}
-          score2 {"Fred" 0 "George" 0}
-          score3 {"bobby" 1 "sammy" 2}]
-    (clear-file)
-    (record-scores score1)
-    (record-scores score2)
-    (record-scores score3)
-    (should= (lazy-seq (merge score1 score2 score3)) (read-all-scores)))))
+(describe "read-total-tally"
+  (it "gets a list of total scores, combining player scores"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                  ["John" {:wins 0, :losses 0, :draws 1}]
+                  ["Bob" {:wins 0, :losses 0, :draws 1}]
+                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (clear-file)
+      (record-tally tally)
+      (should= (into {} [["Sarah" {:wins 0, :losses 0, :draws 2}]
+                    ["John" {:wins 0, :losses 0, :draws 1}]
+                    ["Bob" {:wins 0, :losses 0, :draws 1}]]) (read-total-tally)))))
