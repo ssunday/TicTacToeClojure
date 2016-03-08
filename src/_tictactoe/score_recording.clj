@@ -23,7 +23,6 @@
 
 (defn read-total-tally []
   (let [tally (read-tally)
-        freq (frequencies tally)
         total-tally (atom (zipmap (player-names) (repeat {:wins 0 :losses 0 :draws 0})))]
     (doseq [tally-set tally]
       (swap! total-tally update-in [(first tally-set) :wins] + ((second tally-set) :wins))
