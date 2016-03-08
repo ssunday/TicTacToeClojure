@@ -61,25 +61,32 @@
                 (check-if-spot-is-already-marked board spot) (println (translate loc :error-messages/spot-not-open)))
           (recur (convert-string-to-number (read-line)) board))
       spot)))
+(defn display-currently-registered-names [player-names]
+  (println (translate loc :output/player-names))
+  (doseq [name player-names]
+    (println name)))
 
-(defn get-player-one-name []
+(defn get-player-one-name [player-names]
   (println (translate loc :input/player-one-name))
     (loop [player-one-name (read-line)]
-      (if (clojure.string/blank? player-one-name)
-          (do
-            (println (translate loc :error-messages/name-must-not-be-blank))
-            (recur (read-line)))
-          player-one-name)))
+      (cond (clojure.string/blank? player-one-name)
+            (do
+                (println (translate loc :error-messages/name-must-not-be-blank))
+                (recur (read-line)))
+          :else player-one-name)))
 
-(defn get-player-two-name [player-one-name]
+(defn get-player-two-name [player-names player-one-name]
   (println (translate loc :input/player-two-name))
   (loop [player-two-name (read-line)]
-    (if (or (= player-two-name player-one-name)
-            (clojure.string/blank? player-two-name))
-        (do
-          (println (translate loc :error-messages/name-must-not-be-blank-or-identical))
-          (recur (read-line)))
-        player-two-name)))
+    (cond (clojure.string/blank? player-two-name)
+            (do
+                (println (translate loc :error-messages/name-must-not-be-blank))
+                (recur (read-line)))
+          (= player-two-name player-one-name)
+            (do
+                (println (translate loc :error-messages/name-already-taken))
+                (recur (read-line)))
+        :else player-two-name)))
 
 (defn get-player-one-marker []
   (println (translate loc :input/player-one-marker))
@@ -171,10 +178,11 @@
 (defn end-game-message []
   (println (translate loc :output/end-game-message)))
 
-(defn display-player-scores [player-scores]
-  (println (translate loc :output/player-scores))
-  (doseq [[player-name score] player-scores]
-        (println (str player-name ": " score))))
+(defn display-tally [tally]
+  (println (translate loc :output/player-tally))
+  (println "\t" (translate loc :output/tally-header))
+  (doseq [[player-name scores] tally]
+        (println (str player-name ":\t" (scores :wins) "/" (scores :losses) "/" (scores :draws)))))
 
 (defn select-menu-option [menu-options]
   (println (translate loc :menu/menu))

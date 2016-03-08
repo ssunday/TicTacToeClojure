@@ -1,22 +1,32 @@
 (ns -tictactoe.score_recording
+  (:require [clojure.edn :as edn])
   (:use [clojure.java.io]))
 
-(def player-scores-file-name "scores.txt")
+(def player-tally-file-name "tally.edn")
 
-(defn convert-string-to-number-if-number [str]
-  (try
-    (let [data (read-string str)]
-       (if (number? data) data str))
-    (catch Exception e nil)))
-
-(defn record-scores [player-scores]
-  (doseq [[player, score] player-scores]
-    (spit player-scores-file-name (str player " " score "\n") :append true)))
+(defn record-tally [player-tally]
+  (doseq [player player-tally]
+    (spit player-tally-file-name (prn-str player) :append true)))
 
 (defn clear-file []
-  (delete-file player-scores-file-name))
+  (delete-file player-tally-file-name))
 
-(defn read-all-scores []
-  (let [scores (slurp player-scores-file-name)
-        scores-split (re-seq #"\w+" scores)]
-  (partition 2 (map #(convert-string-to-number-if-number %) scores-split))))
+(defn read-tally []
+  (if (.exists (file player-tally-file-name))
+    (with-open [rdr (reader player-tally-file-name)]
+      (map #(edn/read-string %) (doall (line-seq rdr))))
+    nil))
+
+(defn player-names []
+  (let [tally (read-tally)]
+    (vec (distinct (map #(first %) tally)))))
+
+(defn read-total-tally []
+  (let [tally (read-tally)
+        freq (frequencies tally)
+        total-tally (atom (zipmap (player-names) (repeat {:wins 0 :losses 0 :draws 0})))]
+    (doseq [tally-set tally]
+      (swap! total-tally update-in [(first tally-set) :wins] + ((second tally-set) :wins))
+      (swap! total-tally update-in [(first tally-set) :losses] + ((second tally-set) :losses))
+      (swap! total-tally update-in [(first tally-set) :draws] + ((second tally-set) :draws)))
+    @total-tally))
