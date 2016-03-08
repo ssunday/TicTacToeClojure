@@ -4,3 +4,7 @@ Fred 0
 George 0
 bobby 1
 sammy 2
+12323123 1
+Rrrrr 1
+Yue 0
+Sokka 1
