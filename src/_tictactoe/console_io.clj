@@ -1,11 +1,15 @@
 (ns -tictactoe.console_io
-  (:require [-tictactoe.input_validation :refer :all]))
+  (:require [-tictactoe.input_validation :refer :all])
+  (:use [-tictactoe.localization :only (translate)]))
+
+(def loc (or (keyword (System/getenv "LOC"))
+              :en))
 
 (defn start-game-message []
-  (println "Welcome to the Tic Tac Toe Game!"))
+  (println (translate loc :output/welcome-message)))
 
 (defn display-current-player-marker [current-player-marker]
-  (println "\nCurrent Player Marker:" current-player-marker))
+  (println (translate loc :output/current-player-marker current-player-marker)))
 
 (def colors {:end-marker "\u001b[0m"
              :default "\u001b[39m"
@@ -47,84 +51,71 @@
   (cond (= (count board) 9) (display-game-board-3x3 board player-one-marker)
         (= (count board) 16) (display-game-board-4x4 board player-one-marker)))
 
-(defn player-one-won-message []
-  (println "\nPlayer One Won!"))
-
-(defn player-two-won-message []
-  (println "\nPlayer Two Won!"))
-
-(defn game-is-tied-message []
-  (println "\nTied!"))
-
-(defn end-game-message []
-  (println "\nThank you for playing!"))
-
 (defn get-player-spot-to-be-marked [board]
-  (println "Please input spot to be marked. Must be 0 -" (dec (count board)) "and open.")
+  (println (translate loc :input/spot-to-be-marked (dec (count board))))
   (loop [spot (convert-string-to-number (read-line))
          board board]
     (if (check-if-spot-is-invalid board spot)
-      (do (cond (check-if-spot-is-invalid-input board spot) (println "Spot must be an integer corresponding to an open location.")
-                (check-if-spot-is-not-on-board board spot) (println "Spot must be a location on the game board.")
-                (check-if-spot-is-already-marked board spot) (println "Spot must be open and unmarked.")
-                :else (println "That spot is not valid."))
+      (do (cond (check-if-spot-is-invalid-input board spot) (println (translate loc :error-messages/spot-is-invalid-input))
+                (check-if-spot-is-not-on-board board spot) (println (translate loc :error-messages/spot-is-not-on-board))
+                (check-if-spot-is-already-marked board spot) (println (translate loc :error-messages/spot-not-open)))
           (recur (convert-string-to-number (read-line)) board))
       spot)))
 
 (defn get-player-one-name []
-  (println "Please input player one's name.")
+  (println (translate loc :input/player-one-name))
     (loop [player-one-name (read-line)]
       (if (clojure.string/blank? player-one-name)
           (do
-            (println "Name must not be blank.")
+            (println (translate loc :error-messages/name-must-not-be-blank))
             (recur (read-line)))
           player-one-name)))
 
 (defn get-player-two-name [player-one-name]
-  (println "Please input player two's name.")
+  (println (translate loc :input/player-two-name))
   (loop [player-two-name (read-line)]
     (if (or (= player-two-name player-one-name)
             (clojure.string/blank? player-two-name))
         (do
-          (println "Player names cannot be identical or blank.")
+          (println (translate loc :error-messages/name-must-not-be-blank-or-identical))
           (recur (read-line)))
         player-two-name)))
 
 (defn get-player-one-marker []
-  (println "Please input player one's marker. Marker must be a single character long and not a number.")
+  (println (translate loc :input/player-one-marker))
   (loop [player-one-marker (read-line)]
     (if (check-if-marker-is-invalid player-one-marker)
         (do
-          (println "Marker must be a single character and not a number.")
+          (println (translate loc :error-messages/bad-player-one-marker))
           (recur (read-line)))
         (clojure.string/upper-case player-one-marker))))
 
 (defn get-player-two-marker [player-one-marker]
-  (println "Please input player two's marker. Marker must be a single character long, not a number, and different from player one's marker.")
+  (println (translate loc :input/player-two-marker))
   (loop [player-two-marker (read-line)]
     (if (or  (= player-two-marker player-one-marker)
              (check-if-marker-is-invalid player-two-marker))
         (do
-          (println "Marker must be unique, single length, and not a number.")
+          (println (translate loc :error-messages/bad-player-two-marker))
           (recur (read-line)))
         (clojure.string/upper-case player-two-marker))))
 
 (defn get-first-player [player-one-marker player-two-marker]
-  (println "Please input marker of player going first. Either:" player-one-marker "or" player-two-marker)
-  (loop [first-player-marker (read-line)]
+  (println (translate loc :input/player-going-first player-one-marker player-two-marker))
+  (loop [first-player-marker (clojure.string/upper-case (read-line))]
     (if (check-if-first-player-marker-is-invalid first-player-marker player-one-marker player-two-marker)
         (do
-          (println "Please input one of the already defined markers. Either:" player-one-marker "or" player-two-marker)
+          (println (translate loc :error-messages/invalid-player-going-first player-one-marker player-two-marker))
           (recur (read-line)))
         first-player-marker)))
 
 (defn ask-for-either-3x3-or-4x4-board []
-  (println "Choose either 3x3 or 4x4 board. Type 3 for 3x3 and 4 for 4x4.")
+  (println (translate loc :input/board-dimension))
   (loop [board-type (read-line)]
     (if (and (not (= board-type "3"))
                  (not (= board-type "4")))
         (do
-          (println "Type 3 for 3x3 and 4 for 4x4.")
+          (println (translate loc :error-messages/invalid-board-dimension))
           (recur (read-line)))
         (convert-string-to-number board-type))))
 
@@ -133,55 +124,67 @@
        (not (= response "n"))))
 
 (defn get-whether-player-one-is-ai []
-  (println "Input y/n for player one being an AI.")
+  (println (translate loc :input/player-one-ai))
   (loop [one-ai (read-line)]
     (if (check-if-yes-or-no-response-is-invalid one-ai)
         (do
-             (println "Please input y if you would like player one to be an AI or n for a human player")
+             (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
         (= one-ai "y"))))
 
 (defn get-whether-player-two-is-ai []
-  (println "Input y/n for player two being an AI.")
+  (println (translate loc :input/player-two-ai))
   (loop [two-ai (read-line)]
     (if (check-if-yes-or-no-response-is-invalid two-ai)
         (do
-             (println "Please input y if you would like player two to be an AI or n for a human player")
+             (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
         (= two-ai "y"))))
 
 (defn ask-if-player-wants-to-play-again-with-same-input []
-  (println "\nPlay again with same input? (y/n)")
+  (println (translate loc :input/play-again-same-input))
   (loop [play-again (read-line)]
     (if (check-if-yes-or-no-response-is-invalid play-again)
         (do
-             (println "Please input either y or n.")
+             (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
         (= play-again "y"))))
 
 (defn ask-if-player-wants-to-play-again []
-  (println "\nPlay again with new input? (y/n)")
+  (println (translate loc :input/play-again-new-input))
   (loop [play-again (read-line)]
     (if (check-if-yes-or-no-response-is-invalid play-again)
         (do
-             (println "Please input either y or n.")
+             (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
         (= play-again "y"))))
 
+(defn player-one-won-message []
+  (println (translate loc :output/player-one-has-won)))
+
+(defn player-two-won-message []
+  (println (translate loc :output/player-two-has-won)))
+
+(defn game-is-tied-message []
+  (println (translate loc :output/game-has-been-tied)))
+
+(defn end-game-message []
+  (println (translate loc :output/end-game-message)))
+
 (defn display-player-scores [player-scores]
-  (println "\nPlayer Scores:")
+  (println (translate loc :output/player-scores))
   (doseq [[player-name score] player-scores]
         (println (str player-name ": " score))))
 
 (defn select-menu-option [menu-options]
-  (println "\nMenu:")
+  (println (translate loc :menu/menu))
   (doseq [[menu-number, menu-option] menu-options]
-        (println (str menu-number ". " menu-option)))
-  (println "Please select option by typing in number.")
+        (println (str menu-number ". " (translate loc (keyword "menu" menu-option)))))
+  (println (translate loc :menu/select-menu-option))
   (loop [option (convert-string-to-number (read-line))]
         (if (and (number? option)
                   (<= option (count menu-options))
                   (> option 0))
                   option
-                  (do (println "Option must be a number matched with one of the available options.")
+                  (do (println (translate loc :error-messages/invalid-menu-option))
                     (recur (convert-string-to-number (read-line)))))))
