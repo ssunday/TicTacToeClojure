@@ -8,7 +8,6 @@
   (cond (gf/game-is-won board) (- 10 depth)
         (gf/game-is-tied board) 0))
 
-
 (defn move
   [board player-marker current-player other-player-marker depth previous-move multiplier best-moves]
     (if (gf/game-is-won-or-tied board)

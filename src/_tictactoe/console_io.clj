@@ -24,9 +24,9 @@
 
 (defn colorize-markers [row player-one-marker]
   (map (fn [spot]
-        (cond (number? spot) (str (get colors :cyan) spot (get colors :end-marker))
+        (cond (number? spot) (str (get colors :yellow) spot (get colors :end-marker))
               (= player-one-marker spot) (str (get colors :red) spot (get colors :end-marker))
-              :else (str (get colors :blue) spot (get colors :end-marker))))
+              :else (str (get colors :cyan) spot (get colors :end-marker))))
         row))
 
 (defn print-row [row player-one-marker]
@@ -127,8 +127,8 @@
         (convert-string-to-number board-type))))
 
 (defn check-if-yes-or-no-response-is-invalid [response]
-  (and (not (= response "y"))
-       (not (= response "n"))))
+  (and (not (= response (translate loc :input/yes-option)))
+       (not (= response (translate loc :input/no-option)))))
 
 (defn get-whether-player-one-is-ai []
   (println (translate loc :input/player-one-ai))
@@ -137,7 +137,7 @@
         (do
              (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
-        (= one-ai "y"))))
+        (= one-ai (translate loc :input/yes-option)))))
 
 (defn get-whether-player-two-is-ai []
   (println (translate loc :input/player-two-ai))
@@ -146,7 +146,7 @@
         (do
              (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
-        (= two-ai "y"))))
+        (= two-ai (translate loc :input/yes-option)))))
 
 (defn ask-if-player-wants-to-play-again-with-same-input []
   (println (translate loc :input/play-again-same-input))
@@ -155,7 +155,7 @@
         (do
              (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
-        (= play-again "y"))))
+        (= play-again (translate loc :input/yes-option)))))
 
 (defn ask-if-player-wants-to-play-again []
   (println (translate loc :input/play-again-new-input))
@@ -164,7 +164,7 @@
         (do
              (println (translate loc :error-messages/bad-y-or-n-option))
              (recur (read-line)))
-        (= play-again "y"))))
+        (= play-again (translate loc :input/yes-option)))))
 
 (defn player-one-won-message []
   (println (translate loc :output/player-one-has-won)))
