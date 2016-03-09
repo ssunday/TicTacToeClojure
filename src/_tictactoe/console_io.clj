@@ -61,6 +61,7 @@
                 (check-if-spot-is-already-marked board spot) (println (translate loc :error-messages/spot-not-open)))
           (recur (convert-string-to-number (read-line)) board))
       spot)))
+      
 (defn display-currently-registered-names [player-names]
   (println (translate loc :output/player-names))
   (doseq [name player-names]

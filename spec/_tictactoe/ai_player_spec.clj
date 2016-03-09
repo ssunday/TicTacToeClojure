@@ -2,82 +2,144 @@
   (:require [speclj.core :refer :all]
             [-tictactoe.ai_player :refer :all]))
 
-(def ai-marker "X")
+(def ai "X")
 
-(def other-marker "O")
+(def pl "O")
 
 (describe "get-available-locations"
   (it "returns only numbered, open spots for partially marked 3x3 board"
-    (should= [0 3 4 5] (get-available-spots [0 ai-marker other-marker 3 4 5 ai-marker ai-marker other-marker])))
+    (should= [0 3 4 5] (get-available-spots [0 ai pl 3 4 5 ai ai pl])))
   (it "returns entire 3x3 board when nothing has been marked"
     (should= [0 1 2 3 4 5 6 7 8] (get-available-spots [0 1 2 3 4 5 6 7 8])))
   (it "returns entire 4x4 board when nothing has been marked"
     (should= [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] (get-available-spots [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15])))
   (it "returns only numbered, open spots for partially marked 4x4 board"
-    (should= [0 3 4 5 7 8 10 11 15] (get-available-spots [0 ai-marker other-marker 3 
-                                                   4 5 other-marker 7
-                                                   8 ai-marker 10 11
-                                                  ai-marker other-marker other-marker 15])))
-)
+    (should= [0 3 4 5 7 8 10 11 15] (get-available-spots [0 ai pl 3
+                                                   4 5 pl 7
+                                                   8 ai 10 11
+                                                  ai pl pl 15]))))
+
+(describe "score"
+  (it "returns 0 for a tied board of depth 0"
+    (should= 0 (score [pl ai ai
+                       ai pl pl
+                       pl ai ai] pl ai 0)))
+
+  (it "returns 0 for a tied board of depth 10"
+    (should= 0 (score [pl ai ai
+                       ai pl pl
+                       pl ai ai] pl ai 10)))
+
+  (it "returns 100 for a won board by ai previous turn of depth 0"
+    (should= 100 (score [ai ai ai
+                       ai pl pl
+                       pl ai pl] pl ai 0)))
+  (it "returns 90 for a won board by ai of depth 0"
+    (should= 90 (score [ai ai ai
+                       ai pl pl
+                       pl ai pl] pl ai 10)))
+  (it "returns -100 for a won board by other player of depth 0"
+    (should= -100 (score [ai ai ai
+                       ai pl pl
+                       pl ai pl] ai ai 0)))
+  (it "returns -95 for a won board by other player of depth 5"
+    (should= -95 (score [ai ai ai
+                       ai pl pl
+                       pl ai pl] ai ai 5))))
 
 (describe "best-move"
 
-  (context "3x3 board"
+  (context "on 3x3 board"
 
-    (it "returns corner spot on empty board"
-      (should= 0 (best-move [0 1 2 3 4 5 6 7 8] ai-marker other-marker)))
+    (it "returns top left corner spot on empty board"
+      (should= 0 (best-move [0 1 2 3 4 5 6 7 8] ai pl)))
 
-    (it "returns top left corner spot when center is marked board"
-      (should= 0 (best-move [0 1 2 3 other-marker 5 6 7 8] ai-marker other-marker)))
+    (it "returns top left corner spot when center is marked"
+      (should= 0 (best-move [0 1 2 3 pl 5 6 7 8] ai pl)))
+
+    (it "returns middle spot when top left is marked"
+      (should= 4 (best-move [pl 1 2
+                              3 4 5
+                              6 7 8] ai pl)))
+
+    (it "returns middle spot when it has marked top left and the player has marked another location"
+      (should= 4 (best-move [ai pl 2
+                              3 4 5
+                              6 7 8] ai pl)))
 
     (it "returns winning spot on board where it has two in a row"
-      (should= 2 (best-move [ai-marker ai-marker 2 3 4 5 6 7 8] ai-marker other-marker)))
+      (should= 2 (best-move [ai ai 2 3 4 5 6 7 8] ai pl)))
 
     (it "returns winning spot on board where it has two in a row"
-      (should= 6 (best-move [ai-marker other-marker other-marker ai-marker 4 5 6 7 8] ai-marker other-marker)))
+      (should= 6 (best-move [ai pl pl ai 4 5 6 7 8] ai pl)))
 
     (it "blocks winning spot on board where opponent has two in a row"
-      (should= 2 (best-move [other-marker other-marker 2 3 4 5 6 7 8] ai-marker other-marker)))
+      (should= 2 (best-move [pl pl 2
+                              3 4 5
+                              6 7 8] ai pl)))
+
+    (it "blocks winning spot on board where opponent has two in the third row"
+      (should= 6 (best-move [ai 1 2
+                              3 4 5
+                              6 pl pl] ai pl)))
+
+    (it "blocks winning spot on board where opponent can win with a diagonal"
+      (should= 2 (best-move [ai 1 2
+                              ai pl 5
+                              pl 7 8] ai pl)))
 
     (it "blocks winning spot on board where opponent has two in a row"
-      (should= 8 (best-move [other-marker ai-marker 2
-                              3 other-marker ai-marker
-                              6 7 8] ai-marker other-marker)))
+      (should= 8 (best-move [pl ai 2
+                              3 pl ai
+                              6 7 8] ai pl)))
 
     (it "blocks opponent's winning spot even when it has 2 in a row."
-      (should= 7 (best-move [ai-marker other-marker ai-marker
-                             ai-marker other-marker 5
-                             other-marker 7 ai-marker] ai-marker other-marker)))
+      (should= 7 (best-move [ai pl ai
+                             ai pl 5
+                             pl 7 ai] ai pl)))
 
     (it "wins when it has the opportunity"
-      (should= 8 (best-move [ai-marker other-marker other-marker
-                              3 ai-marker 5
-                              6 7 8] ai-marker other-marker)))
+      (should= 8 (best-move [ai pl pl
+                              3 ai 5
+                              6 7 8] ai pl)))
 
     (it "blocks opponent from winning in diagonal case L-R"
-      (should= 8 (best-move [other-marker ai-marker 2
-                              3 other-marker 5
-                              ai-marker  7  8] ai-marker other-marker)))
+      (should= 8 (best-move [pl ai 2
+                              3 pl 5
+                              ai  7  8] ai pl)))
 
     (it "blocks opponent from winning in diagonal case R-L"
-      (should= 6 (best-move [ai-marker ai-marker other-marker
-                              3 other-marker 5
-                              6  7  8] ai-marker other-marker)))
+      (should= 6 (best-move [ai ai pl
+                              3 pl 5
+                              6  7  8] ai pl)))
 
     (it "blocks an opponent from winning second column"
-      (should= 7 (best-move [other-marker other-marker ai-marker
-                              ai-marker other-marker 5
-                              6 7 8] ai-marker other-marker)))
+      (should= 7 (best-move [pl pl ai
+                              ai pl 5
+                              6 7 8] ai pl)))
 
     (it "blocks an opponent from winning on top row horizontal"
-      (should= 2 (best-move [other-marker other-marker 2
-                              ai-marker 4 5
-                              ai-marker 7 other-marker] ai-marker other-marker))))
-  ; (context "4x4 board"
-  ;   (it "returns winning spot on board where it has three in a row"
-  ;     (should= 2 (best-move [ai-marker ai-marker 2 ai-marker
-  ;                             4 other-marker 6 7
-  ;                             8 9 10 11
-  ;                             other-marker 13 14 15] ai-marker other-marker))))
+      (should= 2 (best-move [pl pl 2
+                              ai 4 5
+                              6 7 8] ai pl)))
 
+    (it "blocks an opponent from winning first column by selecting slot 3"
+      (should= 3 (best-move [pl 1 2
+                              3 ai pl
+                              pl ai 8] ai pl)))
+
+    (it "blocks opponent from winning in second column by selecting four"
+      (should= 4 (best-move [0 pl ai
+                              3 4 5
+                              pl pl ai] ai pl)))
+
+    (it "wins in diagonal case L-R"
+      (should= 8 (best-move [ai pl 2
+                              3 ai 5
+                              pl pl 8] ai pl)))
+
+    (it "wins in diagonal case R-L"
+      (should= 6 (best-move [0 pl ai
+                              pl ai 5
+                              6 pl 8] ai pl))))
 )
