@@ -1,11 +1,18 @@
 (ns -tictactoe.ai_player
   (:require [-tictactoe.game_functions :as gf]))
 
-(defn get-available-locations [board]
+(defn get-available-spots [board]
   (vec (filter number? board)))
 
+(defn winning-move-possible [board player-marker]
+  (some #(gf/game-is-won %) (map #(gf/mark-board-location board % player-marker) (get-available-spots board))))
+
 (defn score [board current-player player-marker depth]
-  (cond (gf/game-is-won board) (- 10 depth)
+  (cond (and (gf/game-is-won board)
+             (= current-player player-marker)) (- depth 100)
+        (and (gf/game-is-won board)
+             (not (= current-player player-marker))) (- 100 depth)
+        (winning-move-possible board current-player) 50
         (gf/game-is-tied board) 0))
 
 (defn move
@@ -14,25 +21,22 @@
         (let [score (* multiplier (score board current-player player-marker depth))]
           (if (< (get @best-moves previous-move) score)
             (swap! best-moves assoc previous-move score)))
-      (move (gf/mark-board-location board (first (get-available-locations board)) current-player)
+      (doseq [spot (get-available-spots board)]
+        (move (gf/mark-board-location board spot current-player)
         player-marker
         other-player-marker
         current-player
         (inc depth)
-        (first (get-available-locations board))
+        spot
         (* multiplier -1)
-        best-moves)))
+        best-moves))))
 
 (defn get-best-move [best-moves]
   (first (first (filter (fn [[k v]] (= v (val (apply max-key val best-moves)))) best-moves))))
 
 (defn best-move [board player-marker other-player-marker]
-  (let [best-moves (atom (zipmap (get-available-locations board) (replicate (count (get-available-locations board)) -500)))
+  (let [best-moves (atom (zipmap (get-available-spots board) (replicate (count (get-available-spots board)) -1000)))
     depth 0
     multiplier 1]
-      (doseq [spot (get-available-locations board)]
-      (move (gf/mark-board-location board spot other-player-marker)
-              player-marker player-marker other-player-marker depth spot multiplier best-moves)
-      (move (gf/mark-board-location board spot player-marker)
-              player-marker other-player-marker player-marker depth spot multiplier best-moves))
+      (move board player-marker other-player-marker player-marker 0 nil multiplier best-moves)
     (get-best-move @best-moves)))
