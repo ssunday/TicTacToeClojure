@@ -9,10 +9,13 @@
 (describe "get-available-locations"
   (it "returns only numbered, open spots for partially marked 3x3 board"
     (should= [0 3 4 5] (get-available-spots [0 ai pl 3 4 5 ai ai pl])))
+
   (it "returns entire 3x3 board when nothing has been marked"
     (should= [0 1 2 3 4 5 6 7 8] (get-available-spots [0 1 2 3 4 5 6 7 8])))
+
   (it "returns entire 4x4 board when nothing has been marked"
     (should= [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] (get-available-spots [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15])))
+
   (it "returns only numbered, open spots for partially marked 4x4 board"
     (should= [0 3 4 5 7 8 10 11 15] (get-available-spots [0 ai pl 3
                                                    4 5 pl 7
@@ -66,6 +69,15 @@
       (should= 4 (best-move [ai pl 2
                               3 4 5
                               6 7 8] ai pl)))
+
+    (it "takes the top middle selection when top left and middle are taken"
+      (should= 1 (best-move [ai 1 2
+                              3 pl 5
+                              6 7 8] ai pl)))
+    (it "takes right middle spot when opponent has 2 in a row"
+      (should= 5 (best-move [ai ai pl
+                              pl pl 5
+                              ai 7 8] ai pl)))
 
     (it "returns winning spot on board where it has two in a row"
       (should= 2 (best-move [ai ai 2 3 4 5 6 7 8] ai pl)))
@@ -132,6 +144,16 @@
       (should= 4 (best-move [0 pl ai
                               3 4 5
                               pl pl ai] ai pl)))
+
+    (it "blocks opponent from winning in first column"
+      (should= 3 (best-move [pl pl ai
+                              3 ai 5
+                              pl pl ai] ai pl)))
+
+    (it "blocks opponent from winning rather than win itself"
+      (should= 8 (best-move [ai pl pl
+                              3 ai ai
+                              pl pl 8] ai pl)))
 
     (it "wins in diagonal case L-R"
       (should= 8 (best-move [ai pl 2
