@@ -1,7 +1,19 @@
 (ns -tictactoe.play_game
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]
-            [-tictactoe.ai_player :as ai]))
+            [-tictactoe.ai_player :as ai]
+            [-tictactoe.score_recording :as score_recording]))
+
+(defn update-player-tally-win [player-tally player-one-won]
+  (let [player-one-name (first (first @player-tally))
+        player-two-name (first (second @player-tally))
+        winning-player-name (if player-one-won player-one-name player-two-name)
+        losing-player-name (if player-one-won player-two-name player-one-name)]
+  (swap! player-tally update-in [winning-player-name :wins] inc)
+  (swap! player-tally update-in [losing-player-name :losses] inc)))
+
+(defn update-player-tally-draw [player-tally]
+  (dorun (map #(swap! player-tally update-in [(first %) :draws] inc) @player-tally)))
 
 (defn winning-player-is-player-one [current-player-marker player-one-marker]
   (not (= current-player-marker player-one-marker)))
@@ -15,7 +27,9 @@
   (if (gf/game-is-won board)
       (let [is-player-one-the-winner (winning-player-is-player-one current-player-marker player-one-marker)]
           (display-who-won is-player-one-the-winner)
-      (do (io/game-is-tied-message)))))
+          (update-player-tally-win player-tally is-player-one-the-winner))
+      (do (io/game-is-tied-message)
+          (update-player-tally-draw player-tally))))
 
 (defn get-move [board current-player-marker other-player-marker current-player-is-ai]
   (if current-player-is-ai
@@ -45,6 +59,7 @@
                                         (gf/make-default-board board-dimension))))))))
 
 (defn run-game []
+  (io/display-currently-registered-names (score_recording/player-names))
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
         player-tally  (atom (zipmap [player-one-name player-two-name] [{:wins 0 :losses 0 :draws 0} {:wins 0 :losses 0 :draws 0}]))]
@@ -52,4 +67,5 @@
       (if play-again
           (do (play-game player-tally)
               (recur (io/ask-if-player-wants-to-play-again)))
-       (do  (io/end-game-message))))))
+       (do (score_recording/record-tally @player-tally)
+           (io/end-game-message))))))

@@ -63,9 +63,10 @@
       spot)))
 
 (defn display-currently-registered-names [player-names]
-  (println (translate loc :output/player-names))
-  (doseq [name player-names]
-    (println name)))
+  (if (> (count player-names) 0)
+    (do (println (translate loc :output/player-names))
+        (doseq [name player-names]
+          (println name)))))
 
 (defn get-player-one-name []
   (println (translate loc :input/player-one-name))
