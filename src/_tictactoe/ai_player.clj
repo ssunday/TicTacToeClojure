@@ -6,9 +6,9 @@
 
 (defn get-score [board current-player player-marker depth]
   (cond (and (gf/game-is-won board)
-             (= current-player player-marker)) (- depth 100)
+             (= current-player player-marker)) (- depth 10)
         (and (gf/game-is-won board)
-             (not (= current-player player-marker))) (- 100 depth)
+             (not (= current-player player-marker))) (- 10 depth)
         (gf/game-is-tied board) 0))
 
 (defn update-best-move-score [best-moves board current-player player-marker previous-move multiplier depth]

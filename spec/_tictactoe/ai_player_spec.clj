@@ -34,19 +34,19 @@
                        pl ai ai] pl ai 10)))
 
   (it "returns 100 for a won board by ai previous turn of depth 0"
-    (should= 100 (get-score [ai ai ai
+    (should= 10 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] pl ai 0)))
-  (it "returns 90 for a won board by ai of depth 0"
-    (should= 90 (get-score [ai ai ai
+  (it "returns 90 for a won board by ai of depth 1"
+    (should= 9 (get-score [ai ai ai
                        ai pl pl
-                       pl ai pl] pl ai 10)))
+                       pl ai pl] pl ai 1)))
   (it "returns -100 for a won board by other player of depth 0"
-    (should= -100 (get-score [ai ai ai
+    (should= -10 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] ai ai 0)))
-  (it "returns -95 for a won board by other player of depth 5"
-    (should= -95 (get-score [ai ai ai
+  (it "returns -5 for a won board by other player of depth 5"
+    (should= -5 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] ai ai 5))))
 
@@ -60,13 +60,8 @@
     (it "returns top left corner spot when center is marked"
       (should= 0 (best-move [0 1 2 3 pl 5 6 7 8] ai pl)))
 
-    ; (it "returns middle spot when top left is marked"
-    ;   (should= 4 (best-move [pl 1 2
-    ;                           3 4 5
-    ;                           6 7 8] ai pl)))
-
-    ; (it "returns middle spot when it has marked top left and the player has marked another location"
-    ;   (should= 4 (best-move [ai pl 2
+    ; (it "returns bottom left spot when top right is marked by opponent"
+    ;   (should= 6 (best-move [0 1 pl
     ;                           3 4 5
     ;                           6 7 8] ai pl)))
 
