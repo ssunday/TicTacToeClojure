@@ -2,41 +2,111 @@
   (:require [speclj.core :refer :all]
             [-tictactoe.score_recording :refer :all]))
 
-(describe "record-tally"
-  (it "saves it to a file to be retrieved"
-    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
-      (clear-file)
-      (record-tally tally)
-      (should= tally (read-tally)))))
+(def test-file-name "test.json")
 
-(describe "player-names"
-  (it "gets a list of distinct player names"
-    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
-                  ["John" {:wins 0, :losses 0, :draws 1}]
-                  ["Bob" {:wins 0, :losses 0, :draws 1}]
-                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+(describe "record-tally"
+
+  (it "saves a tally to a file"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
-      (should= '("Sarah" "John" "Bob") (player-names)))))
+      (should= 1 (count (line-seq (clojure.java.io/reader test-file-name)))))))
 
 (describe "read-tally"
-  (it "gets a list of scores"
+
+  (it "returns nil for an empty file"
+    (alternate-file-name test-file-name)
+    (clear-file)
+    (should= nil (read-tally)))
+
+  (it "can retrieve multiple tallys as a vector"
     (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
-                  ["John" {:wins 0, :losses 0, :draws 1}]
-                  ["Bob" {:wins 0, :losses 0, :draws 1}]
-                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
-      (should= tally (read-tally)))))
+      (should= tally (read-tally))))
+
+  (it "returns multiple sets of tallys as a vector of all of them on the same level"
+    (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]
+          tally2 [["Marge" {:wins 1, :losses 1, :draws 1}]
+                 ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally1)
+      (record-tally tally2)
+      (should= (into [] (concat tally1 tally2)) (read-tally))))
+
+)
+
+(describe "player-names"
+
+  (it "returns a vector of all the player names recorded in the file."
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]
+         names '("Sarah" "John")]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally)
+      (should= names (player-names))))
+
+  (it "only returns distinct names for a log of the same name"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["Sarah" {:wins 1, :losses 0, :draws 1}]]
+         names '("Sarah")]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally)
+      (should= names (player-names))))
+
+  (it "only returns distinct names"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["Sarah" {:wins 1, :losses 0, :draws 1}]
+                 ["John" {:wins 1, :losses 0, :draws 1}]
+                 ["Marge" {:wins 1, :losses 1, :draws 1}]]
+         names '("Sarah" "John" "Marge")]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally)
+      (should= names (player-names))))
+)
 
 (describe "read-total-tally"
-  (it "gets a list of total scores, combining player scores"
+
+  (it "saves multiple tallys to a file and combines tallys of the same player name"
+    (let [tally1 [["Sarah" {:wins 0, :losses 1, :draws 1}]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]
+          tally2 [["Sarah" {:wins 1, :losses 1, :draws 0}]
+                  ["John" {:wins 1, :losses 1, :draws 0}]]
+         total-tally [["Sarah" {:wins 1, :losses 2, :draws 1}]
+                      ["John" {:wins 2, :losses 1, :draws 1}]]]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally1)
+      (record-tally tally2)
+      (should= total-tally (read-total-tally))))
+
+  (it "with multiple tallys loggied it combines tallys of the same player name"
+    (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]
+          tally2 [["Marge" {:wins 1, :losses 0, :draws 1}]
+                 ["John" {:wins 0, :losses 1, :draws 1}]]
+         total-tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                      ["John" {:wins 1, :losses 1, :draws 2}]
+                      ["Marge" {:wins 1, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally1)
+      (record-tally tally2)
+      (should= total-tally (read-total-tally))))
+
+  (it "returns the same set of data if there were no duplicate player names"
     (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
-                  ["John" {:wins 0, :losses 0, :draws 1}]
-                  ["Bob" {:wins 0, :losses 0, :draws 1}]
-                  ["Sarah" {:wins 0, :losses 0, :draws 1}]]]
+                 ["John" {:wins 1, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
-      (should= (into {} [["Sarah" {:wins 0, :losses 0, :draws 2}]
-                    ["John" {:wins 0, :losses 0, :draws 1}]
-                    ["Bob" {:wins 0, :losses 0, :draws 1}]]) (read-total-tally)))))
+      (should= tally (read-total-tally))))
+)
