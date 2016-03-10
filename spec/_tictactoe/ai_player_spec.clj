@@ -28,20 +28,20 @@
                        ai pl pl
                        pl ai ai] pl ai 0)))
 
-  (it "returns 0 for a tied board of depth 10"
+  (it "returns 0 for a tied board of depth 5"
     (should= 0 (get-score [pl ai ai
                        ai pl pl
-                       pl ai ai] pl ai 10)))
+                       pl ai ai] pl ai 5)))
 
-  (it "returns 100 for a won board by ai previous turn of depth 0"
+  (it "returns 10 for a won board by ai previous turn of depth 0"
     (should= 10 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] pl ai 0)))
-  (it "returns 90 for a won board by ai of depth 1"
+  (it "returns 9 for a won board by ai of depth 1"
     (should= 9 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] pl ai 1)))
-  (it "returns -100 for a won board by other player of depth 0"
+  (it "returns -10 for a won board by other player of depth 0"
     (should= -10 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] ai ai 0)))
@@ -57,28 +57,20 @@
     (it "returns top left corner spot on empty board"
       (should= 0 (best-move [0 1 2 3 4 5 6 7 8] ai pl)))
 
-    (it "returns top left corner spot when center is marked"
-      (should= 0 (best-move [0 1 2 3 pl 5 6 7 8] ai pl)))
-
-    ; (it "returns bottom left spot when top right is marked by opponent"
-    ;   (should= 6 (best-move [0 1 pl
-    ;                           3 4 5
-    ;                           6 7 8] ai pl)))
-
-    (it "takes the top middle selection when top left and middle are taken"
-      (should= 1 (best-move [ai 1 2
-                              3 pl 5
+    (it "returns middle spot when top right is marked by opponent"
+      (should= 4 (best-move [0 1 pl
+                              3 4 5
                               6 7 8] ai pl)))
+
     (it "takes right middle spot when opponent has 2 in a row"
       (should= 5 (best-move [ai ai pl
                               pl pl 5
                               ai 7 8] ai pl)))
 
-    (it "returns winning spot on board where it has two in a row"
-      (should= 2 (best-move [ai ai 2 3 4 5 6 7 8] ai pl)))
-
-    (it "returns winning spot on board where it has two in a row"
-      (should= 6 (best-move [ai pl pl ai 4 5 6 7 8] ai pl)))
+    (it "blocks an opponent from winning on top row horizontal"
+      (should= 2 (best-move [pl pl 2
+                              ai 4 5
+                              6 7 8] ai pl)))
 
     (it "blocks winning spot on board where opponent has two in a row"
       (should= 2 (best-move [pl pl 2
@@ -100,8 +92,33 @@
                               3 pl ai
                               6 7 8] ai pl)))
 
-    (it "takes a win instead of block last column."
-      (should= 5 (best-move [ai pl ai
+    (it "blocks opponent from winning in diagonal case TR-BL"
+      (should= 6 (best-move [ai ai pl
+                              3 pl 5
+                              6  7  8] ai pl)))
+
+    (it "wins in diagonal case L-R"
+      (should= 8 (best-move [ai pl 2
+                              3 ai 5
+                              pl pl 8] ai pl)))
+
+    (it "wins in diagonal case R-L"
+      (should= 6 (best-move [0 pl ai
+                              pl ai 5
+                              6 pl 8] ai pl)))
+
+    (it "returns winning spot on board where it has two in a row"
+      (should= 2 (best-move [ai ai 2
+                              pl 4 5
+                              6 pl 8] ai pl)))
+
+    (it "returns winning spot on board where it has two in a row"
+      (should= 6 (best-move [ai pl pl
+                            ai 4 5
+                            6 7 8] ai pl)))
+
+    (it "blocks instead of winning in middle column."
+      (should= 7 (best-move [ai pl ai
                              ai pl 5
                              pl 7 ai] ai pl)))
 
@@ -114,11 +131,6 @@
       (should= 8 (best-move [pl ai 2
                               3 pl 5
                               ai  7  8] ai pl)))
-
-    (it "blocks opponent from winning in diagonal case R-L"
-      (should= 6 (best-move [ai ai pl
-                              3 pl 5
-                              6  7  8] ai pl)))
 
     (it "blocks an opponent from winning second column"
       (should= 7 (best-move [pl pl ai
@@ -145,18 +157,8 @@
                               3 ai 5
                               pl pl ai] ai pl)))
 
-    (it "wins when it could also block in mid row horizontal"
-      (should= 3 (best-move [0 pl 2
+    (it "blocks over winning in bottom row horizontal case"
+      (should= 8 (best-move [0 pl 2
                               3 ai ai
                               pl pl 8] ai pl)))
-
-    (it "wins in diagonal case L-R"
-      (should= 8 (best-move [ai pl 2
-                              3 ai 5
-                              pl pl 8] ai pl)))
-
-    (it "wins in diagonal case R-L"
-      (should= 6 (best-move [0 pl ai
-                              pl ai 5
-                              6 pl 8] ai pl))))
-)
+))
