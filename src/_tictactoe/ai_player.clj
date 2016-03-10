@@ -4,7 +4,7 @@
 (defn get-available-spots [board]
   (vec (filter number? board)))
 
-(defn score [board current-player player-marker depth]
+(defn get-score [board current-player player-marker depth]
   (cond (and (gf/game-is-won board)
              (= current-player player-marker)) (- depth 100)
         (and (gf/game-is-won board)
@@ -12,7 +12,7 @@
         (gf/game-is-tied board) 0))
 
 (defn update-best-move-score [best-moves board current-player player-marker previous-move multiplier depth]
-  (let [score (* multiplier (score board current-player player-marker depth))]
+  (let [score (* multiplier (get-score board current-player player-marker (dec depth)))]
     (if (< (get @best-moves previous-move) score)
       (swap! best-moves assoc previous-move score))))
 
@@ -31,14 +31,14 @@
   (filter #(= (val %) (max-score best-moves)) best-moves))
 
 (defn get-best-of-the-best [all-best-moves]
-  (cond (some #(= (key %) 0) all-best-moves) 0
-        (some #(= (key %) 4) all-best-moves) 4
-        :else (key (first all-best-moves))))
+  (key (first all-best-moves)))
 
 (defn get-best-move [best-moves]
   (get-best-of-the-best (all-instances-of-max-score best-moves)))
 
 (defn best-move [board player-marker other-player-marker]
   (let [best-moves (atom (zipmap (get-available-spots board) (replicate (count (get-available-spots board)) -1000)))]
-      (move board player-marker other-player-marker player-marker 0 nil 1 best-moves)
+      (dorun (map #(move (gf/mark-board-location board % player-marker)
+                          player-marker other-player-marker player-marker
+                          0 % 1 best-moves) (get-available-spots board)))
       (get-best-move @best-moves)))

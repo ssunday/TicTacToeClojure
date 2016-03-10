@@ -24,29 +24,29 @@
 
 (describe "score"
   (it "returns 0 for a tied board of depth 0"
-    (should= 0 (score [pl ai ai
+    (should= 0 (get-score [pl ai ai
                        ai pl pl
                        pl ai ai] pl ai 0)))
 
   (it "returns 0 for a tied board of depth 10"
-    (should= 0 (score [pl ai ai
+    (should= 0 (get-score [pl ai ai
                        ai pl pl
                        pl ai ai] pl ai 10)))
 
   (it "returns 100 for a won board by ai previous turn of depth 0"
-    (should= 100 (score [ai ai ai
+    (should= 100 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] pl ai 0)))
   (it "returns 90 for a won board by ai of depth 0"
-    (should= 90 (score [ai ai ai
+    (should= 90 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] pl ai 10)))
   (it "returns -100 for a won board by other player of depth 0"
-    (should= -100 (score [ai ai ai
+    (should= -100 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] ai ai 0)))
   (it "returns -95 for a won board by other player of depth 5"
-    (should= -95 (score [ai ai ai
+    (should= -95 (get-score [ai ai ai
                        ai pl pl
                        pl ai pl] ai ai 5))))
 
@@ -60,15 +60,15 @@
     (it "returns top left corner spot when center is marked"
       (should= 0 (best-move [0 1 2 3 pl 5 6 7 8] ai pl)))
 
-    (it "returns middle spot when top left is marked"
-      (should= 4 (best-move [pl 1 2
-                              3 4 5
-                              6 7 8] ai pl)))
+    ; (it "returns middle spot when top left is marked"
+    ;   (should= 4 (best-move [pl 1 2
+    ;                           3 4 5
+    ;                           6 7 8] ai pl)))
 
-    (it "returns middle spot when it has marked top left and the player has marked another location"
-      (should= 4 (best-move [ai pl 2
-                              3 4 5
-                              6 7 8] ai pl)))
+    ; (it "returns middle spot when it has marked top left and the player has marked another location"
+    ;   (should= 4 (best-move [ai pl 2
+    ;                           3 4 5
+    ;                           6 7 8] ai pl)))
 
     (it "takes the top middle selection when top left and middle are taken"
       (should= 1 (best-move [ai 1 2
@@ -105,8 +105,8 @@
                               3 pl ai
                               6 7 8] ai pl)))
 
-    (it "blocks opponent's winning spot even when it has 2 in a row."
-      (should= 7 (best-move [ai pl ai
+    (it "takes a win instead of block last column."
+      (should= 5 (best-move [ai pl ai
                              ai pl 5
                              pl 7 ai] ai pl)))
 
@@ -135,23 +135,23 @@
                               ai 4 5
                               6 7 8] ai pl)))
 
-    (it "blocks an opponent from winning first column by selecting slot 3"
-      (should= 3 (best-move [pl 1 2
+    (it "wins instead of blocking opponent by selecting spot 1"
+      (should= 1 (best-move [pl 1 2
                               3 ai pl
                               pl ai 8] ai pl)))
 
     (it "blocks opponent from winning in second column by selecting four"
-      (should= 4 (best-move [0 pl ai
+      (should= 5 (best-move [0 pl ai
                               3 4 5
                               pl pl ai] ai pl)))
 
-    (it "blocks opponent from winning in first column"
-      (should= 3 (best-move [pl pl ai
+    (it "wins in diagonal case TL-R"
+      (should= 0 (best-move [0 pl ai
                               3 ai 5
                               pl pl ai] ai pl)))
 
-    (it "blocks opponent from winning rather than win itself"
-      (should= 8 (best-move [ai pl pl
+    (it "wins when it could also block in mid row horizontal"
+      (should= 3 (best-move [0 pl 2
                               3 ai ai
                               pl pl 8] ai pl)))
 
