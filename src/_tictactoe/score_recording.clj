@@ -15,15 +15,13 @@
 
 (defn file-exists? []
   (.exists (file player-tally-file-name)))
-  
+
 (defn clear-file []
   (if (file-exists?)
     (delete-file player-tally-file-name)))
 
 (defn record-tally [player-tally]
-  (doseq [player player-tally]
-    (spit player-tally-file-name (json/generate-string player) :append true)
-    (spit player-tally-file-name "\n" :append true)))
+  (doall (map #(spit player-tally-file-name (str (json/generate-string %) "\n") :append true) player-tally)))
 
 (defn read-tally []
   (if (file-exists?)

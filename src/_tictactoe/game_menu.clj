@@ -9,6 +9,7 @@
 (def menu_options {1 "play-game"
                    2 "see-scores"
                    3 "end-application"})
+                   
 (defn get-menu-options []
   menu_options)
 

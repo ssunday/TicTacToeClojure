@@ -4,6 +4,30 @@
 
 (def test-file-name "test.json")
 
+(describe "file-exists?"
+
+  (it "returns true for a file that exists"
+    (alternate-file-name test-file-name)
+    (spit test-file-name "0")
+    (should (file-exists?)))
+
+  (it "returns false for a file that does not exist"
+    (alternate-file-name "non-existent-file.txt")
+    (should-not (file-exists?))))
+
+(describe "clear-file"
+
+  (it "deletes a file if it exists"
+    (alternate-file-name "file-to-be-deleted.txt")
+    (spit "file-to-be-deleted.txt" "1")
+    (clear-file)
+    (should-not (file-exists?)))
+
+  (it "does nothing when the file does not exist, or, the file continues to not exist."
+    (alternate-file-name "file-to-be-deleted.txt")
+    (clear-file)
+    (should-not (file-exists?))))
+
 (describe "record-tally"
 
   (it "saves a tally to an empty file"
@@ -20,7 +44,17 @@
       (clear-file)
       (record-tally tally)
       (should= 2 (count (line-seq (clojure.java.io/reader test-file-name))))))
-)
+
+  (it "appends a set of tallys to an already populated file"
+    (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                  ["John" {:wins 0, :losses 0, :draws 1}]]
+          tally2 [["Marge" {:wins 0, :losses 0, :draws 2}]
+                  ["Beth" {:wins 0, :losses 0, :draws 2}]]]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally1)
+      (record-tally tally2)
+      (should= 4 (count (line-seq (clojure.java.io/reader test-file-name)))))))
 
 (describe "read-tally"
 
