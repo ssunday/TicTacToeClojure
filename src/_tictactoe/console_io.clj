@@ -61,13 +61,13 @@
                 (check-if-spot-is-already-marked board spot) (println (translate loc :error-messages/spot-not-open)))
           (recur (convert-string-to-number (read-line)) board))
       spot)))
-      
+
 (defn display-currently-registered-names [player-names]
   (println (translate loc :output/player-names))
   (doseq [name player-names]
     (println name)))
 
-(defn get-player-one-name [player-names]
+(defn get-player-one-name []
   (println (translate loc :input/player-one-name))
     (loop [player-one-name (read-line)]
       (cond (clojure.string/blank? player-one-name)
@@ -76,7 +76,7 @@
                 (recur (read-line)))
           :else player-one-name)))
 
-(defn get-player-two-name [player-names player-one-name]
+(defn get-player-two-name [player-one-name]
   (println (translate loc :input/player-two-name))
   (loop [player-two-name (read-line)]
     (cond (clojure.string/blank? player-two-name)
