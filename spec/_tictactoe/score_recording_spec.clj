@@ -6,12 +6,21 @@
 
 (describe "record-tally"
 
-  (it "saves a tally to a file"
+  (it "saves a tally to an empty file"
     (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
       (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
-      (should= 1 (count (line-seq (clojure.java.io/reader test-file-name)))))))
+      (should= 1 (count (line-seq (clojure.java.io/reader test-file-name))))))
+
+  (it "saves a set of tallys to an empty file"
+    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["John" {:wins 0, :losses 0, :draws 1}]]]
+      (alternate-file-name test-file-name)
+      (clear-file)
+      (record-tally tally)
+      (should= 2 (count (line-seq (clojure.java.io/reader test-file-name))))))
+)
 
 (describe "read-tally"
 
@@ -28,7 +37,7 @@
       (record-tally tally)
       (should= tally (read-tally))))
 
-  (it "returns multiple sets of tallys as a vector of all of them on the same level"
+  (it "returns multiple sets of tallys as a vector with all of them on the same level"
     (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
                  ["John" {:wins 1, :losses 0, :draws 1}]]
           tally2 [["Marge" {:wins 1, :losses 1, :draws 1}]
@@ -37,9 +46,7 @@
       (clear-file)
       (record-tally tally1)
       (record-tally tally2)
-      (should= (into [] (concat tally1 tally2)) (read-tally))))
-
-)
+      (should= (into [] (concat tally1 tally2)) (read-tally)))))
 
 (describe "player-names"
 
@@ -52,26 +59,26 @@
       (record-tally tally)
       (should= names (player-names))))
 
-  (it "only returns distinct names for a log of the same name"
+  (it "returns player names if there is only one game set"
     (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
-                 ["Sarah" {:wins 1, :losses 0, :draws 1}]]
-         names '("Sarah")]
+                 ["Marge" {:wins 1, :losses 0, :draws 1}]]
+         names '("Sarah" "Marge")]
       (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
       (should= names (player-names))))
 
-  (it "only returns distinct names"
-    (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
-                 ["Sarah" {:wins 1, :losses 0, :draws 1}]
-                 ["John" {:wins 1, :losses 0, :draws 1}]
+  (it "only returns distinct names of multiple logged tallys"
+    (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
+                 ["Sue" {:wins 1, :losses 0, :draws 1}]]
+          tally2 [["Sue" {:wins 1, :losses 0, :draws 1}]
                  ["Marge" {:wins 1, :losses 1, :draws 1}]]
-         names '("Sarah" "John" "Marge")]
+         names '("Sarah" "Sue" "Marge")]
       (alternate-file-name test-file-name)
       (clear-file)
-      (record-tally tally)
-      (should= names (player-names))))
-)
+      (record-tally tally1)
+      (record-tally tally2)
+      (should= names (player-names)))))
 
 (describe "read-total-tally"
 
@@ -108,5 +115,4 @@
       (alternate-file-name test-file-name)
       (clear-file)
       (record-tally tally)
-      (should= tally (read-total-tally))))
-)
+      (should= tally (read-total-tally)))))

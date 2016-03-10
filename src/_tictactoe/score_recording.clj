@@ -15,6 +15,10 @@
 
 (defn file-exists? []
   (.exists (file player-tally-file-name)))
+  
+(defn clear-file []
+  (if (file-exists?)
+    (delete-file player-tally-file-name)))
 
 (defn record-tally [player-tally]
   (doseq [player player-tally]
@@ -38,7 +42,3 @@
     (doseq [tally-set tally]
       (doall (map #(swap! total-tally update-in [(first tally-set) %] + ((second tally-set) %)) wins-losses-draws)))
     (vec @total-tally)))
-
-(defn clear-file []
-  (if (file-exists?)
-    (delete-file player-tally-file-name)))
