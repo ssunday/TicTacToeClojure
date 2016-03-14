@@ -4,6 +4,6 @@
 
 (defn run []
   (io/start-game-message)
-  (loop [menu-option (io/select-menu-option (menu/get-menu-options))]
-    (if (not (menu/do_menu_option menu-option))
-      (recur (io/select-menu-option (menu/get-menu-options))))))
+  (loop [menu-option (io/select-menu-option menu/menu-options)]
+    (menu/do-menu-option menu-option)
+    (recur (io/select-menu-option menu/menu-options))))

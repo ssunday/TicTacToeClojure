@@ -31,47 +31,62 @@
   (context "Game is won with vertical match returns winning marker "
 
     (it "for 3x3 board middle column"
-      (should= pl (game-is-won [0 pl 2 3 pl 5 6 pl 8])))
+      (should= pl (game-is-won [0 pl 2
+                                3 pl 5
+                                6 pl 8])))
 
     (it "for 4x4 board last column"
       (should= pl (game-is-won [0 1 2 pl
-                    4 5 6 pl
-                    8 9 10 pl
-                    12 13 14 pl]))))
+                                4 5 6 pl
+                                8 9 10 pl
+                                12 13 14 pl]))))
 
   (context "Game is won with diagonal match returns winning marker"
+
     (it "for 3x3 board TL-BR"
-             (should= pl (game-is-won [pl 1 2
-                           3 pl 5
-                           6 7 pl])))
+       (should= pl (game-is-won [pl 1 2
+                                 3 pl 5
+                                 6 7 pl])))
 
     (it "for 4x4 board TR - BL"
-             (should= pl (game-is-won [0 1 2 pl
-                           4 5 pl 7
-                           8 pl 10 11
-                           pl 13 14 15]))))
+       (should= pl (game-is-won [0 1 2 pl
+                                 4 5 pl 7
+                                 8 pl 10 11
+                                 pl 13 14 15])))
+
+    (it "for 3x3 board TR-BL"
+       (should= pl (game-is-won [0 1 pl
+                                 3 pl 5
+                                 pl 7 8])))
+
+    (it "for 4x4 board TR - BL"
+       (should= pl (game-is-won [pl 1 2 pl
+                                 4 pl 6 7
+                                 8 9 pl 11
+                                 12 13 14 pl]))))
 
   (context "game has not been won returns nil"
+
     (it "for 3x3 board"
      (should= nil (game-is-won [0 pl 2
-                       op pl 5
-                        6 op 8])))
+                                op pl 5
+                                6 op 8])))
     (it "for 4x4 board"
      (should= nil (game-is-won [op 1 2 pl
-                        4 5 pl 7
-                        8 pl 10 op
-                        op 13 14 15]))))
+                                4 5 pl 7
+                                8 pl 10 op
+                                op 13 14 15]))))
 
   (context "game has been tied returns nil"
     (it "for 3x3 board"
         (should= nil  (game-is-won [op pl op
-                           op pl pl
-                           pl op op]))
+                                    op pl pl
+                                    pl op op]))
     (it "for 4x4 board"
         (should= nil  (game-is-won [op op pl pl
-                           op pl op op
-                           pl op op pl
-                           pl op op pl]))))))
+                                    op pl op op
+                                    pl op op pl
+                                    pl op op pl]))))))
 
 (describe "game-is-tied"
 
@@ -98,36 +113,36 @@
                             8 pl 10 11
                             pl 13 14 15])))))
 
-(describe "game-is-won-or-tied"
+(describe "game-is-over"
   (it "returns true when game has been tied for 3x3 board"
-      (game-is-won-or-tied [op pl op
+      (game-is-over [op pl op
                             op pl pl
                             pl op op]))
 
   (it "returns true when game has been tied for 4x4 board"
-      (game-is-won-or-tied [op op pl pl
+      (game-is-over [op op pl pl
                            op pl op op
                            pl op op pl
                            pl op op pl]))
 
   (it "returns true when game has been won for 3x3 board"
-      (game-is-won-or-tied [op pl op
+      (game-is-over [op pl op
                             op pl pl
                             op op pl]))
 
   (it "returns true when game has been won for 4x4 board"
-      (game-is-won-or-tied [op op pl pl
-                           op pl pl op
-                           op op pl pl
-                           op pl op pl]))
+      (game-is-over [op op pl pl
+                            op pl pl op
+                            op op pl pl
+                            op pl op pl]))
 
   (it "returns false when game neither been won or tied for 3x3 board"
-     (not (game-is-won-or-tied [op pl 2
+     (not (game-is-over [op pl 2
                                 3 pl 5
                                 op 7 pl])))
 
   (it "returns false when game neither been won or tied for 4x4 board"
-     (not (game-is-won-or-tied [op 1 2 pl
+     (not (game-is-over [op 1 2 pl
                                 4 5 pl 7
                                 8 pl 10 op
                                 op 13 14 15]))))

@@ -24,7 +24,7 @@
       (:ai player-markers)))
 
 (defn minimax [board player-markers current-player-marker depth]
-  (if (gf/game-is-won-or-tied board)
+  (if (gf/game-is-over board)
     (get-score board player-markers depth)
     (let [next-player (get-next-player player-markers current-player-marker)]
       (apply-max-or-min (map #(minimax (gf/mark-board-location board % current-player-marker)

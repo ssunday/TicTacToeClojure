@@ -21,7 +21,8 @@
                               (list (nth board 1) (nth board 5) (nth board 9) (nth board 13))
                               (list (nth board 2) (nth board 6) (nth board 10) (nth board 14))
                               (list (nth board 3) (nth board 7) (nth board 11) (nth board 15))
-                              (list (nth board 3) (nth board 6) (nth board 9) (nth board 12))]))
+                              (list (nth board 3) (nth board 6) (nth board 9) (nth board 12))
+                              (list (nth board 0) (nth board 5) (nth board 10) (nth board 15))]))
 
 (defn game-is-won [board]
   (first (first (filter #(get-whether-a-row-is-won %) (winning-combinations board)))))
@@ -29,5 +30,5 @@
 (defn game-is-tied [board]
   (every? string? board))
 
-(defn game-is-won-or-tied [board]
+(defn game-is-over [board]
   (or (game-is-tied board) (game-is-won board)))

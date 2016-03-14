@@ -55,3 +55,17 @@
 (describe "check-if-spot-is-invalid-input"
   (it "returns true for nil spot"
     (check-if-spot-is-invalid-input [0 1 2 3 4 5 6 7 8] nil)))
+
+(describe "check-if-yes-or-no-response-is-invalid"
+
+  (it "returns false for y when y is an option"
+    (should-not (check-if-yes-or-no-response-is-invalid "y" "y" "n")))
+
+  (it "returns true for y when y is not an option"
+    (should (check-if-yes-or-no-response-is-invalid "y" "j" "n")))
+
+  (it "returns true for n when n is not an option"
+    (should (check-if-yes-or-no-response-is-invalid "n" "j" "s")))
+
+  (it "returns false for n when n is an option"
+    (should-not (check-if-yes-or-no-response-is-invalid "n" "j" "n"))))
