@@ -4,12 +4,12 @@
 
 (def game_menu {1 `(run-game)
                 2 `(display-previous-scores)
-                3 `true})
+                3 `(System/exit 0)})
 
 (def menu_options {1 "play-game"
                    2 "see-scores"
                    3 "end-application"})
-                   
+
 (defn get-menu-options []
   menu_options)
 
