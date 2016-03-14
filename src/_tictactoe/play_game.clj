@@ -60,12 +60,12 @@
 
 (defn run-game []
   (io/display-currently-registered-names (score_recording/player-names))
-  (let [player-one-name (io/get-player-one-name (score_recording/player-names))
-        player-two-name (io/get-player-two-name (score_recording/player-names) player-one-name)
+  (let [player-one-name (io/get-player-one-name)
+        player-two-name (io/get-player-two-name player-one-name)
         player-tally  (atom (zipmap [player-one-name player-two-name] [{:wins 0 :losses 0 :draws 0} {:wins 0 :losses 0 :draws 0}]))]
     (loop [play-again true]
       (if play-again
           (do (play-game player-tally)
               (recur (io/ask-if-player-wants-to-play-again)))
-       (do  (score_recording/record-tally @player-tally)
-            (io/end-game-message))))))
+       (do (score_recording/record-tally @player-tally)
+           (io/end-game-message))))))

@@ -1,6 +1,7 @@
 (ns -tictactoe.display_previous_scores
-  (:require [-tictactoe.console_io :refer :all]
-            [-tictactoe.score_recording :refer :all]))
+  (:require [-tictactoe.console_io :as io]
+            [-tictactoe.score_recording :as scores]))
+
 
 (defn display-previous-scores []
-  (display-tally (read-total-tally)))
+  (io/display-tally (scores/read-total-tally)))
