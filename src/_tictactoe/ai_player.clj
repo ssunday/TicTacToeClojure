@@ -13,24 +13,35 @@
         (= winning-player (:opponent player-markers)) (- depth 100)
         (gf/game-is-tied board) 0)))
 
+(defn apply-max-or-min [minimax-map player-markers current-player-marker]
+  (if (= current-player-marker (:ai player-markers))
+      (apply max minimax-map)
+      (apply min minimax-map)))
+
+(defn get-next-player [player-markers current-player-marker]
+  (if (= current-player-marker (:ai player-markers))
+      (:opponent player-markers)
+      (:ai player-markers)))
+
 (defn minimax [board player-markers current-player-marker depth]
   (if (gf/game-is-won-or-tied board)
     (get-score board player-markers depth)
-    (if (= current-player-marker (:ai player-markers))
-        (apply max (map #(minimax (gf/mark-board-location board % current-player-marker)
-                                  player-markers (:opponent player-markers) (inc depth))
-                  (get-available-locations board)))
-        (apply min (map #(minimax (gf/mark-board-location board % current-player-marker)
-                                  player-markers (:ai player-markers) (inc depth))
-                  (get-available-locations board))))))
+    (let [next-player (get-next-player player-markers current-player-marker)]
+      (apply-max-or-min (map #(minimax (gf/mark-board-location board % current-player-marker)
+                                              player-markers next-player (inc depth))
+                              (get-available-locations board))
+        player-markers current-player-marker))))
 
 (defn scores-for-available-locations [board player-markers]
-  (let [initial-depth 1]
-      (pmap #(minimax (gf/mark-board-location board % (:ai player-markers)) player-markers (:opponent player-markers) initial-depth)
-                      (get-available-locations board))))
+  (pmap #(minimax (gf/mark-board-location board % (:ai player-markers)) player-markers (:opponent player-markers) 1)
+         (get-available-locations board)))
 
 (defn assign-scores-to-available-location [board player-markers]
-  (zipmap (get-available-locations board) (scores-for-available-locations board player-markers)))
+  (zipmap (get-available-locations board)
+          (scores-for-available-locations board player-markers)))
+
+(defn get-best-move [moves-and-scores]
+  (key (apply max-key val moves-and-scores)))
 
 (defn best-move [board ai-marker opponent-marker]
-  (key (apply max-key val (assign-scores-to-available-location board (player-markers ai-marker opponent-marker)))))
+  (get-best-move (assign-scores-to-available-location board (player-markers ai-marker opponent-marker))))
