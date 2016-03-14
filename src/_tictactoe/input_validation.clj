@@ -12,8 +12,7 @@
       (not (nil? (convert-string-to-number marker)))))
 
 (defn check-if-first-player-marker-is-invalid [first-player-marker player-one-marker player-two-marker]
-  (and (not (= first-player-marker player-one-marker))
-       (not (= first-player-marker player-two-marker))))
+  (every? #(not= % first-player-marker) [player-one-marker player-two-marker]))
 
 (defn check-if-spot-is-invalid-input [board spot]
   (nil? spot))
@@ -27,3 +26,11 @@
 (defn check-if-spot-is-invalid [board spot]
   (or (nil? (find board spot))
       (not  (number? (get board spot)))))
+
+(defn check-if-yes-or-no-response-is-invalid [response y n]
+  (every? #(not= response %) [y n]))
+
+(defn check-if-menu-option-is-valid [menu-options option]
+  (and (number? option)
+       (<= option (count menu-options))
+       (> option 0)))

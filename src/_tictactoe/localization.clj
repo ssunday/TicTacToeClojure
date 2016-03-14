@@ -68,7 +68,7 @@
                               :current-player-marker "Aktuelle Spieler Marker: %s"
                               :player-names "Dies sind die Spieler mit aus früheren Spielen ausgezählt Partituren. Wenn Sie einen dieser Spieler sind, wählen Sie bitte, dass die gleichen Namen. Wenn Sie nicht sind, werden Sie ihre Werte ändern, indem Sie den Namen auswählen."
                               :player-tally "Spieler Tally:"
-                              :tally-header "W/L/D"
+                              :tally-header "S/V/R"
                               :player-one-has-won "Erste Spieler hat Gewonnen!"
                               :player-two-has-won "Zweite Spieler hat Gewonnen!"
                               :game-has-been-tied "Spiel wurde Gebunden!"
