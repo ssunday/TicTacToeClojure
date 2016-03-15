@@ -47,7 +47,7 @@
   (println (translate loc :input/spot-to-be-marked (dec (count board))))
   (loop [spot (validation/convert-string-to-number (read-line))]
     (if (validation/spot-is-invalid board spot)
-      (do (cond (validation/spot-is-invalid-input board spot) (println (translate loc :error-messages/spot-is-invalid-input))
+      (do (cond (validation/spot-is-invalid-input spot) (println (translate loc :error-messages/spot-is-invalid-input))
                 (validation/spot-is-not-on-board board spot) (println (translate loc :error-messages/spot-is-not-on-board))
                 (validation/spot-is-already-marked board spot) (println (translate loc :error-messages/spot-not-open)))
           (recur (validation/convert-string-to-number (read-line))))
@@ -164,7 +164,7 @@
         (println (str menu-number ". " (translate loc (keyword "menu" menu-option)))))
   (println (translate loc :menu/select-menu-option))
   (loop [option (validation/convert-string-to-number (read-line))]
-        (if (validation/menu-option-is-valid menu-options option)
+        (if (validation/menu-option-is-valid (count menu-options) option)
             option
             (do (println (translate loc :error-messages/invalid-menu-option))
                 (recur (validation/convert-string-to-number (read-line)))))))

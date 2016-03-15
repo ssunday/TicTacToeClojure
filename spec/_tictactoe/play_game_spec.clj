@@ -20,7 +20,6 @@
       (update-player-tally-draw player-tally)
       (should= @player-tally {"Sarah" {:wins 0 :losses 0 :draws 1} "John" {:wins 0 :losses 0 :draws 1}}))))
 
-
 (describe "winning-player-is-player-one"
 
   (it "returns false if the current player marker is equal to the player one marker"
@@ -45,3 +44,15 @@
           player-two-marker "O"
           first-player player-two-marker]
       (should= player-one-marker (get-other-player-marker first-player player-one-marker player-two-marker))))))
+
+(describe "mark-board"
+
+  (it "for human player as current player returns board marked with provided input"
+    (let [human-player "X"
+          ai-player "O"]
+      (should= [human-player 1 2 3 4 5 6 7 8] (with-in-str "0" (mark-board [0 1 2 3 4 5 6 7 8] human-player ai-player false)))))
+
+  (it "for ai player as current player returns board marked with generated input"
+    (let [ai "X"
+          pl "O"]
+      (should= [ai pl ai pl pl ai ai ai pl] (mark-board [ai pl 2 pl pl ai ai ai pl] ai pl true)))))

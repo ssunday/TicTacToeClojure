@@ -16,17 +16,18 @@
 (defn first-player-marker-is-invalid [first-player-marker player-one-marker player-two-marker]
   (every? #(not= % first-player-marker) [player-one-marker player-two-marker]))
 
-(defn spot-is-invalid-input [board spot]
-  (nil? spot))
-
-(defn spot-is-already-marked[board spot]
-  (string? (get board spot)))
-
 (defn spot-is-not-on-board [board spot]
   (nil? (find board spot)))
 
+(defn spot-is-invalid-input [spot]
+  (nil? spot))
+
+(defn spot-is-already-marked [board spot]
+  (string? (get board spot)))
+
 (defn spot-is-invalid [board spot]
   (or (spot-is-not-on-board board spot)
+      (spot-is-invalid-input spot)
       (spot-is-already-marked board spot)))
 
 (defn invalid-board-dimension [dimension]
@@ -35,7 +36,7 @@
 (defn y-or-n-response-is-invalid [response y n]
   (every? #(not= response %) [y n]))
 
-(defn menu-option-is-valid [menu-options option]
+(defn menu-option-is-valid [menu-length option]
   (and (number? option)
-       (<= option (count menu-options))
+       (<= option menu-length)
        (> option 0)))
