@@ -1,16 +1,16 @@
-# -tictactoe
+# Tic Tac Toe
 
 A Clojure application to play Tic Tac Toe.
 
 Features:
 
-* Human v Human, AI v. AI, or Human v. AI.
+* Human v Human, AI v. AI, or Human v. AI. (AI currently only works with 3x3)
 * Can choose what marker to use.
 * Can set first player
 * Board can either be 3x3 or 4x4
 * Board output is colored.
 * Localized to both English and German.
-* Scores persist.
+* Scores persist to a local file.
 
 ## Usage
 
