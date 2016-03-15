@@ -1,0 +1,11 @@
+(ns -tictactoe.scoring_schema)
+
+(def wins (keyword "wins"))
+
+(def losses (keyword "losses"))
+
+(def draws (keyword "draws"))
+
+(def wins-losses-draws [wins losses draws])
+
+(def default-wins-losses-draws-scores (zipmap wins-losses-draws (repeat 0)))
