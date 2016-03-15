@@ -41,13 +41,18 @@
       player-two-marker
       player-one-marker))
 
+(defn ask-for-player-ai-if-valid-board-dimension [board-dimension prompt]
+  (if (= board-dimension 3)
+    (prompt)
+    false))
+
 (defn play-game [player-tally]
   (let [player-one-marker (io/get-player-one-marker)
         player-two-marker (io/get-player-two-marker player-one-marker)
         first-player (io/get-first-player player-one-marker player-two-marker)
         board-dimension (io/ask-for-either-3x3-or-4x4-board)
-        player-one-is-ai (if (= board-dimension 3) (io/get-whether-player-one-is-ai) false)
-        player-two-is-ai (if (= board-dimension 3) (io/get-whether-player-two-is-ai) false)]
+        player-one-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-one-is-ai)
+        player-two-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-two-is-ai)]
       (loop [player-marker first-player
              other-player-marker (get-other-player-marker first-player player-one-marker player-two-marker)
              board (gf/make-default-board board-dimension)]
