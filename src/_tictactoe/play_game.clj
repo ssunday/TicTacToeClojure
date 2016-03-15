@@ -2,18 +2,19 @@
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]
             [-tictactoe.ai_player :as ai]
-            [-tictactoe.score_recording :as score_recording]))
+            [-tictactoe.score_recording :as score_recording]
+            [-tictactoe.scoring_schema :as schema]))
 
 (defn update-player-tally-win [player-tally player-one-won]
   (let [player-one-name (first (first @player-tally))
         player-two-name (first (second @player-tally))
         winning-player-name (if player-one-won player-one-name player-two-name)
         losing-player-name (if player-one-won player-two-name player-one-name)]
-  (swap! player-tally update-in [winning-player-name :wins] inc)
-  (swap! player-tally update-in [losing-player-name :losses] inc)))
+  (swap! player-tally update-in [winning-player-name schema/wins] inc)
+  (swap! player-tally update-in [losing-player-name schema/losses] inc)))
 
 (defn update-player-tally-draw [player-tally]
-  (dorun (map #(swap! player-tally update-in [(first %) :draws] inc) @player-tally)))
+  (dorun (map #(swap! player-tally update-in [(first %) schema/draws] inc) @player-tally)))
 
 (defn winning-player-is-player-one [current-player-marker player-one-marker]
   (not= current-player-marker player-one-marker))
@@ -72,7 +73,7 @@
   (io/display-currently-registered-names (score_recording/player-names))
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
-        player-tally  (atom (zipmap [player-one-name player-two-name] (repeat {:wins 0 :losses 0 :draws 0})))]
+        player-tally  (atom (zipmap [player-one-name player-two-name] (repeat schema/default-wins-losses-draws-scores)))]
     (loop [play-again true]
       (if play-again
           (do (play-game player-tally)
