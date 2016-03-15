@@ -7,16 +7,69 @@
 (def op "O")
 
 (describe "make-default-board"
+
   (it "The default board for a 3x3 is a vector of 0-8."
     (should= [0 1 2 3 4 5 6 7 8] (make-default-board 3))
+
   (it "The default board for a 4x4 is a vector of 0-15."
     (should= [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15] (make-default-board 4)))))
 
 (describe "mark-board-location"
+
   (it "correctly marks 3x3 board given spot and marker."
     (should= [0 1 2 pl 4 5 6 7 8] (mark-board-location (make-default-board 3) 3 pl))
+
   (it "correctly marks 4x4 board given spot and marker."
     (should= [0 1 2 pl 4 5 6 7 8 9 10 11 12 13 14 15] (mark-board-location (make-default-board 3) 3 pl)))))
+
+(describe "winning-combinations"
+
+  (it "returns a vector of all possible winning row combinations of the current 3x3 board"
+    (let [board [0 1 pl
+                 pl 4 op
+                 6 7 op]]
+      (should= [[0 1 pl] [pl 4 op] [6 7 op] [0 pl 6] [1 4 7] [pl op op] [0 4 op] [pl 4 6]]
+               (winning-combinations board))))
+
+  (it "returns a vector of all possible winning row combinations of the current 4x4 board"
+    (let [board [0 1 pl 3
+                 pl 5 op pl
+                 8 9 10 11
+                 12 op 14 pl]]
+      (should= [[0 1 pl 3] [pl 5 op pl] [8 9 10 11] [12 op 14 pl]
+                [0 pl 8 12] [1 5 9 op] [pl op 10 14]  [3 pl 11 pl]
+                [0 5 10 pl] [3 op 9 12]]
+               (winning-combinations board)))))
+
+(describe "get-whether-a-row-is-won"
+
+  (context "3 in a row"
+
+    (it "returns true if row is filled with all of the same character"
+      (let [row [op op op]]
+        (should (get-whether-a-row-is-won row))))
+
+    (it "returns false if row is filled with mixed characters"
+      (let [row [op pl pl]]
+        (should-not (get-whether-a-row-is-won row))))
+
+    (it "returns false if row is not entirely filled with character"
+      (let [row [op 1 2]]
+        (should-not (get-whether-a-row-is-won row)))))
+
+  (context "4 in a row"
+
+    (it "returns true if row is filled with all of the same character"
+      (let [row [op op op op]]
+        (should (get-whether-a-row-is-won row))))
+
+    (it "returns false if row is filled with mixed characters"
+      (let [row [op pl pl op]]
+        (should-not (get-whether-a-row-is-won row))))
+
+    (it "returns false if row is not entirely filled with character"
+      (let [row [op 1 2 pl]]
+        (should-not (get-whether-a-row-is-won row))))))
 
 (describe "game-is-won"
 
