@@ -1,2 +1,6 @@
-
 target/classes/META-INF/maven/-tictactoe/-tictactoe/pom.properties
+tally.edn
+tally.json
+test.edn
+test.json
+ns-dep-graph.png

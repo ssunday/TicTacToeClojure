@@ -6,5 +6,6 @@
                   [cheshire "5.5.0"]]
   :main -tictactoe.core
   :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
-  :plugins [[speclj "3.3.1"]]
+  :plugins [[speclj "3.3.1"]
+            [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
   :test-paths ["spec"])

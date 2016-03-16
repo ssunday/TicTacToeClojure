@@ -47,6 +47,9 @@
 
 (describe "mark-board"
 
+  (around [it]
+    (with-out-str (it)))
+
   (it "for human player as current player returns board marked with provided input"
     (let [human-player "X"
           ai-player "O"]
