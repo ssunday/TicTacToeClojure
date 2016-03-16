@@ -1,4 +1,6 @@
 (ns -tictactoe.game_runner
+  (:require [-tictactoe.scoring_edn :refer :all]
+            [-tictactoe.scoring_json :refer :all])
   (:use [-tictactoe.console_io :only (start-game-message select-menu-option)]
         [-tictactoe.game_menu :only (do-menu-option menu-options)]))
 
