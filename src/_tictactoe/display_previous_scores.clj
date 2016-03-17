@@ -3,4 +3,5 @@
         [-tictactoe.console_io :only (display-tally)]))
 
 (defn display-previous-scores []
-  (display-tally (read-total-tally)))
+  (-> (read-total-tally)
+      (display-tally)))
