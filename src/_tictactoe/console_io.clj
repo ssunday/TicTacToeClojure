@@ -34,7 +34,7 @@
 
 (defn board-rows [board]
   (let [board-spaces (count board)
-        board-dimension (int (Math/sqrt board-spaces))
+        board-dimension (-> board-spaces Math/sqrt int)
         spots (take board-spaces (iterate (partial + 1) 0))]
     (partition board-dimension (map #(nth board %) spots))))
 
