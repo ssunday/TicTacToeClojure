@@ -10,7 +10,7 @@ Features:
 * Board can either be 3x3 or 4x4
 * Board output is colored.
 * Localized to both English and German.
-* Scores persist to a local file. Either JSON or EDN. Default is JSON.
+* Scores persist to a local file. Either JSON, EDN, or Postgres local database. Connection configuration assumes //localhost:5432/user-name format. See the scoring_postgres file for the schema and to change it.
 
 ## Usage
 
@@ -21,7 +21,7 @@ lein run
 ```
 
 Type in LOC=de before lein run for German localization. Default is English.
-For EDN file persistence, type in TYPE=edn. JSON is default or TYPE=json.
+For EDN file persistence, type in TYPE=edn. For saving to a locally run Postgres database, use TYPE=pg. JSON is default or TYPE=json.
 
 ##Testing
 
