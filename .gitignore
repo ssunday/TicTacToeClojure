@@ -4,3 +4,7 @@ tally.json
 test.edn
 test.json
 ns-dep-graph.png
+
+src/_tictactoe/display_previous_scores.clj
+
+src/_tictactoe/game_functions.clj
