@@ -1,3 +1,5 @@
+;Responsible for using Tower to create a dictionary for the English and other language phrases used for input and output.
+
 (ns -tictactoe.localization
   (:require [taoensso.tower :as tower :refer (with-tscope)]))
 
@@ -64,32 +66,36 @@
                              :yes-option "j"
                              :no-option "n"
                            }
-                    :output {:welcome-message "Willkommen in der Tic Tac Toe-Spiel!"
-                              :current-player-marker "Aktuelle Spieler Marker: %s"
-                              :player-names "Dies sind die Spieler mit aus früheren Spielen ausgezählt Partituren. Wenn Sie einen dieser Spieler sind, wählen Sie bitte, dass die gleichen Namen. Wenn Sie nicht sind, werden Sie ihre Werte ändern, indem Sie den Namen auswählen."
-                              :player-tally "Spieler Tally:"
-                              :tally-header "S/V/R"
-                              :player-one-has-won "Erste Spieler hat Gewonnen!"
-                              :player-two-has-won "Zweite Spieler hat Gewonnen!"
-                              :game-has-been-tied "Spiel wurde Gebunden!"
-                              :end-game-message "Danke für das Spiel"}
-                    :error-messages {:spot-not-open "Stelle muss offen sein und nicht markierte."
-                                    :spot-is-invalid-input "Punkt muss eine ganze Zahl entsprechend einer offenen Position sein."
-                                    :spot-is-not-on-board "Punkt muss eine Position auf dem Spielbrett sein."
-                                    :name-already-taken "Dieser Name ist bereits getan."
-                                    :name-must-not-be-blank "Der Name darf nicht leer sein."
-                                    :bad-player-one-marker "Marker muss ein einzelnes Zeichen und keine Zahl sein."
-                                    :bad-player-two-marker "Marker muss eindeutig, einzelne Länge sein, und keine Zahl."
-                                    :invalid-player-going-first "Eingang eines der bereits definierten Marker Bitte Entweder: %1$s oder %2$s."
-                                    :invalid-board-dimension "Typ 3 für 3x3 und 4 für 4x4."
-                                    :invalid-menu-option "Option muss eine Zahl mit einer der verfügbaren Optionen angepasst werden."
-                                    :bad-y-or-n-option "Bitte geben Sie entweder j oder n."
+                    :output {
+                             :welcome-message "Willkommen in der Tic Tac Toe-Spiel!"
+                             :current-player-marker "Aktuelle Spieler Marker: %s"
+                             :player-names "Dies sind die Spieler mit aus früheren Spielen ausgezählt Partituren. Wenn Sie einen dieser Spieler sind, wählen Sie bitte, dass die gleichen Namen. Wenn Sie nicht sind, werden Sie ihre Werte ändern, indem Sie den Namen auswählen."
+                             :player-tally "Spieler Tally:"
+                             :tally-header "S/V/R"
+                             :player-one-has-won "Erste Spieler hat Gewonnen!"
+                             :player-two-has-won "Zweite Spieler hat Gewonnen!"
+                             :game-has-been-tied "Spiel wurde Gebunden!"
+                             :end-game-message "Danke für das Spiel"}
+                    :error-messages {
+                                     :spot-not-open "Stelle muss offen sein und nicht markierte."
+                                     :spot-is-invalid-input "Punkt muss eine ganze Zahl entsprechend einer offenen Position sein."
+                                     :spot-is-not-on-board "Punkt muss eine Position auf dem Spielbrett sein."
+                                     :name-already-taken "Dieser Name ist bereits getan."
+                                     :name-must-not-be-blank "Der Name darf nicht leer sein."
+                                     :bad-player-one-marker "Marker muss ein einzelnes Zeichen und keine Zahl sein."
+                                     :bad-player-two-marker "Marker muss eindeutig, einzelne Länge sein, und keine Zahl."
+                                     :invalid-player-going-first "Eingang eines der bereits definierten Marker Bitte Entweder: %1$s oder %2$s."
+                                     :invalid-board-dimension "Typ 3 für 3x3 und 4 für 4x4."
+                                     :invalid-menu-option "Option muss eine Zahl mit einer der verfügbaren Optionen angepasst werden."
+                                     :bad-y-or-n-option "Bitte geben Sie entweder j oder n."
                                     }
-                    :menu {:menu "Menü"
-                            :select-menu-option "Bitte wählen Sie, indem Sie im Eingabe seiner Nummer."
-                            :play-game "Spielen"
-                            :see-scores "Siehe Ergebnisse"
-                            :end-application "End-Anwendung"}
+                    :menu {
+                           :menu "Menü"
+                           :select-menu-option "Bitte wählen Sie, indem Sie im Eingabe seiner Nummer."
+                           :play-game "Spielen"
+                           :see-scores "Siehe Ergebnisse"
+                           :end-application "End-Anwendung"
+                          }
                     :missing "Übersetzung fehlt"}}
                 :fallback-locale :en})
 

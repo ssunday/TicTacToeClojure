@@ -1,3 +1,5 @@
+;Responsible for writing and reading from the EDN file type.
+
 (ns -tictactoe.scoring_edn
   (:require [clojure.edn :as edn]
             [-tictactoe.scoring_repository :as repository]

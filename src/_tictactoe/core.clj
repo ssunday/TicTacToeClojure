@@ -1,5 +1,7 @@
+;Calls the function that runs the application.
+
 (ns -tictactoe.core
-  (:require [-tictactoe.game_runner :refer :all]))
+  (:use [-tictactoe.game_runner :only (run)]))
 
 (defn -main []
   (run))

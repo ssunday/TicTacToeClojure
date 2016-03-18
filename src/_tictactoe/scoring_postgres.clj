@@ -1,3 +1,5 @@
+;Responsible for Postgres database data persistence.
+
 ;The below disables extremely verbose logging messages that I could not figure out how to disable from Korma.
 (System/setProperties
   (doto (java.util.Properties. (System/getProperties))

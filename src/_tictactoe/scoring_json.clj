@@ -1,3 +1,5 @@
+;Responsible for writing and reading from the JSON file type.
+
 (ns -tictactoe.scoring_json
   (:require [cheshire.core :as json]
             [-tictactoe.scoring_repository :as repository]

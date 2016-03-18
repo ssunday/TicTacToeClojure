@@ -1,3 +1,5 @@
+;Responsible for the schema of how the player wins/losses/tallies are created.
+
 (ns -tictactoe.scoring_schema)
 
 (def wins (keyword "wins"))

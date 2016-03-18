@@ -1,3 +1,5 @@
+;Responsible for the core scoring and recording functions.
+
 (ns -tictactoe.scoring_repository)
 
 (defmulti alternate-file-name
