@@ -112,12 +112,12 @@
 
 (defn ask-for-board-dimension []
   (println (translate loc :input/board-dimension))
-  (loop [board-dimension (read-line)]
+  (loop [board-dimension (validation/convert-string-to-number (read-line))]
     (if (validation/invalid-board-dimension board-dimension)
         (do
           (println (translate loc :error-messages/invalid-board-dimension))
-          (recur (read-line)))
-        (validation/convert-string-to-number board-dimension))))
+          (recur (validation/convert-string-to-number (read-line))))
+        board-dimension)))
 
 (defn yes-or-no-response []
   (loop [y-or-n (read-line)]

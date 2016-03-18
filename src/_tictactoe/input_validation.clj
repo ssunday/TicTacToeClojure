@@ -2,7 +2,7 @@
 
 (ns -tictactoe.input_validation)
 
-(def valid-dimensions ["3" "4"])
+(def valid-dimensions [3 4])
 
 (defn convert-string-to-number [str]
   (try
