@@ -6,4 +6,5 @@
         [-tictactoe.console_io :only (display-tally)]))
 
 (defmethod menu/do-menu-option :see-scores [data]
-  (display-tally (read-total-tally)))
+  (-> (read-total-tally)
+      (display-tally)))
