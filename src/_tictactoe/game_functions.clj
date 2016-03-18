@@ -1,3 +1,5 @@
+;Responsible for the game board state, i.e whether the game has been won, marking the board, and so on.
+
 (ns -tictactoe.game_functions)
 
 (defn make-default-board [dimension]

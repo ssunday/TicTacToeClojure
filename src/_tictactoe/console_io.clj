@@ -1,3 +1,5 @@
+;Responsible for console input and output.
+
 (ns -tictactoe.console_io
   (:require [-tictactoe.input_validation :as validation])
   (:use [-tictactoe.localization :only (translate)]))

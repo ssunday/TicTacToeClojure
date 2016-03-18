@@ -1,3 +1,5 @@
+;Responsible for validating input.
+
 (ns -tictactoe.input_validation)
 
 (def valid-dimensions ["3" "4"])

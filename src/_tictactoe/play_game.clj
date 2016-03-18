@@ -1,3 +1,5 @@
+;Responsible for playing the games of tic tac toe.
+
 (ns -tictactoe.play_game
   (:require [-tictactoe.game_functions :as gf]
             [-tictactoe.console_io :as io]

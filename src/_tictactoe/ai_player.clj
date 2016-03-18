@@ -1,3 +1,5 @@
+;Responsible for generating the AI player's best move by way of minimax.
+
 (ns -tictactoe.ai_player
   (:require [-tictactoe.game_functions :as gf]))
 

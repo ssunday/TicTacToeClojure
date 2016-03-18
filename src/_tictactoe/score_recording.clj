@@ -1,3 +1,5 @@
+;Responsible for game scoring and tallying.
+
 (ns -tictactoe.score_recording
   (:require [cheshire.core :as json]
             [-tictactoe.scoring_schema :as schema]
