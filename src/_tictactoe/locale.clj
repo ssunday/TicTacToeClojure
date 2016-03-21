@@ -1,5 +1,7 @@
 (ns -tictactoe.locale)
 
+(def default-loc (keyword "en"))
+
 (defn loc []
   (or (keyword (System/getenv "LOC"))
-      :en))
+      default-loc))
