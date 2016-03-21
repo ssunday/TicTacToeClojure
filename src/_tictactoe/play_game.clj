@@ -18,15 +18,15 @@
 (defn update-player-tally-draw [player-tally]
   (dorun (map #(swap! player-tally update-in [(first %) schema/draws] inc) @player-tally)))
 
-(defn winning-player-is-player-one [current-player-marker player-one-marker]
+(defn- winning-player-is-player-one [current-player-marker player-one-marker]
   (not= current-player-marker player-one-marker))
 
-(defn display-who-won [is-player-one-the-winner]
+(defn- display-who-won [is-player-one-the-winner]
   (if is-player-one-the-winner
       (io/player-one-won-message)
       (io/player-two-won-message)))
 
-(defn end-game-round [board player-tally current-player-marker player-one-marker]
+(defn- end-game-round [board player-tally current-player-marker player-one-marker]
   (if (gf/game-is-won board)
       (let [is-player-one-the-winner (winning-player-is-player-one current-player-marker player-one-marker)]
           (display-who-won is-player-one-the-winner)
@@ -39,17 +39,17 @@
                                                    (io/get-player-spot-to-be-marked board))]
       (gf/mark-board-location board spot-to-be-marked current-player-marker)))
 
-(defn get-other-player-marker [first-player player-one-marker player-two-marker]
+(defn- get-other-player-marker [first-player player-one-marker player-two-marker]
   (if (= first-player player-one-marker)
       player-two-marker
       player-one-marker))
 
-(defn ask-for-player-ai-if-valid-board-dimension [board-dimension prompt]
+(defn- ask-for-player-ai-if-valid-board-dimension [board-dimension prompt]
   (if (= board-dimension 3)
     (prompt)
     false))
 
-(defn play-game [player-tally]
+(defn- play-game [player-tally]
   (let [player-one-marker (io/get-player-one-marker)
         player-two-marker (io/get-player-two-marker player-one-marker)
         first-player (io/get-first-player player-one-marker player-two-marker)
