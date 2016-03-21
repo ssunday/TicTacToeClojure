@@ -29,7 +29,7 @@
    (into [] (list (nth board 0) (nth board 5) (nth board 10) (nth board 15)))
    (into [] (list (nth board 3) (nth board 6) (nth board 9) (nth board 12)))])
 
-(defn get-whether-a-row-is-won [row]
+(defn- get-whether-a-row-is-won [row]
   (= (count (distinct row)) 1))
 
 (defn game-is-won [board]

@@ -41,36 +41,6 @@
                 [0 5 10 pl] [3 op 9 12]]
                (winning-combinations board)))))
 
-(describe "get-whether-a-row-is-won"
-
-  (context "3 in a row"
-
-    (it "returns true if row is filled with all of the same character"
-      (let [row [op op op]]
-        (should (get-whether-a-row-is-won row))))
-
-    (it "returns false if row is filled with mixed characters"
-      (let [row [op pl pl]]
-        (should-not (get-whether-a-row-is-won row))))
-
-    (it "returns false if row is not entirely filled with character"
-      (let [row [op 1 2]]
-        (should-not (get-whether-a-row-is-won row)))))
-
-  (context "4 in a row"
-
-    (it "returns true if row is filled with all of the same character"
-      (let [row [op op op op]]
-        (should (get-whether-a-row-is-won row))))
-
-    (it "returns false if row is filled with mixed characters"
-      (let [row [op pl pl op]]
-        (should-not (get-whether-a-row-is-won row))))
-
-    (it "returns false if row is not entirely filled with character"
-      (let [row [op 1 2 pl]]
-        (should-not (get-whether-a-row-is-won row))))))
-
 (describe "game-is-won"
 
   (context "Game is won with horizontal match returns winning marker"

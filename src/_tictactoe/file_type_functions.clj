@@ -7,7 +7,7 @@
   (-> file-name
       file
       .exists))
-      
+
 (defn clear-file [file-name]
   (if (file-exists file-name)
     (delete-file file-name)))
