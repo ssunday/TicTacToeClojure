@@ -33,7 +33,7 @@
         player-one-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-one-is-ai)
         player-two-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-two-is-ai)]
       (loop [player-marker first-player
-             other-player-marker (get-other-player-marker first-player player-one-marker player-two-marker)
+             other-player-marker (play/get-other-player-marker first-player player-one-marker player-two-marker)
              board (gf/make-default-board board-dimension)]
           (if (not (gf/game-is-over board))
               (do (io/display-current-player-marker player-marker)
