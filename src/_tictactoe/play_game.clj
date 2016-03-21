@@ -1,25 +1,11 @@
 ;Responsible for playing the games of tic tac toe.
 
 (ns -tictactoe.play_game
-  (:require [-tictactoe.game_functions :as gf]
-            [-tictactoe.console_io :as io]
-            [-tictactoe.ai_player :as ai]
-            [-tictactoe.score_recording :as score_recording]
-            [-tictactoe.scoring_schema :as schema]))
-
-(defn update-player-tally-win [player-tally player-one-won]
-  (let [player-one-name (-> @player-tally first first)
-        player-two-name (-> @player-tally second first)
-        winning-player-name (if player-one-won player-one-name player-two-name)
-        losing-player-name (if player-one-won player-two-name player-one-name)]
-  (swap! player-tally update-in [winning-player-name schema/wins] inc)
-  (swap! player-tally update-in [losing-player-name schema/losses] inc)))
-
-(defn update-player-tally-draw [player-tally]
-  (dorun (map #(swap! player-tally update-in [(first %) schema/draws] inc) @player-tally)))
-
-(defn- winning-player-is-player-one [current-player-marker player-one-marker]
-  (not= current-player-marker player-one-marker))
+  (:require [-tictactoe.play_game_functions :as play]
+            [-tictactoe.game_functions :as gf]
+            [-tictactoe.game_play_io :as io]
+            [-tictactoe.score_unique_player_names :as names]
+            [-tictactoe.score_recording :as score_recording]))
 
 (defn- display-who-won [is-player-one-the-winner]
   (if is-player-one-the-winner
@@ -28,21 +14,11 @@
 
 (defn- end-game-round [board player-tally current-player-marker player-one-marker]
   (if (gf/game-is-won board)
-      (let [is-player-one-the-winner (winning-player-is-player-one current-player-marker player-one-marker)]
+      (let [is-player-one-the-winner (play/winning-player-is-player-one current-player-marker player-one-marker)]
           (display-who-won is-player-one-the-winner)
-          (update-player-tally-win player-tally is-player-one-the-winner))
+          (play/update-player-tally-win player-tally is-player-one-the-winner))
       (do (io/game-is-tied-message)
-          (update-player-tally-draw player-tally))))
-
-(defn mark-board [board current-player-marker other-player-marker current-player-is-ai]
-  (let [spot-to-be-marked (if current-player-is-ai (ai/best-move board current-player-marker other-player-marker)
-                                                   (io/get-player-spot-to-be-marked board))]
-      (gf/mark-board-location board spot-to-be-marked current-player-marker)))
-
-(defn- get-other-player-marker [first-player player-one-marker player-two-marker]
-  (if (= first-player player-one-marker)
-      player-two-marker
-      player-one-marker))
+          (play/update-player-tally-draw player-tally))))
 
 (defn- ask-for-player-ai-if-valid-board-dimension [board-dimension prompt]
   (if (= board-dimension 3)
@@ -57,27 +33,29 @@
         player-one-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-one-is-ai)
         player-two-is-ai (ask-for-player-ai-if-valid-board-dimension board-dimension io/get-whether-player-two-is-ai)]
       (loop [player-marker first-player
-             other-player-marker (get-other-player-marker first-player player-one-marker player-two-marker)
+             other-player-marker (play/get-other-player-marker first-player player-one-marker player-two-marker)
              board (gf/make-default-board board-dimension)]
           (if (not (gf/game-is-over board))
               (do (io/display-current-player-marker player-marker)
                   (io/display-game-board board player-one-marker)
                   (recur other-player-marker player-marker
-                         (mark-board board player-marker other-player-marker
-                         (if (= player-marker player-one-marker) player-one-is-ai player-two-is-ai))))
+                         (gf/mark-board-location board
+                                                (play/get-spot-to-be-marked board player-marker other-player-marker
+                                                      (if (= player-marker player-one-marker)
+                                                          player-one-is-ai
+                                                          player-two-is-ai))
+                                                player-marker)))
               (do (io/display-game-board board player-one-marker)
                   (end-game-round board player-tally player-marker player-one-marker)
                   (if (io/ask-if-player-wants-to-play-again-with-same-input)
-                    (recur first-player (get-other-player-marker first-player player-one-marker player-two-marker)
+                    (recur first-player (play/get-other-player-marker first-player player-one-marker player-two-marker)
                                         (gf/make-default-board board-dimension))))))))
 
 (defn run-game []
-  (io/display-currently-registered-names (score_recording/player-names))
+  (io/display-currently-registered-names (names/player-names))
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
-        player-tally (-> [player-one-name player-two-name]
-                         (zipmap (repeat schema/default-wins-losses-draws-scores))
-                         atom)]
+        player-tally (play/initial-player-tally player-one-name player-two-name)]
     (loop [play-again true]
       (if play-again
           (do (play-game player-tally)

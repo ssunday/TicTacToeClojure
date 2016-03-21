@@ -6,8 +6,8 @@
   (fn [file]
     (:file-type file)))
 
-(defmulti read-tally identity)
-
 (defmulti clear-all-data identity)
+
+(defmulti read-tally identity)
 
 (defmulti record-player-tallys (fn [data] (:data-type data)))

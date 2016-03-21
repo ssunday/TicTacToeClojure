@@ -1,11 +1,5 @@
 ;Responsible for Postgres database data persistence.
 
-;The below disables extremely verbose logging messages that I could not figure out how to disable from Korma.
-(System/setProperties
-  (doto (java.util.Properties. (System/getProperties))
-    (.put "com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog")
-    (.put "com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL" "OFF")))
-
 (ns -tictactoe.scoring_postgres
   (:refer-clojure :exclude [update])
   (:require [-tictactoe.scoring_repository :as repository]

@@ -18,7 +18,7 @@
   (describe "read-tally"
 
     (it "returns nil for an empty json file"
-      (should= nil (read-tally json-type )))
+      (should= nil (read-tally json-type)))
 
     (it "can retrieve multiple tallys as a vector"
       (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]

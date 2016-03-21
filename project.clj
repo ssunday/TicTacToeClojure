@@ -11,4 +11,7 @@
   :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
   :plugins [[speclj "3.3.1"]
             [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
-  :test-paths ["spec"])
+  :test-paths ["spec"]
+  :jvm-opts ~(vec (map (fn [[p v]] (str "-D" (name p) "=" v))
+                       {"com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog"
+                        "com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL" "OFF"})))
