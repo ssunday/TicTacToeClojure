@@ -1,17 +1,11 @@
 ;Responsible for running the menu loop.
 
 (ns -tictactoe.game_runner
-  (:require [-tictactoe.game_menu :refer :all]
-            [-tictactoe.scoring_edn :refer :all]
-            [-tictactoe.scoring_json :refer :all]
-            [-tictactoe.scoring_postgres :refer :all]
-            [-tictactoe.play_game_option :refer :all]
-            [-tictactoe.display_previous_scores_option :refer :all]
-            [-tictactoe.end_application_option :refer :all])
-  (:use [-tictactoe.console_io :only (start-game-message select-menu-option)]))
+  (:require [-tictactoe.game_menu :as menu]
+            [-tictactoe.game_menu_messages :as messages]))
 
 (defn run []
-  (start-game-message)
-  (loop [menu-option (select-menu-option menu-options)]
-    (do-menu-option menu-option)
-    (recur (select-menu-option menu-options))))
+  (messages/start-game-message)
+  (loop [menu-option (messages/select-menu-option menu/menu-options)]
+    (menu/do-menu-option menu-option)
+    (recur (messages/select-menu-option menu/menu-options))))
