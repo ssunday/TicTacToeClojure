@@ -8,7 +8,10 @@
                   [postgresql/postgresql "9.1-901.jdbc4"]
                   [org.clojure/java.jdbc "0.3.7"]]
   :main -tictactoe.core
-  :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
+  :profiles {:dev {:dependencies [[speclj "3.3.1"]]
+                   :plugins [[jonase/eastwood "0.2.3"]]
+                   :eastwood {:linters [:all]
+                              :namespaces [:source-paths]}}}
   :plugins [[speclj "3.3.1"]
             [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
   :test-paths ["spec"]

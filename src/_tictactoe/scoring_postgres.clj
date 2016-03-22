@@ -4,9 +4,9 @@
   (:refer-clojure :exclude [update])
   (:require [-tictactoe.scoring_repository :as repository]
             [clojure.java.jdbc :as jdbc]
-            [cheshire.core :as json])
-  (:use [korma.core]
-        [korma.db]))
+            [cheshire.core :as json]
+            [korma.core :refer :all]
+            [korma.db :refer :all]))
 
 (def user-name (System/getProperty "user.name"))
 

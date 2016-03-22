@@ -10,8 +10,8 @@
         player-two-name (-> @player-tally second first)
         winning-player-name (if player-one-won player-one-name player-two-name)
         losing-player-name (if player-one-won player-two-name player-one-name)]
-  (swap! player-tally update-in [winning-player-name schema/wins] inc)
-  (swap! player-tally update-in [losing-player-name schema/losses] inc)))
+    (swap! player-tally update-in [winning-player-name schema/wins] inc)
+    (swap! player-tally update-in [losing-player-name schema/losses] inc)))
 
 (defn update-player-tally-draw [player-tally]
   (dorun (map #(swap! player-tally update-in [(first %) schema/draws] inc) @player-tally)))
