@@ -51,8 +51,8 @@
                     (recur first-player (play/get-other-player-marker first-player player-one-marker player-two-marker)
                                         (gf/make-default-board board-dimension))))))))
 
-(defn run-game []
-  (io/display-currently-registered-names (names/player-names))
+(defn run-game [data]
+  (io/display-currently-registered-names (names/player-names data))
   (let [player-one-name (io/get-player-one-name)
         player-two-name (io/get-player-two-name player-one-name)
         player-tally (play/initial-player-tally player-one-name player-two-name)]
@@ -60,5 +60,5 @@
       (if play-again
           (do (play-game player-tally)
               (recur (io/ask-if-player-wants-to-play-again-new-input)))
-       (do (score_recording/record-tally @player-tally)
-           (io/end-game-message))))))
+          (do (score_recording/record-tally data @player-tally)
+              (io/end-game-message))))))

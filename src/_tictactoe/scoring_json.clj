@@ -8,16 +8,19 @@
 
 (def json-file-name "tally.json")
 
-(defmethod repository/alternate-file-name :json [file]
-  (def json-file-name (str (:file-name file) ".json")))
-
-(defmethod repository/clear-all-data :json [file]
-  (file/clear-file json-file-name))
-
-(defmethod repository/record-player-tallys :json [player-tally]
-  (doall (map #(spit json-file-name (str (json/generate-string %) "\n") :append true) (:tally player-tally))))
-
-(defmethod repository/read-tally :json [data]
+(defn- read-the-tallys []
   (if (file/file-exists json-file-name)
     (with-open [rdr (reader json-file-name)]
       (vec (map #(vec (json/parse-string % true)) (doall (line-seq rdr)))))))
+
+(defn- record-the-tallys [tallys]
+  (doall (map #(spit json-file-name (str (json/generate-string %) "\n") :append true) tallys)))
+
+(defn- use-different-file-name [name]
+  (def json-file-name (str name ".json")))
+
+(defrecord JSON [] repository/DataType
+  (repository/alternate-file-name [this name] (use-different-file-name name))
+  (repository/clear-all-data [this] (file/clear-file json-file-name))
+  (repository/read-tally [this] (read-the-tallys))
+  (repository/record-player-tallys [this tally] (record-the-tallys tally)))

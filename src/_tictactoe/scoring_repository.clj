@@ -2,12 +2,8 @@
 
 (ns -tictactoe.scoring_repository)
 
-(defmulti alternate-file-name
-  (fn [file]
-    (:file-type file)))
-
-(defmulti clear-all-data identity)
-
-(defmulti read-tally identity)
-
-(defmulti record-player-tallys (fn [data] (:data-type data)))
+(defprotocol DataType
+  (alternate-file-name [this name])
+  (clear-all-data [this])
+  (read-tally [this])
+  (record-player-tallys [this tally]))

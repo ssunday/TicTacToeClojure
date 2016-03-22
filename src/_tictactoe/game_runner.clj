@@ -4,8 +4,8 @@
   (:require [-tictactoe.game_menu :as menu]
             [-tictactoe.game_menu_messages :as messages]))
 
-(defn run []
+(defn run [data]
   (messages/start-game-message)
   (loop [menu-option (messages/select-menu-option menu/menu-options)]
-    (menu/do-menu-option menu-option)
+    (menu/do-menu-option {:option menu-option :data data})
     (recur (messages/select-menu-option menu/menu-options))))

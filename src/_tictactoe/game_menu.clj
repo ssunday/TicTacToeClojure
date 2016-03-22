@@ -6,4 +6,5 @@
                    2 "see-scores"
                    3 "end-application"})
 
-(defmulti do-menu-option (fn [selection] (keyword (get menu-options selection))))
+(defmulti do-menu-option
+  (fn [args] (keyword (get menu-options (:option args)))))
