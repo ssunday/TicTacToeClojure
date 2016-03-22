@@ -40,13 +40,13 @@
     (it "saves a tally to an empty file"
       (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
         (record-player-tallys json-type tally)
-        (should= 1 (count (line-seq (clojure.java.io/reader json-file-name))))))
+        (should= 1 (count (line-seq (clojure.java.io/reader @json-file-name))))))
 
     (it "saves a set of tallys to an empty file"
       (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
                    ["John" {:wins 0, :losses 0, :draws 1}]]]
         (record-player-tallys json-type tally)
-        (should= 2 (count (line-seq (clojure.java.io/reader json-file-name))))))
+        (should= 2 (count (line-seq (clojure.java.io/reader @json-file-name))))))
 
     (it "appends a set of tallys to an already populated file"
       (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
@@ -55,7 +55,7 @@
                     ["Beth" {:wins 0, :losses 0, :draws 2}]]]
         (record-player-tallys json-type tally1)
         (record-player-tallys json-type tally2)
-        (should= 4 (count (line-seq (clojure.java.io/reader json-file-name))))))))
+        (should= 4 (count (line-seq (clojure.java.io/reader @json-file-name))))))))
 
 (context "EDN"
 
@@ -90,13 +90,13 @@
     (it "saves a single tally to an empty edn file"
       (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]]]
         (record-player-tallys edn-type tally)
-        (should= 1 (count (line-seq (clojure.java.io/reader edn-file-name))))))
+        (should= 1 (count (line-seq (clojure.java.io/reader @edn-file-name))))))
 
     (it "saves a set of tallys to an empty edn file"
       (let [tally [["Sarah" {:wins 0, :losses 0, :draws 1}]
                    ["John" {:wins 0, :losses 0, :draws 1}]]]
         (record-player-tallys edn-type tally)
-        (should= 2 (count (line-seq (clojure.java.io/reader edn-file-name))))))
+        (should= 2 (count (line-seq (clojure.java.io/reader @edn-file-name))))))
 
     (it "appends a set of tallys to an already populated edn file"
       (let [tally1 [["Sarah" {:wins 0, :losses 0, :draws 1}]
@@ -105,7 +105,7 @@
                     ["Beth" {:wins 0, :losses 0, :draws 2}]]]
         (record-player-tallys edn-type tally1)
         (record-player-tallys edn-type tally2)
-        (should= 4 (count (line-seq (clojure.java.io/reader edn-file-name))))))))
+        (should= 4 (count (line-seq (clojure.java.io/reader @edn-file-name))))))))
 
 (context "POSTGRES"
 

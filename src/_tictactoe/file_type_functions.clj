@@ -1,7 +1,7 @@
 ;Responsible for methods that all file types can use.
 
 (ns -tictactoe.file_type_functions
-  (:use [clojure.java.io]))
+  (:use [clojure.java.io :only (file delete-file)]))
 
 (defn file-exists [file-name]
   (-> file-name
