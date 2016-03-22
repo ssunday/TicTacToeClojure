@@ -5,8 +5,8 @@
   (:require [-tictactoe.scoring_repository :as repository]
             [clojure.java.jdbc :as jdbc]
             [cheshire.core :as json])
-  (:use korma.core
-        korma.db))
+  (:use [korma.core]
+        [korma.db]))
 
 (def user-name (System/getProperty "user.name"))
 
@@ -41,13 +41,11 @@
               (if scores
                 (assoc v :scores (json/generate-string scores)) v))))
 
-(defmethod repository/alternate-file-name :pg [file] nil)
-
-(defmethod repository/clear-all-data :pg [file]
+(defn- clear-database []
   (delete tallys))
 
-(defmethod repository/record-player-tallys :pg [player-tally]
-  (doall (map #(insert tallys (values [{:name (first %) :scores (second %)}])) (:tally player-tally))))
+(defn- record-the-tallys [tally]
+  (doall (map #(insert tallys (values [{:name (first %) :scores (second %)}])) tally)))
 
 (defn- names-and-scores []
   (select tallys (fields :name :scores)))
@@ -55,7 +53,13 @@
 (defn- formatted-tallys []
   (map #(vector (:name %) (:scores %)) (names-and-scores)))
 
-(defmethod repository/read-tally :pg [data]
+(defn- read-the-tallys []
   (let [tallys (formatted-tallys)]
     (if (not (empty? tallys))
         tallys)))
+
+(defrecord POSTGRES [] repository/DataType
+  (repository/alternate-file-name [this name] nil)
+  (repository/clear-all-data [this] (clear-database))
+  (repository/read-tally [this] (read-the-tallys))
+  (repository/record-player-tallys [this tally] (record-the-tallys tally)))

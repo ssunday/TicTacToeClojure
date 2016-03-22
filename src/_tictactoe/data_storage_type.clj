@@ -1,3 +1,5 @@
+;Determines the type of data passed in by the command line as an environmental variable
+
 (ns -tictactoe.data_storage_type)
 
 (def default-type (keyword "json"))

@@ -1,4 +1,4 @@
-; Responsible for methods that all file types can use.
+;Responsible for methods that all file types can use.
 
 (ns -tictactoe.file_type_functions
   (:use [clojure.java.io]))

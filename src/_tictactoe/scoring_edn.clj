@@ -8,16 +8,19 @@
 
 (def edn-file-name "tally.edn")
 
-(defmethod repository/alternate-file-name :edn [file]
-  (def edn-file-name (str (:file-name file) ".edn")))
+(defn- use-different-file-name [name]
+  (def edn-file-name (str name ".edn")))
 
-(defmethod repository/clear-all-data :edn [file]
-  (file/clear-file edn-file-name))
+(defn- record-the-tallys [tallys]
+  (doall (map #(spit edn-file-name (prn-str %) :append true) tallys)))
 
-(defmethod repository/record-player-tallys :edn [player-tally]
-  (doall (map #(spit edn-file-name (prn-str %) :append true) (:tally player-tally))))
-
-(defmethod repository/read-tally :edn [data]
+(defn- read-the-tallys []
   (if (file/file-exists edn-file-name)
     (with-open [rdr (reader edn-file-name)]
         (map #(edn/read-string %) (doall (line-seq rdr))))))
+
+(defrecord EDN [] repository/DataType
+  (repository/alternate-file-name [this name] (use-different-file-name name))
+  (repository/clear-all-data [this] (file/clear-file edn-file-name))
+  (repository/read-tally [this] (read-the-tallys))
+  (repository/record-player-tallys [this tally] (record-the-tallys tally)))

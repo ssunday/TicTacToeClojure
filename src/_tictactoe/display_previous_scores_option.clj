@@ -5,6 +5,7 @@
             [-tictactoe.score_reading :as scores]
             [-tictactoe.display_tally :as display]))
 
-(defmethod menu/do-menu-option :see-scores [data]
-  (-> (scores/read-total-tally)
+(defmethod menu/do-menu-option :see-scores [args]
+  (-> (:data args)
+      scores/read-total-tally
       (display/display-tally)))
