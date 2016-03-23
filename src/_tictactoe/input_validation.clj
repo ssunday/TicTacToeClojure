@@ -8,7 +8,7 @@
   (try
     (let [spot (read-string str)]
        (if (number? spot) spot nil))
-    (catch Exception e nil)))
+  (catch Exception e nil)))
 
 (defn marker-is-invalid [marker]
   (or (> (count marker) 1)

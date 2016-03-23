@@ -6,14 +6,13 @@
                   [cheshire "5.5.0"]
                   [korma "0.4.2"]
                   [postgresql/postgresql "9.1-901.jdbc4"]
-                  [org.clojure/java.jdbc "0.3.7"]]
+                  [org.clojure/java.jdbc "0.3.7"]
+                  [environ "1.0.2"]]
   :main -tictactoe.core
-  :profiles {:dev {:dependencies [[speclj "3.3.1"]]
-                   :plugins [[jonase/eastwood "0.2.3"]]
-                   :eastwood {:linters [:all]
-                              :namespaces [:source-paths]}}}
   :plugins [[speclj "3.3.1"]
-            [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
+            [lein-ns-dep-graph "0.1.0-SNAPSHOT"]
+            [lein-environ "1.0.2"]]
+  :aliases { "spec" ["with-profile" "+test" "spec"] }
   :test-paths ["spec"]
   :jvm-opts ~(vec (map (fn [[p v]] (str "-D" (name p) "=" v))
                        {"com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog"

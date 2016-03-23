@@ -6,18 +6,21 @@
             [clojure.java.jdbc :as jdbc]
             [cheshire.core :as json]
             [korma.core :refer :all]
-            [korma.db :refer :all]))
+            [korma.db :refer :all]
+            [environ.core :refer [env]]))
 
 (def user-name (System/getProperty "user.name"))
 
-(defdb db (postgres {:db user-name
+(def database-name (env :database-name))
+
+(defdb db (postgres {:db database-name
                      :user user-name
                      :password ""
                      :host "localhost"
                      :port "5432"}))
 
 (def db-start {:subprotocol "postgresql"
-               :subname (str "//localhost:5432/" user-name)
+               :subname (str "//localhost:5432/" database-name)
                :user user-name
                :password ""})
 
