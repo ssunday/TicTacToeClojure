@@ -1,6 +1,6 @@
-(ns -tictactoe.game_play_io-spec
+(ns -tictactoe.console.game_play_io-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.game_play_io :refer :all]))
+            [-tictactoe.console.game_play_io :refer :all]))
 
 (describe "get-player-one-name"
   (around [it]

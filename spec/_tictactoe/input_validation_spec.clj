@@ -1,6 +1,6 @@
-(ns -tictactoe.input_validation-spec
+(ns -tictactoe.ttt.input_validation-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.input_validation :refer :all]))
+            [-tictactoe.ttt.input_validation :refer :all]))
 
 (describe "convert-string-to-number"
   (it "returns nil for non number"

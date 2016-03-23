@@ -1,6 +1,6 @@
-(ns -tictactoe.localization-spec
+(ns -tictactoe.ttt.localization-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.localization :refer :all]))
+            [-tictactoe.ttt.localization :refer :all]))
 
 (describe "localize"
   (around [it]

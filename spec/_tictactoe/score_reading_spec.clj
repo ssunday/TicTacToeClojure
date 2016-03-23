@@ -1,9 +1,9 @@
-(ns -tictactoe.score_reading-spec
+(ns -tictactoe.ttt.score_reading-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.score_reading :refer :all]
-            [-tictactoe.score_recording :as record]
-            [-tictactoe.scoring_json :refer :all])
-  (:use [-tictactoe.scoring_repository :only [alternate-file-name clear-all-data]]))
+            [-tictactoe.ttt.score_reading :refer :all]
+            [-tictactoe.ttt.score_recording :as record]
+            [-tictactoe.scoring.scoring_json :refer :all])
+  (:use [-tictactoe.ttt.scoring_repository :only [alternate-file-name clear-all-data]]))
 
 (def test-file-name "test")
 

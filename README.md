@@ -10,7 +10,7 @@ Features:
 * Board can either be 3x3 or 4x4
 * Board output is colored.
 * Localized to both English and German.
-* Scores persist to a local file. Either JSON, EDN, or Postgres local database. Connection configuration assumes //localhost:5432/user-name format. See the scoring_postgres file for the schema and to change it.
+* Scores persist to a local file. Either JSON, EDN, or Postgres local database.
 
 ## Usage
 
@@ -23,9 +23,11 @@ lein run
 Type in LOC=de before lein run for German localization. Default is English.
 For EDN file persistence, type in TYPE=edn. For saving to a locally run Postgres database, use TYPE=pg. JSON is default or TYPE=json.
 
+For postgres persistence, connection configuration assumes //localhost:5432/tictactoe database url format. You must have a database created with the name tictactoe prior to running the game
+
 ## Testing
 
-To run the tests, you need to have Speclj and use the lein spec command.
+To run the tests, you need to have Speclj and use the lein spec command. Before running, a database named 'test' must be created.
 
 ## Extending Tic Tac Toe
 

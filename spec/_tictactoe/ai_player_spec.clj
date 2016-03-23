@@ -1,6 +1,6 @@
-(ns -tictactoe.ai_player-spec
+(ns -tictactoe.ttt.ai_player-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.ai_player :refer :all]))
+            [-tictactoe.ttt.ai_player :refer :all]))
 
 (def ai "X")
 

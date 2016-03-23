@@ -1,6 +1,6 @@
-(ns -tictactoe.game_functions-spec
+(ns -tictactoe.ttt.game_functions-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.game_functions :refer :all]))
+            [-tictactoe.ttt.game_functions :refer :all]))
 
 (def pl "X")
 

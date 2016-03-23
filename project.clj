@@ -7,13 +7,21 @@
                   [korma "0.4.2"]
                   [postgresql/postgresql "9.1-901.jdbc4"]
                   [org.clojure/java.jdbc "0.3.7"]
-                  [environ "1.0.2"]]
+                  [environ "1.0.2"]
+                  [compojure "1.4.0"]
+                  [ring "1.4.0"]
+                  [stencil "0.5.0"]]
   :main -tictactoe.core
   :plugins [[speclj "3.3.1"]
             [lein-ns-dep-graph "0.1.0-SNAPSHOT"]
-            [lein-environ "1.0.2"]]
-  :aliases { "spec" ["with-profile" "+test" "spec"] }
+            [lein-environ "1.0.2"]
+            [lein-ring "0.9.7"]]
+  :aliases { "spec" ["with-profile" "+test" "spec"]
+             "eastwood" ["with-profile" "+test" "eastwood"] }
   :test-paths ["spec"]
   :jvm-opts ~(vec (map (fn [[p v]] (str "-D" (name p) "=" v))
                        {"com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog"
                         "com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL" "OFF"})))
+
+
+;  :ring {:handler -tictactoe.web.handler/app}

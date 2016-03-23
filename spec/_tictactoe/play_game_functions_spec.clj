@@ -1,25 +1,25 @@
-(ns -tictactoe.play_game_functions-spec
+(ns -tictactoe.console.play_game_functions-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.play_game_functions :refer :all]
-            [-tictactoe.scoring_schema :as schema]))
+            [-tictactoe.console.play_game_functions :refer :all]
+            [-tictactoe.ttt.scoring_schema :as schema]))
 
 (describe "update-player-tally-win"
 
   (it "increments win by one for first player if they won and loss for second player by one"
-    (let [player-tally (atom {"Sarah" {:wins 0 :losses 0 :draws 0} "John" {:wins 0 :losses 0 :draws 0}})]
+    (let [player-tally (atom {"Sarah" schema/default-wins-losses-draws-scores "John" schema/default-wins-losses-draws-scores})]
       (update-player-tally-win player-tally true)
-      (should= @player-tally {"Sarah" {:wins 1 :losses 0 :draws 0} "John" {:wins 0 :losses 1 :draws 0}})))
+      (should= @player-tally {"Sarah" {schema/wins 1 schema/losses 0 schema/draws 0} "John" {schema/wins 0 schema/losses 1 schema/draws 0}})))
 
   (it "increments win by one for second player if they won and loss for first player by one"
-    (let [player-tally (atom {"Sarah" {:wins 0 :losses 0 :draws 0} "John" {:wins 0 :losses 0 :draws 0}})]
+    (let [player-tally (atom {"Sarah" schema/default-wins-losses-draws-scores "John" schema/default-wins-losses-draws-scores})]
       (update-player-tally-win player-tally false)
-      (should= @player-tally {"Sarah" {:wins 0 :losses 1 :draws 0} "John" {:wins 1 :losses 0 :draws 0}}))))
+      (should= @player-tally {"Sarah" {schema/wins 0 schema/losses 1 schema/draws 0} "John" {schema/wins 1 schema/losses 0 schema/draws 0}}))))
 
 (describe "update-player-tally-draw"
   (it "increments both player's draw tally by one"
-    (let [player-tally (atom {"Sarah" {:wins 0 :losses 0 :draws 0} "John" {:wins 0 :losses 0 :draws 0}})]
+    (let [player-tally (atom {"Sarah" schema/default-wins-losses-draws-scores "John" schema/default-wins-losses-draws-scores})]
       (update-player-tally-draw player-tally)
-      (should= @player-tally {"Sarah" {:wins 0 :losses 0 :draws 1} "John" {:wins 0 :losses 0 :draws 1}}))))
+      (should= @player-tally {"Sarah" {schema/wins 0 schema/losses 0 schema/draws 1} "John" {schema/wins 0 schema/losses 0 schema/draws 1}}))))
 
 (describe "get-spot-to-be-marked"
 

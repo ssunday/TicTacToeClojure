@@ -1,6 +1,6 @@
-(ns -tictactoe.file_type_functions-spec
+(ns -tictactoe.scoring.file_type_functions-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.file_type_functions :refer :all])
+            [-tictactoe.scoring.file_type_functions :refer :all])
   (:use [clojure.java.io]))
 
 (describe "file-exists"

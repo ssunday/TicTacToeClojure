@@ -1,9 +1,9 @@
-(ns -tictactoe.scoring_repository-spec
+(ns -tictactoe.ttt.scoring_repository-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.scoring_repository :refer :all]
-            [-tictactoe.scoring_json :refer :all]
-            [-tictactoe.scoring_edn :refer :all]
-            [-tictactoe.scoring_postgres :refer :all]))
+            [-tictactoe.ttt.scoring_repository :refer :all]
+            [-tictactoe.scoring.scoring_json :refer :all]
+            [-tictactoe.scoring.scoring_edn :refer :all]
+            [-tictactoe.scoring.scoring_postgres :refer :all]))
 
 (def test-file-name "test")
 
