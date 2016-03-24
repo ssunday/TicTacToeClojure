@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>{{header}}</title>
+  <h1>{{header}}</h1>
 </head>
 <body>
-  <h1>Game Settings</h1>
+  {{#error}}
+  <h2> Markers must be unique from each other.</h2>
+  {{/error}}
   <form action="/settings" method="post">
     <h2> Please select names for each player. </h2>
     <br>
     <label>Player One Name:</label>
-    <input type="text" name="player_one_name"/>
+    <input type="text" name="player-one-name" value = "Player One Name"/>
     <br>
     <label>Player Two Name:</label>
-    <input type="text" name="player_two_name"/>
+    <input type="text" name="player-two-name" value = "Player Two Name"/>
     <br>
     <h2> Please select unique markers for each player. </h2>
     <br>
     <label>Player One Marker:</label>
-    <select name="player_one_marker">
+    <select name="player-one-marker">
         <option value="A">A</option>
         <option value="B">B</option>
         <option value="C">C</option>
@@ -48,7 +51,7 @@
     </select>
     <br>
     <label>Player Two Marker:</label>
-    <select name="player_two_marker">
+    <select name="player-two-marker">
         <option value="A">A</option>
         <option value="B">B</option>
         <option value="C">C</option>
@@ -81,25 +84,26 @@
     <label>Board Dimension:</label>
     <br>
     <label>3x3</label>
-    <input type="radio" name="board_dimension" value="3" disabled/><br>
+    <input type="radio" name="board-dimension" value="3" checked/><br>
     <label>4x4</label>
-    <input type="radio" name="board_dimension" value="4" disabled/><br>
+    <input type="radio" name="board-dimension" value="4" /><br>
     <br>
+    AI only works for the 3x3 board option.
     <label>Player One will be AI: </label>
-    <input type="radio" name="player_one_type" value="AI" checked/><br>
+    <input type="radio" name="player-one-type" value="AI" checked/><br>
     <label>Player One will be a Human Player: </label>
-    <input type="radio" name="player_one_type" value="Human"/>
+    <input type="radio" name="player-one-type" value="Human"/>
     <br>
     <br>
     <label>Player Two will be AI: </label>
-    <input type="radio" name="player_two_type" value="AI" checked/> <br>
+    <input type="radio" name="player-two-type" value="AI" checked/> <br>
     <label>Player Two will be a Human Player: </label>
-    <input type="radio" name="player_two_type" value="Human" />
+    <input type="radio" name="player-two-type" value="Human" />
     <br>
     <br>
     <label>Player that goes first:</label>
-    <label>Player One: </label><input type="radio" name="first_player" value="player_one_marker" checked/>
-    <label>Player Two: </label><input type="radio" name="first_player" value="player_two_marker"/>
+    <label>Player One:</label><input type="radio" name="first-player" value="player-one-marker" checked/>
+    <label>Player Two:</label><input type="radio" name="first-player" value="player-two-marker"/>
     <br>
     <br>
     <input type="submit">

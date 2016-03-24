@@ -1,10 +1,10 @@
 ;Creates the particular record for the chosen data type
 
-(ns -tictactoe.console.data_storage_factory
+(ns -tictactoe.ttt.data_storage_factory
   (:require [-tictactoe.scoring.scoring_edn :refer :all]
             [-tictactoe.scoring.scoring_json :refer :all]
             [-tictactoe.scoring.scoring_postgres :refer :all]
-            [-tictactoe.console.data_storage_type :as data-storage]))
+            [-tictactoe.ttt.data_storage_type :as data-storage]))
 
 (defn data []
   (cond (= (data-storage/data-type) :json) (->JSON)

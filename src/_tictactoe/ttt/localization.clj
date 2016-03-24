@@ -50,6 +50,13 @@
                           :see-scores "See Scores"
                           :end-application "End Application"
                           }
+                    :web {
+                         :game-settings "Game Settings"
+                         :game-scores "Game Scores"
+                         :click-here "Click here"
+                         :page-not-found "Page not found"
+                         :game-over "Game Over"
+                         }
                     :missing "Translation missing"}
                 :de {:input {
                              :spot-to-be-marked "Bitte geben Sie Ort und Stelle zu kennzeichnen. Muss 0 bis %s und offen sein."
@@ -96,6 +103,13 @@
                            :see-scores "Siehe Ergebnisse"
                            :end-application "End-Anwendung"
                           }
+                    :web {
+                         :game-settings "Spieleinstellungen"
+                         :game-scores "Spielergebnisse"
+                         :click-here "Klick hier"
+                         :page-not-found "Seite nicht gefunden"
+                         :game-over "Spiel ist aus"
+                         }
                     :missing "Übersetzung fehlt"}}
                 :fallback-locale :en})
 

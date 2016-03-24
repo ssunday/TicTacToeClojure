@@ -1,9 +1,10 @@
 ;Responsible for input and output for playing the tic tac toe game
 
 (ns -tictactoe.console.game_play_io
-  (:require [-tictactoe.ttt.input_validation :as validation]
+  (:require [-tictactoe.console.input_validation :as validation]
             [-tictactoe.console.message_writer :as writer]
-            [-tictactoe.console.locale :as locale])
+            [-tictactoe.ttt.convert_string_to_number :as convert]
+            [-tictactoe.ttt.locale :as locale])
   (:use [-tictactoe.ttt.localization :only (translate)]))
 
 (def colors {:end-marker "\u001b[0m"
@@ -98,11 +99,11 @@
 
 (defn ask-for-board-dimension []
   (writer/write (translate (locale/loc) :input/board-dimension))
-  (loop [board-dimension (validation/convert-string-to-number (read-line))]
+  (loop [board-dimension (convert/convert-string-to-number (read-line))]
     (if (validation/invalid-board-dimension board-dimension)
         (do
           (writer/write (translate (locale/loc) :error-messages/invalid-board-dimension))
-          (recur (validation/convert-string-to-number (read-line))))
+          (recur (convert/convert-string-to-number (read-line))))
         board-dimension)))
 
 (defn yes-or-no-response []

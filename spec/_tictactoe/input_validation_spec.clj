@@ -1,24 +1,6 @@
-(ns -tictactoe.ttt.input_validation-spec
+(ns -tictactoe.console.input_validation-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.ttt.input_validation :refer :all]))
-
-(describe "convert-string-to-number"
-  (it "returns nil for non number"
-    (should= (convert-string-to-number "A") nil))
-  (it "returns nil for blank space"
-    (should= (convert-string-to-number "") nil))
-  (it "returns number for string number"
-    (should= (convert-string-to-number "1") 1)))
-
-(describe "marker-is-invalid"
-  (it "returns true for marker longer than one digit in length"
-    (convert-string-to-number "Abc"))
-  (it "returns true for blank space"
-    (convert-string-to-number ""))
-  (it "returns true for string number"
-    (convert-string-to-number "1"))
-  (it "returns false for single character"
-    (not (convert-string-to-number "A"))))
+            [-tictactoe.console.input_validation :refer :all]))
 
 (describe "first-player-marker-is-invalid"
   (it "returns true for marker that matches neither of the player markers"

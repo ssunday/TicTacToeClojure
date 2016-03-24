@@ -1,4 +1,4 @@
-(ns -tictactoe.console.locale)
+(ns -tictactoe.ttt.locale)
 
 (def default-loc (keyword "en"))
 

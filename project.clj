@@ -10,7 +10,8 @@
                   [environ "1.0.2"]
                   [compojure "1.4.0"]
                   [ring "1.4.0"]
-                  [stencil "0.5.0"]]
+                  [stencil "0.5.0"]
+                  [lib-noir "0.9.9"]]
   :main -tictactoe.core
   :plugins [[speclj "3.3.1"]
             [lein-ns-dep-graph "0.1.0-SNAPSHOT"]

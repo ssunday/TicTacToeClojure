@@ -1,14 +1,9 @@
 ;Responsible for validating input.
 
-(ns -tictactoe.ttt.input_validation)
+(ns -tictactoe.console.input_validation
+  (:use [-tictactoe.ttt.convert_string_to_number]))
 
 (def valid-dimensions [3 4])
-
-(defn convert-string-to-number [str]
-  (try
-    (let [spot (read-string str)]
-       (if (number? spot) spot nil))
-  (catch Exception e nil)))
 
 (defn marker-is-invalid [marker]
   (or (> (count marker) 1)

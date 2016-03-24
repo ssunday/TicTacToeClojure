@@ -11,8 +11,9 @@
 (defn- begin-cell []
   "<td style='padding:0 15px 0 15px;'>")
 
-(defn- cell-value [board index]
-  (if (number? (get board index))
+(defn- cell-value [board index current-player-is-ai]
+  (if (and (number? (get board index))
+           (not current-player-is-ai))
       (format "<input type='radio' name='spot' value=%s checked>" (get board index))
       (format "%s" (get board index))))
 
@@ -30,13 +31,15 @@
     <button type='submit'>Next Turn</button>
   </form>")
 
-(defn display-board [board]
-  (let [string-board ""
+(defn display-board [board current-player-is-ai]
+  (let [string-board (atom ())
         dimension (int (Math/sqrt (count board)))]
-    (for [index (range (count board))]
-      (-> string-board
-        (str (begin-row index dimension))
-        (str (begin-cell))
-        (str (cell-value board index))
-        (str (end-cell))
-        (str (end-row index dimension))))))
+    (swap! string-board conj (get-form-start))
+    (doseq [index (range (count board))]
+        (swap! string-board conj (begin-row index dimension))
+        (swap! string-board conj (begin-cell))
+        (swap! string-board conj (cell-value board index current-player-is-ai))
+        (swap! string-board conj (end-cell))
+        (swap! string-board conj (end-row index dimension)))
+    (swap! string-board conj (end-board))
+    (clojure.string/join "" (reverse @string-board))))

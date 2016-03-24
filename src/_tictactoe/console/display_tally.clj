@@ -3,7 +3,7 @@
 (ns -tictactoe.console.display_tally
   (:require [-tictactoe.ttt.scoring_schema :as scoring_schema]
             [-tictactoe.console.message_writer :as writer]
-            [-tictactoe.console.locale :as locale])
+            [-tictactoe.ttt.locale :as locale])
   (:use [-tictactoe.ttt.localization :only (translate)]))
 
 (defn display-tally [tally]
