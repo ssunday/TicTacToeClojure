@@ -150,14 +150,14 @@
 
   (it "returns true when game has been won for 3x3 board"
       (game-is-over [op pl op
-                            op pl pl
-                            op op pl]))
+                     op pl pl
+                     op op pl]))
 
   (it "returns true when game has been won for 4x4 board"
       (game-is-over [op op pl pl
-                            op pl pl op
-                            op op pl pl
-                            op pl op pl]))
+                     op pl pl op
+                     op op pl pl
+                     op pl op pl]))
 
   (it "returns false when game neither been won or tied for 3x3 board"
      (not (game-is-over [op pl 2

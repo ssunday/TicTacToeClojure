@@ -6,9 +6,9 @@
   <h1>{{header}}</h1>
 </head>
 <body>
-  {{#error}}
-  <h2>{{error-markers-are-same}}</h2>
-  {{/error}}
+  {{#bad-input}}
+  <h2>{{error-markers-or-names-are-same}}</h2>
+  {{/bad-input}}
   <form action="/settings" method="post">
     <h3>{{set-player-names}}</h3>
     <br>

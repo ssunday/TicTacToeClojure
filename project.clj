@@ -1,7 +1,7 @@
 (defproject -tictactoe "1.7.0-SNAPSHOT"
   :description "Tic Tac Toe Command line game written in Clojure"
   :url "https://github.com/ssunday/TicTacToeClojure"
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                   [com.taoensso/tower "3.0.2"]
                   [cheshire "5.5.0"]
                   [korma "0.4.2"]
