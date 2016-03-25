@@ -7,20 +7,20 @@
 </head>
 <body>
   {{#error}}
-  <h2> Markers must be unique from each other.</h2>
+  <h2>{{error-markers-are-same}}</h2>
   {{/error}}
   <form action="/settings" method="post">
-    <h2> Please select names for each player. </h2>
+    <h3>{{set-player-names}}</h3>
     <br>
-    <label>Player One Name:</label>
+    <label>{{player-one-name}}</label>
     <input type="text" name="player-one-name" value = "Player One Name"/>
     <br>
-    <label>Player Two Name:</label>
+    <label>{{player-two-name}}</label>
     <input type="text" name="player-two-name" value = "Player Two Name"/>
     <br>
-    <h2> Please select unique markers for each player. </h2>
+    <h2>{{select-unique-markers}}</h2>
     <br>
-    <label>Player One Marker:</label>
+    <label>{{set-player-one-marker}}</label>
     <select name="player-one-marker">
         <option value="A">A</option>
         <option value="B">B</option>
@@ -50,7 +50,7 @@
       	<option value="Z">Z</option>
     </select>
     <br>
-    <label>Player Two Marker:</label>
+    <label>{{set-player-two-marker}}</label>
     <select name="player-two-marker">
         <option value="A">A</option>
         <option value="B">B</option>
@@ -81,32 +81,32 @@
     </select>
     <br>
     <br>
-    <label>Board Dimension:</label>
+    <label>{{choose-board-dimension}}</label>
     <br>
     <label>3x3</label>
     <input type="radio" name="board-dimension" value="3" checked/><br>
     <label>4x4</label>
     <input type="radio" name="board-dimension" value="4" /><br>
     <br>
-    AI only works for the 3x3 board option.
-    <label>Player One will be AI: </label>
+    <h3>{{ai-works-for-3x3}}</h3><br>
+    <label>{{player-one-will-be-ai}} </label>
     <input type="radio" name="player-one-type" value="AI" checked/><br>
-    <label>Player One will be a Human Player: </label>
+    <label>{{player-one-will-be-human}}</label>
     <input type="radio" name="player-one-type" value="Human"/>
     <br>
     <br>
-    <label>Player Two will be AI: </label>
+    <label>{{player-two-will-be-ai}} </label>
     <input type="radio" name="player-two-type" value="AI" checked/> <br>
-    <label>Player Two will be a Human Player: </label>
-    <input type="radio" name="player-two-type" value="Human" />
+    <label>{{player-two-will-be-human}}</label>
+    <input type="radio" name="player-two-type" value="Human"/>
     <br>
     <br>
-    <label>Player that goes first:</label>
-    <label>Player One:</label><input type="radio" name="first-player" value="player-one-marker" checked/>
-    <label>Player Two:</label><input type="radio" name="first-player" value="player-two-marker"/>
+    <label>{{choose-player-that-goes-first}}</label>
+    <label>{{player-one}}</label><input type="radio" name="first-player" value="player-one-marker" checked/>
+    <label>{{player-two}}</label><input type="radio" name="first-player" value="player-two-marker"/>
     <br>
     <br>
-    <input type="submit">
+    <input type="submit" value={{next}}>
   </form>
 </body>
 </html>

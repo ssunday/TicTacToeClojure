@@ -23,6 +23,3 @@
   :jvm-opts ~(vec (map (fn [[p v]] (str "-D" (name p) "=" v))
                        {"com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog"
                         "com.mchange.v2.log.FallbackMLog.DEFAULT_CUTOFF_LEVEL" "OFF"})))
-
-
-;  :ring {:handler -tictactoe.web.handler/app}

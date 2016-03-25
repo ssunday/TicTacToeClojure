@@ -25,13 +25,10 @@
       "</tr>"
       ""))
 
-(defn- end-board []
-  "</table>
-    <br>
-    <button type='submit'>Next Turn</button>
-  </form>")
+(defn- end-board [next]
+  (str "</table><br> <button type='submit'>" next "</button> </form>"))
 
-(defn display-board [board current-player-is-ai]
+(defn display-board [board current-player-is-ai next]
   (let [string-board (atom ())
         dimension (int (Math/sqrt (count board)))]
     (swap! string-board conj (get-form-start))
@@ -41,5 +38,5 @@
         (swap! string-board conj (cell-value board index current-player-is-ai))
         (swap! string-board conj (end-cell))
         (swap! string-board conj (end-row index dimension)))
-    (swap! string-board conj (end-board))
+    (swap! string-board conj (end-board next))
     (clojure.string/join "" (reverse @string-board))))
