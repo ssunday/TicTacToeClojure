@@ -41,7 +41,7 @@
                                                          :player-two (translate (loc) :web/player-two)
                                                          :next (translate (loc) :web/next)}))
 
-(defn play-game-page []
+(defn- play-game-page []
   (let [current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
                                                          :player-two-marker (session/get :player-two-marker)
                                                          :player-one-is-ai (session/get :player-one-is-ai)

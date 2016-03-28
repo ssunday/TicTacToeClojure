@@ -1,12 +1,12 @@
-(ns -tictactoe.console.input_validation-spec
+(ns -tictactoe.console.game_play_input_validation-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.console.input_validation :refer :all]))
+            [-tictactoe.console.game_play_input_validation :refer :all]))
 
 (describe "first-player-marker-is-invalid"
 
   (it "returns true for marker that matches neither of the player markers"
     (first-player-marker-is-invalid "C" "A" "B"))
-    
+
   (it "returns false for marker that matches one of the player markers"
     (not (first-player-marker-is-invalid "A" "A" "B"))))
 
@@ -67,17 +67,3 @@
 
   (it "returns false for n when n is an option"
     (should-not (y-or-n-response-is-invalid "n" "j" "n"))))
-
-(describe "menu-option-is-valid"
-
-  (it "returns true for option that is within the menu length"
-    (let [menu-length 3]
-      (should (menu-option-is-valid menu-length 2))))
-
-  (it "returns false for option that is beyond the menu length"
-    (let [menu-length 3]
-      (should-not (menu-option-is-valid menu-length 5))))
-
-  (it "returns false for option that is not a number"
-    (let [menu-length 3]
-      (should-not (menu-option-is-valid menu-length nil)))))

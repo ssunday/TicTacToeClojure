@@ -3,8 +3,7 @@
 (ns -tictactoe.scoring.scoring_json
   (:require [cheshire.core :as json]
             [-tictactoe.ttt.scoring_repository :as repository]
-            [-tictactoe.scoring.file_type_functions :as file]
-            [clojure.java.io :refer :all]))
+            [-tictactoe.scoring.file_type_functions :as file]))
 
 (def json-file-name (atom "tally.json"))
 
@@ -12,12 +11,12 @@
   (reset! json-file-name (str name ".json")))
 
 (defn- record-the-tallys [tallys]
-  (doall (map #(spit @json-file-name (str (json/generate-string %) "\n") :append true) tallys)))
+  (doall (map #(file/write-to-file @json-file-name (str (json/generate-string %) "\n")) tallys)))
 
 (defn- read-the-tallys []
-  (if (file/file-exists @json-file-name)
-    (with-open [rdr (reader @json-file-name)]
-      (vec (map #(vec (json/parse-string % true)) (doall (line-seq rdr)))))))
+  (let [file-lines (file/get-file-lines @json-file-name)]
+    (if (> (count file-lines) 0)
+      (vec (map #(json/parse-string % true) file-lines)))))
 
 (defrecord JSON [] repository/DataType
   (repository/alternate-file-name [this name] (use-different-file-name name))

@@ -3,9 +3,9 @@
 (ns -tictactoe.console.game_play_io
   (:require [-tictactoe.console.input_validation :as validation]
             [-tictactoe.console.message_writer :as writer]
-            [-tictactoe.ttt.convert_string_to_number :as convert]
             [-tictactoe.ttt.locale :as locale])
-  (:use [-tictactoe.ttt.localization :only (translate)]))
+  (:use [-tictactoe.ttt.localization :only (translate)]
+        [-tictactoe.ttt.convert_string_to_number :only (convert-string-to-number)]))
 
 (def colors {:end-marker "\u001b[0m"
              :default "\u001b[39m"
@@ -99,11 +99,11 @@
 
 (defn ask-for-board-dimension []
   (writer/write (translate (locale/loc) :input/board-dimension))
-  (loop [board-dimension (convert/convert-string-to-number (read-line))]
+  (loop [board-dimension (convert-string-to-number (read-line))]
     (if (validation/invalid-board-dimension board-dimension)
         (do
           (writer/write (translate (locale/loc) :error-messages/invalid-board-dimension))
-          (recur (convert/convert-string-to-number (read-line))))
+          (recur (convert-string-to-number (read-line))))
         board-dimension)))
 
 (defn yes-or-no-response []

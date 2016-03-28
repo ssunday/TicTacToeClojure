@@ -3,8 +3,7 @@
 (ns -tictactoe.scoring.scoring_edn
   (:require [clojure.edn :as edn]
             [-tictactoe.ttt.scoring_repository :as repository]
-            [-tictactoe.scoring.file_type_functions :as file]
-            [clojure.java.io :refer :all]))
+            [-tictactoe.scoring.file_type_functions :as file]))
 
 (def edn-file-name (atom "tally.edn"))
 
@@ -12,12 +11,12 @@
   (reset! edn-file-name (str name ".edn")))
 
 (defn- record-the-tallys [tallys]
-  (doall (map #(spit @edn-file-name (prn-str %) :append true) tallys)))
+  (doall (map #(file/write-to-file @edn-file-name (prn-str %)) tallys)))
 
 (defn- read-the-tallys []
-  (if (file/file-exists @edn-file-name)
-    (with-open [rdr (reader @edn-file-name)]
-        (map #(edn/read-string %) (doall (line-seq rdr))))))
+  (let [file-lines (file/get-file-lines @edn-file-name)]
+    (if (> (count file-lines) 0)
+      (vec (map #(edn/read-string %) file-lines)))))
 
 (defrecord EDN [] repository/DataType
   (repository/alternate-file-name [this name] (use-different-file-name name))

@@ -1,7 +1,6 @@
 (ns -tictactoe.web.handler-spec
   (:require [speclj.core :refer :all]
             [ring.mock.request :as mock]
-            [noir.session :as session]
             [-tictactoe.scoring.scoring_json :refer :all]
             [-tictactoe.web.handler :refer :all])
   (:use [-tictactoe.ttt.localization :only (translate)]
@@ -26,9 +25,7 @@
   (it "shows see scores option"
     (let [response (app (mock/request :get "/"))
           message (translate (loc) :menu/see-scores)]
-      (should (clojure.string/includes? (:body response) message))))
-
-)
+      (should (clojure.string/includes? (:body response) message)))))
 
 (describe "/settings"
 
@@ -89,9 +86,14 @@
     (it "does show bad-marker-input error message when markers are the name"
       (let [response (app (mock/request :post "/settings" invalid-params))
             message (translate (loc) :web/error-markers-or-names-are-same)]
-        (should (clojure.string/includes? (:body response) message))))
+        (should (clojure.string/includes? (:body response) message))))))
 
-))
+; (describe "/play_game"
+;   (it "fulfills response"
+;     (let [response (app (mock/request :post "/play_game" {:spot 0}))]
+;       (session-mocking/create-session)
+;       (should= 200 (:status response))))
+; )
 
 (describe "/scores"
 

@@ -1,6 +1,6 @@
-;Responsible for validating input.
+;Responsible for validating game play input.
 
-(ns -tictactoe.console.input_validation
+(ns -tictactoe.console.game_play_input_validation
   (:use [-tictactoe.ttt.convert_string_to_number :only (convert-string-to-number)]))
 
 (def valid-dimensions [3 4])
@@ -32,8 +32,3 @@
 
 (defn y-or-n-response-is-invalid [response y n]
   (every? #(not= response %) [y n]))
-
-(defn menu-option-is-valid [menu-length option]
-  (and (number? option)
-       (<= option menu-length)
-       (> option 0)))

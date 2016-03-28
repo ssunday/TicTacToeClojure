@@ -8,7 +8,7 @@
 (defn- select-option [option]
   (cond (= option "console") (console/run (data))
         (= option "web") (web/run (data))
-        :else "ERROR: Not a valid option."))
+        :else (println "ERROR: Not a valid option.")))
 
 (defn -main [arg]
   (select-option arg))
