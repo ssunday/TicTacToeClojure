@@ -1,7 +1,7 @@
 ;Responsible for validating input.
 
 (ns -tictactoe.console.input_validation
-  (:use [-tictactoe.ttt.convert_string_to_number]))
+  (:use [-tictactoe.ttt.convert_string_to_number :only (convert-string-to-number)]))
 
 (def valid-dimensions [3 4])
 

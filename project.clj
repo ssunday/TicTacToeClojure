@@ -14,7 +14,6 @@
                   [lib-noir "0.9.9"]]
   :main -tictactoe.core
   :plugins [[speclj "3.3.1"]
-            [lein-ns-dep-graph "0.1.0-SNAPSHOT"]
             [lein-environ "1.0.2"]
             [lein-ring "0.9.7"]]
   :aliases { "spec" ["with-profile" "+test" "spec"]

@@ -3,8 +3,10 @@
             [-tictactoe.console.input_validation :refer :all]))
 
 (describe "first-player-marker-is-invalid"
+
   (it "returns true for marker that matches neither of the player markers"
     (first-player-marker-is-invalid "C" "A" "B"))
+    
   (it "returns false for marker that matches one of the player markers"
     (not (first-player-marker-is-invalid "A" "A" "B"))))
 

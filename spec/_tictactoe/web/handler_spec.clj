@@ -1,6 +1,7 @@
 (ns -tictactoe.web.handler-spec
   (:require [speclj.core :refer :all]
             [ring.mock.request :as mock]
+            [noir.session :as session]
             [-tictactoe.scoring.scoring_json :refer :all]
             [-tictactoe.web.handler :refer :all])
   (:use [-tictactoe.ttt.localization :only (translate)]
@@ -30,6 +31,7 @@
 )
 
 (describe "/settings"
+
   (context "GET"
 
     (it "fulfills response"
@@ -79,28 +81,29 @@
       (let [response (app (mock/request :post "/settings" valid-params))]
         (should= 200 (:status response))))
 
+    (it "does not show bad-marker-input error message when markers are the name"
+      (let [response (app (mock/request :post "/settings" valid-params))
+            message (translate (loc) :web/error-markers-or-names-are-same)]
+        (should-not (clojure.string/includes? (:body response) message))))
+
     (it "does show bad-marker-input error message when markers are the name"
       (let [response (app (mock/request :post "/settings" invalid-params))
             message (translate (loc) :web/error-markers-or-names-are-same)]
-        (should (clojure.string/includes? (:body response) message))))))
+        (should (clojure.string/includes? (:body response) message))))
 
-(describe "/play_game"
-  (context "GET"
-    (it "fulfills response"
-      (let [response (app (mock/request :get "/play_game"))]
-        (should= 200 (:status response))))))
+))
 
-(describe "/see_scores"
+(describe "/scores"
 
   (around [it]
     (with-redefs [data-storage (atom (->JSON))] (it)))
 
   (it "fulfills response"
-    (let [response (app (mock/request :get "/see_scores"))]
+    (let [response (app (mock/request :get "/scores"))]
       (should= 200 (:status response))))
 
   (it "shows scores header"
-    (let [response (app (mock/request :get "/see_scores"))
+    (let [response (app (mock/request :get "/scores"))
           message (translate (loc) :web/game-scores)]
       (should (clojure.string/includes? (:body response) message)))))
 

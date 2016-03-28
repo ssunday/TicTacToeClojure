@@ -33,7 +33,7 @@
 
 (defn display-board [board current-player-is-ai button-label]
   (let [string-board (atom ())
-        dimension (int (Math/sqrt (count board)))]
+        dimension (-> board count Math/sqrt int)]
     (swap! string-board conj (begin-board))
     (doseq [index (range (count board))]
         (swap! string-board conj (begin-row index dimension))

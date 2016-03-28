@@ -25,8 +25,8 @@
 
 (defn mark-board [board spot current-player other-player]
   (let [location-to-mark (if (nil? spot)
-                              (ai/best-move board current-player other-player)
-                              spot)]
+                             (ai/best-move board current-player other-player)
+                             spot)]
     (gf/mark-board-location board location-to-mark current-player)))
 
 (defn make-board [dimension]
@@ -36,6 +36,9 @@
   (let [winning-score {schema/wins 1 schema/losses 0 schema/draws 0}
         losing-score {schema/wins 0 schema/losses 1 schema/draws 0}
         draw-score {schema/wins 0 schema/losses 0 schema/draws 1}]
-    (cond (player-won board player-one-marker) [[player-one-name winning-score] [player-two-name losing-score]]
-          (player-won board player-two-marker) [[player-one-name losing-score] [player-two-name winning-score]]
-          (game-tied board) [[player-one-name draw-score] [player-two-name draw-score]])))
+    (cond (player-won board player-one-marker) [[player-one-name winning-score]
+                                                [player-two-name losing-score]]
+          (player-won board player-two-marker) [[player-one-name losing-score]
+                                                [player-two-name winning-score]]
+          (game-tied board) [[player-one-name draw-score]
+                             [player-two-name draw-score]])))
