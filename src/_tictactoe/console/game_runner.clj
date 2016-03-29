@@ -5,8 +5,7 @@
             [-tictactoe.console.game_menu_messages :as messages]
             [-tictactoe.console.play_game_option :refer :all]
             [-tictactoe.console.display_previous_scores_option :refer :all]
-            [-tictactoe.console.end_application_option :refer :all]
-            [-tictactoe.console.game_runner :as runner]))
+            [-tictactoe.console.end_application_option :refer :all]))
 
 (defn run [data]
   (messages/start-game-message)
