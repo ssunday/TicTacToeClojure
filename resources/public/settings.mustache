@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {background-color:lightgrey;
+          padding: 60px;}
+    h2   {color:red;
+          border-style: solid;
+          border-color: red;}
+    h3 {border-bottom-style: solid;}
+  </style>
+  <title>{{header}}</title>
+  <h1>{{header}}</h1>
+</head>
+<body>
+  {{#bad-input}}
+  <h2>{{input-error}}</h2>
+  {{/bad-input}}
+  <form action="/settings" method="post">
+    <h3>{{set-player-names}}</h3>
+    <label>{{player-one-name}}</label>
+    <input type="text" name="player-one-name"/>
+    <br>
+    <label>{{player-two-name}}</label>
+    <input type="text" name="player-two-name"/>
+    <br>
+    <h3>{{select-unique-markers}}</h2>
+    <label>{{set-player-one-marker}}</label>
+    <select name="player-one-marker">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="H">H</option>
+        <option value="I">I</option>
+        <option value="J">J</option>
+        <option value="K">K</option>
+        <option value="L">L</option>
+        <option value="M">M</option>
+        <option value="N">N</option>
+        <option value="O">O</option>
+        <option value="P">P</option>
+        <option value="Q">Q</option>
+        <option value="R">R</option>
+        <option value="S">S</option>
+        <option value="T">T</option>
+        <option value="U">U</option>
+        <option value="V">V</option>
+        <option value="W">W</option>
+        <option value="X" selected = "selected">X</option>
+        <option value="Y">Y</option>
+      	<option value="Z">Z</option>
+    </select>
+    <br>
+    <label>{{set-player-two-marker}}</label>
+    <select name="player-two-marker">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="H">H</option>
+        <option value="I">I</option>
+        <option value="J">J</option>
+        <option value="K">K</option>
+        <option value="L">L</option>
+        <option value="M">M</option>
+        <option value="N">N</option>
+        <option value="O" selected = "selected">O</option>
+        <option value="P">P</option>
+        <option value="Q">Q</option>
+        <option value="R">R</option>
+        <option value="S">S</option>
+        <option value="T">T</option>
+        <option value="U">U</option>
+        <option value="V">V</option>
+        <option value="W">W</option>
+        <option value="X">X</option>
+        <option value="Y">Y</option>
+      	<option value="Z">Z</option>
+    </select>
+    <br>
+    <br>
+    <h3>{{choose-board-dimension}}</h3>
+    <label>3x3</label>
+    <input type="radio" name="board-dimension" value="3" checked/><br>
+    <label>4x4</label>
+    <input type="radio" name="board-dimension" value="4" /><br>
+    <br>
+    <h3>{{ai-settings}} </h3>
+    <h4>{{ai-works-for-3x3}}</h4>
+    <label>{{player-one-will-be-ai}} </label>
+    <input type="radio" name="player-one-type" value="AI" checked/><br>
+    <label>{{player-one-will-be-human}}</label>
+    <input type="radio" name="player-one-type" value="Human"/>
+    <br>
+    <br>
+    <label>{{player-two-will-be-ai}} </label>
+    <input type="radio" name="player-two-type" value="AI" checked/> <br>
+    <label>{{player-two-will-be-human}}</label>
+    <input type="radio" name="player-two-type" value="Human"/>
+    <br>
+    <br>
+    <h3>{{choose-player-that-goes-first}}</h3>
+    <label>{{player-one}}</label><input type="radio" name="first-player" value="player-one-marker" checked/>
+    <br>
+    <label>{{player-two}}</label><input type="radio" name="first-player" value="player-two-marker"/>
+    <br>
+    <br>
+    <input type="submit" value={{next}}>
+  </form>
+</body>
