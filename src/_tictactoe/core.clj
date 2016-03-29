@@ -10,5 +10,5 @@
         (= option "web") (web/run (data))
         :else (println "ERROR: Not a valid option.")))
 
-(defn -main [arg]
+(defn -main [& [arg]]
   (select-option arg))

@@ -11,7 +11,8 @@
                   [compojure "1.4.0"]
                   [ring "1.4.0"]
                   [stencil "0.5.0"]
-                  [lib-noir "0.9.9"]]
+                  [lib-noir "0.9.9"]
+                  [ring-test "0.1.3"]]
   :main -tictactoe.core
   :plugins [[speclj "3.3.1"]
             [lein-environ "1.0.2"]

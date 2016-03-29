@@ -9,7 +9,7 @@
       ""))
 
 (defn- begin-cell []
-  "<td style='padding:0 15px 0 15px;'>")
+  "<td style='padding:5px 20px 5px 20px;'>")
 
 (defn- cell-value [board index current-player-is-ai]
   (if (and (number? (get board index))

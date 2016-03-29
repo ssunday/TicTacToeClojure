@@ -23,10 +23,13 @@
       (and (= (:player-two-marker args) (:current-player args))
            (:player-two-is-ai args))))
 
+(defn- get-spot-to-mark [board spot current-player other-player]
+  (if (nil? spot)
+      (ai/best-move board current-player other-player)
+      spot))
+
 (defn mark-board [board spot current-player other-player]
-  (let [location-to-mark (if (nil? spot)
-                             (ai/best-move board current-player other-player)
-                             spot)]
+  (let [location-to-mark (get-spot-to-mark board spot current-player other-player)]
     (gf/mark-board-location board location-to-mark current-player)))
 
 (defn make-board [dimension]

@@ -11,8 +11,8 @@
 (defroutes app-routes
   (GET "/" [] (home-page))
   (GET "/settings" [] (settings-page false))
-  (POST "/settings" request (post-settings request))
-  (POST "/play_game" request (play-game request data-storage))
+  (POST "/settings" request (post-settings (:params request)))
+  (POST "/play_game" request (play-game (:params request) data-storage))
   (GET "/scores" [] (scores-page data-storage))
   (route/not-found (not-found-page)))
 

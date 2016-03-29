@@ -1,14 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <style>
+    body {background-color:lightgrey;
+          padding: 60px;
+          font-size: 20px;}
+    h1 {border-style: dashed;}
+  </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
-  <ol>
-  <li> {{play-game}}:  <a href="/settings">{{click-here}}.</a> </li>
-  <li> {{see-scores}}:  <a href="/scores">{{click-here}}.</a></li>
-  </ol>
+  <a href="/settings">{{play-game}}</a>
+  <br><br>
+  <a href="/scores">{{see-scores}}</a>
 </body>
-</html>

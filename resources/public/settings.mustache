@@ -1,25 +1,30 @@
 <!DOCTYPE HTML>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <style>
+    body {background-color:lightgrey;
+          padding: 60px;}
+    h2   {color:red;
+          border-style: solid;
+          border-color: red;}
+    h3 {border-bottom-style: solid;}
+  </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
   {{#bad-input}}
-  <h2>{{error-markers-or-names-are-same}}</h2>
+  <h2>{{input-error}}</h2>
   {{/bad-input}}
   <form action="/settings" method="post">
     <h3>{{set-player-names}}</h3>
-    <br>
     <label>{{player-one-name}}</label>
-    <input type="text" name="player-one-name" value = "1"/>
+    <input type="text" name="player-one-name"/>
     <br>
     <label>{{player-two-name}}</label>
-    <input type="text" name="player-two-name" value = "2"/>
+    <input type="text" name="player-two-name"/>
     <br>
-    <h2>{{select-unique-markers}}</h2>
-    <br>
+    <h3>{{select-unique-markers}}</h2>
     <label>{{set-player-one-marker}}</label>
     <select name="player-one-marker">
         <option value="A">A</option>
@@ -81,14 +86,14 @@
     </select>
     <br>
     <br>
-    <label>{{choose-board-dimension}}</label>
-    <br>
+    <h3>{{choose-board-dimension}}</h3>
     <label>3x3</label>
     <input type="radio" name="board-dimension" value="3" checked/><br>
     <label>4x4</label>
     <input type="radio" name="board-dimension" value="4" /><br>
     <br>
-    <h3>{{ai-works-for-3x3}}</h3><br>
+    <h3>{{ai-settings}} </h3>
+    <h4>{{ai-works-for-3x3}}</h4>
     <label>{{player-one-will-be-ai}} </label>
     <input type="radio" name="player-one-type" value="AI" checked/><br>
     <label>{{player-one-will-be-human}}</label>
@@ -101,12 +106,12 @@
     <input type="radio" name="player-two-type" value="Human"/>
     <br>
     <br>
-    <label>{{choose-player-that-goes-first}}</label>
+    <h3>{{choose-player-that-goes-first}}</h3>
     <label>{{player-one}}</label><input type="radio" name="first-player" value="player-one-marker" checked/>
+    <br>
     <label>{{player-two}}</label><input type="radio" name="first-player" value="player-two-marker"/>
     <br>
     <br>
     <input type="submit" value={{next}}>
   </form>
 </body>
-</html>
