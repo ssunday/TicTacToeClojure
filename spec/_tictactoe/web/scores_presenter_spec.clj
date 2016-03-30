@@ -3,17 +3,8 @@
             [-tictactoe.ttt.scoring_schema :as schema]
             [-tictactoe.web.scores_presenter :refer :all]))
 
-(describe "display-scores"
-  (it "returns a string containing tally header"
-    (let [tally-header "W/L/D"
-          name-header "Player"
-          tallys [["Sarah" {schema/wins 0 schema/losses 0 schema/draws 1}]
+(describe "get-parsed-scores"
+  (it "vector containing a hash of name and string W/L/D score with key value of that name"
+    (let [tallys [["Sarah" {schema/wins 0 schema/losses 0 schema/draws 1}]
                   ["John" {schema/wins 0 schema/losses 0 schema/draws 1}]]]
-      (should (clojure.string/includes? (display-scores tallys name-header tally-header) tally-header))))
-
-(it "returns a string containing player name"
-  (let [tally-header "W/L/D"
-        name-header "Player"
-        tallys [["Sarah" {schema/wins 0 schema/losses 0 schema/draws 1}]
-                ["John" {schema/wins 0 schema/losses 0 schema/draws 1}]]]
-    (should (clojure.string/includes? (display-scores tallys name-header tally-header) (first (first tallys)))))))
+      (should (some #(= {:name "Sarah" :score "0/0/1"} %) (get-parsed-scores tallys))))))

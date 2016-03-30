@@ -16,30 +16,30 @@
 
 (defn home-page []
   (stencil/render-file (resource-file-path "home") {:header (translate (loc) :output/welcome-message)
-                                                     :play-game (translate (loc) :menu/play-game)
-                                                     :see-scores (translate (loc) :menu/see-scores)}))
+                                                    :play-game (translate (loc) :menu/play-game)
+                                                    :see-scores (translate (loc) :menu/see-scores)}))
 
 (defn settings-page [bad-input]
   (stencil/render-file (resource-file-path "settings") {:header (translate (loc) :web/game-settings)
-                                                         :set-player-names (translate (loc) :web/set-player-names)
-                                                         :player-one-name (translate (loc) :input/player-one-name)
-                                                         :player-two-name (translate (loc) :input/player-two-name)
-                                                         :select-unique-markers (translate (loc) :web/select-unique-markers)
-                                                         :set-player-one-marker (translate (loc) :web/set-player-one-marker)
-                                                         :set-player-two-marker (translate (loc) :web/set-player-two-marker)
-                                                         :bad-input bad-input
-                                                         :input-error (translate (loc) :web/input-error)
-                                                         :choose-board-dimension (translate (loc) :web/choose-board-dimension)
-                                                         :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
-                                                         :ai-settings (translate (loc) :web/ai-settings)
-                                                         :player-one-will-be-ai (translate (loc) :web/player-one-will-be-ai)
-                                                         :player-one-will-be-human (translate (loc) :web/player-one-will-be-human)
-                                                         :player-two-will-be-ai (translate (loc) :web/player-two-will-be-ai)
-                                                         :player-two-will-be-human (translate (loc) :web/player-two-will-be-human)
-                                                         :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                         :player-one (translate (loc) :web/player-one)
-                                                         :player-two (translate (loc) :web/player-two)
-                                                         :next (translate (loc) :web/next)}))
+                                                        :set-player-names (translate (loc) :web/set-player-names)
+                                                        :player-one-name (translate (loc) :input/player-one-name)
+                                                        :player-two-name (translate (loc) :input/player-two-name)
+                                                        :select-unique-markers (translate (loc) :web/select-unique-markers)
+                                                        :set-player-one-marker (translate (loc) :web/set-player-one-marker)
+                                                        :set-player-two-marker (translate (loc) :web/set-player-two-marker)
+                                                        :bad-input bad-input
+                                                        :input-error (translate (loc) :web/input-error)
+                                                        :choose-board-dimension (translate (loc) :web/choose-board-dimension)
+                                                        :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
+                                                        :ai-settings (translate (loc) :web/ai-settings)
+                                                        :player-one-will-be-ai (translate (loc) :web/player-one-will-be-ai)
+                                                        :player-one-will-be-human (translate (loc) :web/player-one-will-be-human)
+                                                        :player-two-will-be-ai (translate (loc) :web/player-two-will-be-ai)
+                                                        :player-two-will-be-human (translate (loc) :web/player-two-will-be-human)
+                                                        :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
+                                                        :player-one (translate (loc) :web/player-one)
+                                                        :player-two (translate (loc) :web/player-two)
+                                                        :next (translate (loc) :web/next)}))
 
 (defn- play-game-page []
   (let [current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
@@ -76,8 +76,7 @@
   (session/put! :board (play/make-board (convert-string-to-number (:board-dimension params)))))
 
 (defn post-settings [params]
-  (let [input-is-valid (validation/marker-and-name-validation (:player-one-marker params) (:player-two-marker params)
-                                                                      (:player-one-name params) (:player-two-name params))
+  (let [input-is-valid (validation/input-sanitation params)
         bad-input (not input-is-valid)]
     (if input-is-valid
         (do (create-initial-session params)
@@ -95,21 +94,28 @@
     (session/put! :current-player other-player)))
 
 (defn play-game [params data-storage]
-  (let [spot (convert-string-to-number (:spot params))]
-    (game-turn spot)
-    (if (play/game-is-over (session/get :board))
-        (do (recording/record-tally @data-storage (play/score-game-round (session/get :player-one-name) (session/get :player-two-name)
-                                                                         (session/get :player-one-marker) (session/get :player-two-marker)
-                                                                         (session/get :board)))
-            (game-over-page))
+  (let [spot (convert-string-to-number (:spot params))
+        current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
+                                                         :player-two-marker (session/get :player-two-marker)
+                                                         :player-one-is-ai (session/get :player-one-is-ai)
+                                                         :player-two-is-ai (session/get :player-two-is-ai)
+                                                         :current-player (session/get :current-player)})]
+    (if (validation/spot-input-is-valid (session/get :board) spot current-player-is-ai)
+        (do (game-turn spot)
+            (if (play/game-is-over (session/get :board))
+                (do (recording/record-tally @data-storage (play/score-game-round (session/get :player-one-name) (session/get :player-two-name)
+                                                                                 (session/get :player-one-marker) (session/get :player-two-marker)
+                                                                                 (session/get :board)))
+                    (game-over-page))
+                (play-game-page)))
         (play-game-page))))
 
 (defn scores-page [data-storage]
   (let [tallys (reading/read-total-tally @data-storage)]
     (stencil/render-file (resource-file-path "scores") {:header (translate (loc) :web/game-scores)
-                                                        :scores (scores/display-scores tallys
-                                                                                       (translate (loc) :web/player-header)
-                                                                                       (translate (loc) :output/tally-header))
+                                                        :scores (scores/get-parsed-scores tallys)
+                                                        :name-header (translate (loc) :web/player-header)
+                                                        :tally-header (translate (loc) :output/tally-header)
                                                         :player-tally (translate (loc) :output/player-tally)
                                                         :return-home (translate (loc) :web/return-home)})))
 
