@@ -1,6 +1,6 @@
 ;Creates the particular record for the chosen data type
 
-(ns -tictactoe.ttt.data_storage_factory
+(ns -tictactoe.data_storage_factory
   (:require [-tictactoe.scoring.scoring_edn :refer :all]
             [-tictactoe.scoring.scoring_json :refer :all]
             [-tictactoe.scoring.scoring_postgres :refer :all]

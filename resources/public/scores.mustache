@@ -4,7 +4,6 @@
   <style>
     body {background-color:lightgrey;
           padding: 60px;}
-    h1 {border-style: dotted;}
     h3 {border-bottom-style: solid;}
   </style>
   <title>{{header}}</title>
@@ -13,5 +12,16 @@
 <body>
   <h2><a href="/">{{return-home}}</a></h2>
   <h3>{{player-tally}}</h3>
-  {{&scores}}
+  <table border='1'cellpadding='10'>
+  <tr>
+  <th>{{name-header}}</th>
+  <th>{{tally-header}}</th>
+  </tr>
+  {{#scores}}
+    <tr>
+    <td>{{name}}</td>
+    <td>{{score}}</td>
+    </tr>
+  {{/scores}}
+  </table>
 </body>
