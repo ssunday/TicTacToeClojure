@@ -1,45 +1,23 @@
 (ns -tictactoe.web.board_presenter)
 
-(defn- begin-board []
-  "<table><form action='/play_game' method='post'>")
+(defn- spot-is-open [spot]
+  (number? spot))
 
-(defn- begin-row [index dimension]
-  (if (= (mod index dimension) 0)
-      "<tr>"
-      ""))
+(defn- row-starters [board]
+  (let [dimension (-> board count Math/sqrt int)]
+    (map #(zero? (mod % dimension)) (range (count board)))))
 
-(defn- begin-cell []
-  "<td style='padding:5px 20px 5px 20px;'>")
+(defn- row-enders [board]
+  (let [board-length (count board)
+        dimension (int (Math/sqrt board-length))]
+    (map #(= (mod % dimension) (dec dimension)) (range board-length))))
 
-(defn- cell-value [board index current-player-is-ai]
-  (if (and (number? (get board index))
-           (not current-player-is-ai))
-      (format "<input type='radio' name='spot' value=%s checked>" (get board index))
-      (format "%s" (get board index))))
+(defn- build-open-value-row-list-for-each-spot [board]
+  (let [spot-values-and-whether-open (map #(list (spot-is-open %) %) board)
+        which-spots-begin-rows (row-starters board)
+        which-spots-end-rows (row-enders board)]
+    (map #(list (first %1) (second %1) %2 %3) spot-values-and-whether-open which-spots-begin-rows which-spots-end-rows)))
 
-(defn- end-cell []
-  "</td>")
-
-(defn- end-row [index dimension]
-  (if (= (mod index dimension) (dec dimension))
-      "</tr>"
-      ""))
-
-(defn- end-board [button-label]
-  (str "</table><br> <button type='submit'>" button-label "</button></form>"))
-
-(defn- convert-to-string [board]
-  (clojure.string/join "" (reverse board)))
-
-(defn display-board [board current-player-is-ai button-label]
-  (let [string-board (atom ())
-        dimension (-> board count Math/sqrt int)]
-    (swap! string-board conj (begin-board))
-    (doseq [index (range (count board))]
-        (swap! string-board conj (begin-row index dimension))
-        (swap! string-board conj (begin-cell))
-        (swap! string-board conj (cell-value board index current-player-is-ai))
-        (swap! string-board conj (end-cell))
-        (swap! string-board conj (end-row index dimension)))
-    (swap! string-board conj (end-board button-label))
-    (convert-to-string @string-board)))
+(defn parse-board-for-display [board]
+  (let [open-value-row-list (build-open-value-row-list-for-each-spot board)]
+     (vec (map #(zipmap [:open :value :start-row :end-row] %) open-value-row-list))))

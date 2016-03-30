@@ -3,14 +3,42 @@
   <meta charset="UTF-8">
   <style>
     body {background-color:lightgrey;
-          padding: 60px;
           font-size: 16px;}
+    td {padding: 10px 15px 10px 15px;
+        width: 20px;
+        border: 1px solid #000;}
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
-  {{current-marker-message}}
-  <br><br>
-  {{&board}}
+  <h4>{{current-marker-message}}</h4>
+  <br>
+  <form action='/play_game' method='post'>
+  <table>
+  {{#board}}
+    {{#start-row}}
+    <tr>
+    {{/start-row}}
+    <td>
+    {{#current-player-is-ai}}
+      {{value}}
+    {{/current-player-is-ai}}
+    {{^current-player-is-ai}}
+      {{#open}}
+        <input type='radio' name='spot' value={{value}} checked>
+      {{/open}}
+      {{^open}}
+        {{value}}
+      {{/open}}
+    {{/current-player-is-ai}}
+    </td>
+    {{#end-row}}
+    </tr>
+    {{/end-row}}
+  {{/board}}
+  </table>
+  <br>
+  <button type='submit'>{{next}}</button>
+  </form>
 </body>
