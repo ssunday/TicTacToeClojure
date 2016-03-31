@@ -1,27 +1,30 @@
 <!DOCTYPE HTML>
 <head>
-  <meta charset="UTF-8">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
   <style>
-    body {background-color:lightgrey;
-          padding: 60px;}
-    h3 {border-bottom-style: solid;}
+    body {padding: 60px;}
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
-  <h2><a href="/">{{return-home}}</a></h2>
-  <h3>{{player-tally}}</h3>
-  <table border='1'cellpadding='10'>
-  <tr>
-  <th>{{name-header}}</th>
-  <th>{{tally-header}}</th>
-  </tr>
-  {{#scores}}
-    <tr>
-    <td>{{name}}</td>
-    <td>{{score}}</td>
-    </tr>
-  {{/scores}}
+  <a class="waves-effect waves-light btn" href="/">{{return-home}}</a>
+  <h4>{{player-tally}}</h4>
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>{{name-header}}</th>
+        <th>{{tally-header}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#scores}}
+        <tr>
+        <td>{{name}}</td>
+        <td>{{score}}</td>
+        </tr>
+      {{/scores}}
+    </tbody>
   </table>
 </body>

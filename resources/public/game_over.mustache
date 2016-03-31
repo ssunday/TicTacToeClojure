@@ -1,19 +1,28 @@
 <!DOCTYPE HTML>
 <head>
-  <meta charset="UTF-8">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
   <style>
-    body {background-color:lightgrey;
-          padding: 60px;}
-    h2 {color: blue;}
+    body {padding: 60px;}
+    h1 {text-align: center;}
+    h3 {color: blue;
+        text-align: center;}
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
   <br>
-  <h2>{{message}}</h2>
+  <h3>{{message}}</h3>
+  <div class="row">
+      <div class="col s2 offset-s5">
+        <a class="waves-effect waves-light btn" href="/settings">{{play-again}}</a>
+      </div>
+  </div>
   <br>
-  <h3><a href="/settings">{{play-again}}</a></h3>
-  <br>
-  <h3><a href="/scores">{{see-scores}}</a></h3>
+  <div class="row">
+    <div class="col s2 offset-s5">
+        <a class="waves-effect waves-light btn"href="/scores">{{see-scores}}</a>
+    </div>
+  </div>
 </body>

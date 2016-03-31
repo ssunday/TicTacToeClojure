@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <head>
-  <meta charset="UTF-8">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
   <style>
-    body {background-color:lightgrey;
-          font-size: 16px;}
-    td {padding: 10px 15px 10px 15px;
-        width: 20px;
-        border: 1px solid #000;}
+    body {padding: 60px;}
+    td {
+      border: 1px solid #000;
+    }
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
@@ -15,30 +15,31 @@
   <h4>{{current-marker-message}}</h4>
   <br>
   <form action='/play_game' method='post'>
-  <table>
-  {{#board}}
-    {{#start-row}}
-    <tr>
-    {{/start-row}}
-    <td>
-    {{#current-player-is-ai}}
-      {{value}}
-    {{/current-player-is-ai}}
-    {{^current-player-is-ai}}
-      {{#open}}
-        <input type='radio' name='spot' value={{value}} checked>
-      {{/open}}
-      {{^open}}
-        {{value}}
-      {{/open}}
-    {{/current-player-is-ai}}
-    </td>
-    {{#end-row}}
-    </tr>
-    {{/end-row}}
-  {{/board}}
+  <table class="centered">
+    {{#board}}
+      {{#start-row}}
+      <tr>
+      {{/start-row}}
+      <td>
+      {{#current-player-is-ai}}
+        <h5>{{value}}</h5>
+      {{/current-player-is-ai}}
+      {{^current-player-is-ai}}
+        {{#open}}
+          <input name="spot" type="radio" id={{value}} value ={{value}} checked/>
+          <label for={{value}}></label>
+        {{/open}}
+        {{^open}}
+          <h5>{{value}}</h5>
+        {{/open}}
+      {{/current-player-is-ai}}
+      </td>
+      {{#end-row}}
+      </tr>
+      {{/end-row}}
+    {{/board}}
   </table>
   <br>
-  <button type='submit'>{{next}}</button>
+  <button class="btn waves-effect waves-light" type="submit" name="action">{{next}}</button>
   </form>
 </body>

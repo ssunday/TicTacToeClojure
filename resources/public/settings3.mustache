@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<head>
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+  <style>
+    body {padding: 60px;}
+    .col.s5 {
+      border-style: solid;
+      padding: 15px;}
+    button {
+      text-align: center;
+      float: center;}
+  </style>
+  <title>{{header}}</title>
+  <h1>{{header}}</h1>
+</head>
+<body>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  {{#bad-input}}
+    <span class="red-text text-darken-4"><h2>{{input-error}}</h2></span>
+  {{/bad-input}}
+  <form action="/settings" method="post">
+  <div class="row">
+    <div class="col s5">
+      <h3>{{player-one}}</h3>
+      <div class="row">
+        <div class="input-field col s10">
+          <input id="player-one-name" name="player-one-name" type="text">
+          <label for="player-one-name">{{name}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10">
+          {{marker}}
+          <select class="browser-default" name="player-one-marker">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+            <option value="J">J</option>
+            <option value="K">K</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+            <option value="O">O</option>
+            <option value="P">P</option>
+            <option value="Q">Q</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+            <option value="T">T</option>
+            <option value="U">U</option>
+            <option value="V">V</option>
+            <option value="W">W</option>
+            <option value="X" selected=>X</option>
+            <option value="Y">Y</option>
+          	<option value="Z">Z</option>
+          </select>
+        </div>
+      </div>
+      <input name="player-one-type" type="radio" id="AI1" value = "AI"/>
+      <label for="AI1">{{ai-player}}</label>
+      <input name="player-one-type" type="radio" id="Human1" value = "Human" checked/>
+      <label for="Human1">{{human-player}}</label>
+      <br>
+    </div>
+    <div class="col s1"><br></div>
+    <div class="col s5">
+      <h3>{{player-two}}</h3>
+      <div class="row">
+        <div class="input-field col s10">
+          <input id="player-two-name" name="player-two-name" type="text">
+          <label for="player-two-name">{{name}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10">
+          {{marker}}
+          <select class="browser-default" name="player-two-marker">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+            <option value="J">J</option>
+            <option value="K">K</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+            <option value="O" selected>O</option>
+            <option value="P">P</option>
+            <option value="Q">Q</option>
+            <option value="R">R</option>
+            <option value="S">S</option>
+            <option value="T">T</option>
+            <option value="U">U</option>
+            <option value="V">V</option>
+            <option value="W">W</option>
+            <option value="X">X</option>
+            <option value="Y">Y</option>
+          	<option value="Z">Z</option>
+          </select>
+        </div>
+      </div>
+      <input name="player-two-type" type="radio" id="AI2" value = "AI" checked/>
+      <label for="AI2">{{ai-player}}</label>
+      <input name="player-two-type" type="radio" id="Human2" value = "Human"/>
+      <label for="Human2">{{human-player}}</label>
+      <br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s5">
+      <h4>{{choose-board-dimension}} ({{ai-works-for-3x3}})</h4>
+      <input name="board-dimension" type="radio" id="3" value = "3" checked/>
+      <label for="3">3x3</label>
+      <input name="board-dimension" type="radio" id="4" value = "4"/>
+      <label for="4">4x4</label>
+    </div>
+    <div class="col s1"><br></div>
+    <div class="col s5">
+      <h4>{{choose-player-that-goes-first}}</h4>
+      <input name="first-player" type="radio" id="player-one-marker" value = "player-one-marker" checked/>
+      <label for="player-one-marker">{{player-one}}</label>
+      <input name="first-player" type="radio" id="player-two-marker" value = "player-two-marker"/>
+      <label for="player-two-marker">{{player-two}}</label>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+      <div class="col s2 offset-s5">
+        <button class="btn waves-effect waves-light" type="submit" name="action">{{next}}</button>
+      </div>
+  </div>
+  </form>
+</body>
