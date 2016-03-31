@@ -49,7 +49,9 @@
                                                          :current-player (session/get :current-player)})]
     (stencil/render-file (resource-file-path "play_game")
                          {:header (translate (loc) :menu/play-game)
-                          :board (board/display-board (session/get :board) current-player-is-ai (translate (loc) :web/next))
+                          :current-player-is-ai current-player-is-ai
+                          :board (board/parse-board-for-display (session/get :board))
+                          :next (translate (loc) :web/next)
                           :current-marker-message (translate (loc) :output/current-player-marker (session/get :current-player))})))
 
 (defn- game-over-message []
