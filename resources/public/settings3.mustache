@@ -7,9 +7,25 @@
     .col.s5 {
       border-style: solid;
       padding: 15px;}
+    .col.s5.null {
+      border: none;}
     button {
       text-align: center;
       float: center;}
+    label {color: #000000;}
+    .input-field label {
+     padding-left: 5px;
+    }
+    .input-field label.active {
+      padding-bottom: 5px;
+    }
+    input[type=text]{
+      background-color: #FFFFFF;
+      border-bottom: 1px solid #616161;
+      outline: 1px solid #616161;
+      padding-left: 10px;
+    }
+    select {border-color: #616161}
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
@@ -63,8 +79,11 @@
           </select>
         </div>
       </div>
+      <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <input name="player-one-type" type="radio" id="AI1" value = "AI"/>
       <label for="AI1">{{ai-player}}</label>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <input name="player-one-type" type="radio" id="Human1" value = "Human" checked/>
       <label for="Human1">{{human-player}}</label>
       <br>
@@ -111,8 +130,11 @@
           </select>
         </div>
       </div>
+      <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <input name="player-two-type" type="radio" id="AI2" value = "AI" checked/>
       <label for="AI2">{{ai-player}}</label>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <input name="player-two-type" type="radio" id="Human2" value = "Human"/>
       <label for="Human2">{{human-player}}</label>
       <br>
@@ -121,25 +143,31 @@
   <div class="row">
     <div class="col s5">
       <h4>{{choose-board-dimension}} ({{ai-works-for-3x3}})</h4>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <input name="board-dimension" type="radio" id="3" value = "3" checked/>
       <label for="3">3x3</label>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <input name="board-dimension" type="radio" id="4" value = "4"/>
       <label for="4">4x4</label>
     </div>
     <div class="col s1"><br></div>
     <div class="col s5">
       <h4>{{choose-player-that-goes-first}}</h4>
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <input name="first-player" type="radio" id="player-one-marker" value = "player-one-marker" checked/>
       <label for="player-one-marker">{{player-one}}</label>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <input name="first-player" type="radio" id="player-two-marker" value = "player-two-marker"/>
       <label for="player-two-marker">{{player-two}}</label>
     </div>
   </div>
   <br>
   <div class="row">
-      <div class="col s2 offset-s5">
+      <div class="col s5 null"><br></div>
+      <div class="col s2">
         <button class="btn waves-effect waves-light" type="submit" name="action">{{next}}</button>
       </div>
+      <div class="col s5 null"><br></div>
   </div>
   </form>
 </body>
