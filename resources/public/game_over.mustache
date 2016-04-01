@@ -1,19 +1,18 @@
 <!DOCTYPE HTML>
 <head>
-  <meta charset="UTF-8">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
   <style>
-    body {background-color:lightgrey;
-          padding: 60px;}
-    h2 {color: blue;}
+    body {padding: 60px;}
+    h3 {color: blue;}
   </style>
   <title>{{header}}</title>
   <h1>{{header}}</h1>
 </head>
 <body>
-  <br>
-  <h2>{{message}}</h2>
-  <br>
-  <h3><a href="/settings">{{play-again}}</a></h3>
-  <br>
-  <h3><a href="/scores">{{see-scores}}</a></h3>
+  <h3>{{message}}</h3>
+  <br><br>
+  <a class="waves-effect waves-light btn" href="/settings">{{play-again}}</a>
+  <br><br><br>
+  <a class="waves-effect waves-light btn"href="/scores">{{see-scores}}</a>
 </body>
