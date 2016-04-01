@@ -3,6 +3,7 @@
             [stencil.core :as stencil]
             [-tictactoe.web.board_presenter :as board]
             [-tictactoe.web.play_game_functions :as play]
+            [-tictactoe.web.game_settings :as settings]
             [-tictactoe.web.scores_presenter :as scores]
             [-tictactoe.web.input_validation :as validation]
             [-tictactoe.ttt.score_recording :as recording]
@@ -19,20 +20,46 @@
                                                     :play-game (translate (loc) :menu/play-game)
                                                     :see-scores (translate (loc) :menu/see-scores)}))
 
+(defn- get-settings-from-previous-session []
+    {:player-one-name (session/get :player-one-name)
+     :player-two-name (session/get :player-two-name)
+     :player-one-marker (session/get :player-one-marker)
+     :player-two-marker (session/get :player-two-marker)
+     :player-one-type (session/get :player-one-type)
+     :player-two-type (session/get :player-two-type)
+     :board-dimension (session/get :board-dimension)
+     :first-player (session/get :first-player)})
+
+(defn- preloaded-settings []
+  (if (nil? (session/get :player-one-name))
+      (settings/default-settings (translate (loc) :web/name))
+      (get-settings-from-previous-session)))
+
 (defn settings-page [bad-input]
+  (let [base-settings (settings/default-settings (translate (loc) :web/name))
+        board-dimension (settings/board-dimension-map (:board-dimension base-settings))
+        first-player (settings/first-player-map (:first-player base-settings) (translate (loc) :web/player-one) (translate (loc) :web/player-two))
+        player-one-type (settings/player-type-map (:player-one-type base-settings))
+        player-two-type (settings/player-type-map (:player-two-type base-settings))
+        markers-player-one (settings/markers-map (:player-one-marker base-settings))
+        markers-player-two (settings/markers-map (:player-two-marker base-settings))]
   (stencil/render-file (resource-file-path "settings")  {:header (translate (loc) :web/game-settings)
                                                          :name (translate (loc) :web/name)
+                                                         :player-one-name (:player-one-name base-settings)
+                                                         :player-two-name (:player-two-name base-settings)
                                                          :marker (translate (loc) :web/marker)
-                                                         :ai-player (translate (loc) :web/ai-player)
-                                                         :human-player (translate (loc) :web/human-player)
+                                                         :markers-player-one markers-player-one
+                                                         :markers-player-two markers-player-two
+                                                         :player-one-type player-one-type
+                                                         :player-two-type player-two-type
                                                          :bad-input bad-input
                                                          :input-error (translate (loc) :web/input-error)
                                                          :choose-board-dimension (translate (loc) :web/choose-board-dimension)
+                                                         :board-dimension board-dimension
                                                          :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
                                                          :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                         :player-one (translate (loc) :web/player-one)
-                                                         :player-two (translate (loc) :web/player-two)
-                                                         :next (translate (loc) :web/next)}))
+                                                         :first-player first-player
+                                                         :next (translate (loc) :web/next)})))
 
 (defn- play-game-page []
   (let [current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
@@ -65,9 +92,13 @@
   (session/put! :player-two-name (:player-two-name params))
   (session/put! :player-one-marker (:player-one-marker params))
   (session/put! :player-two-marker (:player-two-marker params))
+  (session/put! :player-one-type (:player-one-type params))
+  (session/put! :player-two-type (:player-two-type params))
   (session/put! :player-one-is-ai (validation/player-is-ai (:player-one-type params) (:board-dimension params)))
   (session/put! :player-two-is-ai (validation/player-is-ai (:player-two-type params) (:board-dimension params)))
   (session/put! :current-player ((keyword (:first-player params)) params))
+  (session/put! :first-player (:first-player params))
+  (session/put! :board-dimension (:board-dimension params))
   (session/put! :board (play/make-board (convert-string-to-number (:board-dimension params)))))
 
 (defn post-settings [params]
@@ -84,7 +115,6 @@
                                          (session/get :player-one-marker)
                                          (session/get :player-two-marker))
         marked-board (play/mark-board (session/get :board) spot current-player other-player)]
-
     (session/put! :board marked-board)
     (session/put! :current-player other-player)))
 
