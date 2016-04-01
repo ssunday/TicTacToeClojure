@@ -47,11 +47,6 @@
             message (translate (loc) :web/input-error)]
         (should-not (clojure.string/includes? (:body response) message))))
 
-    (it "shows select marker information"
-      (let [response (app (mock/request :get "/settings"))
-            message (translate (loc) :web/select-unique-markers)]
-        (should (clojure.string/includes? (:body response) message))))
-
     (it "displays message that AI only works on 3x3 board"
       (let [response (app (mock/request :get "/settings"))
             message (translate (loc) :web/ai-works-for-3x3)]
