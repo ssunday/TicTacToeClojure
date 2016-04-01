@@ -18,71 +18,21 @@
   (stencil/render-file (resource-file-path "home") {:header (translate (loc) :output/welcome-message)
                                                     :play-game (translate (loc) :menu/play-game)
                                                     :see-scores (translate (loc) :menu/see-scores)}))
-(defn settings1-page [bad-input]
-  (stencil/render-file (resource-file-path "settings1") {:header (translate (loc) :web/game-settings)
-                                                         :name (translate (loc) :web/name)
-                                                         :marker (translate (loc) :web/marker)
-                                                         :bad-input bad-input
-                                                         :input-error (translate (loc) :web/input-error)
-                                                         :choose-board-dimension (translate (loc) :web/choose-board-dimension)
-                                                         :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
-                                                         :ai-player (translate (loc) :web/ai-player)
-                                                         :human-player (translate (loc) :web/human-player)
-                                                         :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                         :player-one (translate (loc) :web/player-one)
-                                                         :player-two (translate (loc) :web/player-two)
-                                                         :next (translate (loc) :web/next)}))
-(defn settings2-page [bad-input]
-  (stencil/render-file (resource-file-path "settings2") {:header (translate (loc) :web/game-settings)
-                                                         :name (translate (loc) :web/name)
-                                                         :marker (translate (loc) :web/marker)
-                                                         :bad-input bad-input
-                                                         :input-error (translate (loc) :web/input-error)
-                                                         :choose-board-dimension (translate (loc) :web/choose-board-dimension)
-                                                         :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
-                                                         :ai-player (translate (loc) :web/ai-player)
-                                                         :human-player (translate (loc) :web/human-player)
-                                                         :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                         :player-one (translate (loc) :web/player-one)
-                                                         :player-two (translate (loc) :web/player-two)
-                                                         :next (translate (loc) :web/next)}))
-
-(defn settings3-page [bad-input]
-  (stencil/render-file (resource-file-path "settings3") {:header (translate (loc) :web/game-settings)
-                                                         :name (translate (loc) :web/name)
-                                                         :marker (translate (loc) :web/marker)
-                                                         :ai-player (translate (loc) :web/ai-player)
-                                                         :human-player (translate (loc) :web/human-player)
-                                                         :bad-input bad-input
-                                                         :input-error (translate (loc) :web/input-error)
-                                                         :choose-board-dimension (translate (loc) :web/choose-board-dimension)
-                                                         :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
-                                                         :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                         :player-one (translate (loc) :web/player-one)
-                                                         :player-two (translate (loc) :web/player-two)
-                                                         :next (translate (loc) :web/next)}))
 
 (defn settings-page [bad-input]
-  (stencil/render-file (resource-file-path "settings") {:header (translate (loc) :web/game-settings)
-                                                        :set-player-names (translate (loc) :web/set-player-names)
-                                                        :player-one-name (translate (loc) :input/player-one-name)
-                                                        :player-two-name (translate (loc) :input/player-two-name)
-                                                        :select-unique-markers (translate (loc) :web/select-unique-markers)
-                                                        :set-player-one-marker (translate (loc) :web/set-player-one-marker)
-                                                        :set-player-two-marker (translate (loc) :web/set-player-two-marker)
-                                                        :bad-input bad-input
-                                                        :input-error (translate (loc) :web/input-error)
-                                                        :choose-board-dimension (translate (loc) :web/choose-board-dimension)
-                                                        :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
-                                                        :ai-settings (translate (loc) :web/ai-settings)
-                                                        :player-one-will-be-ai (translate (loc) :web/player-one-will-be-ai)
-                                                        :player-one-will-be-human (translate (loc) :web/player-one-will-be-human)
-                                                        :player-two-will-be-ai (translate (loc) :web/player-two-will-be-ai)
-                                                        :player-two-will-be-human (translate (loc) :web/player-two-will-be-human)
-                                                        :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
-                                                        :player-one (translate (loc) :web/player-one)
-                                                        :player-two (translate (loc) :web/player-two)
-                                                        :next (translate (loc) :web/next)}))
+  (stencil/render-file (resource-file-path "settings")  {:header (translate (loc) :web/game-settings)
+                                                         :name (translate (loc) :web/name)
+                                                         :marker (translate (loc) :web/marker)
+                                                         :ai-player (translate (loc) :web/ai-player)
+                                                         :human-player (translate (loc) :web/human-player)
+                                                         :bad-input bad-input
+                                                         :input-error (translate (loc) :web/input-error)
+                                                         :choose-board-dimension (translate (loc) :web/choose-board-dimension)
+                                                         :ai-works-for-3x3 (translate (loc) :web/ai-works-for-3x3)
+                                                         :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
+                                                         :player-one (translate (loc) :web/player-one)
+                                                         :player-two (translate (loc) :web/player-two)
+                                                         :next (translate (loc) :web/next)}))
 
 (defn- play-game-page []
   (let [current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
@@ -126,7 +76,7 @@
     (if input-is-valid
         (do (create-initial-session params)
             (play-game-page))
-        (settings3-page bad-input))))
+        (settings-page bad-input))))
 
 (defn- game-turn [spot]
   (let [current-player (session/get :current-player)
