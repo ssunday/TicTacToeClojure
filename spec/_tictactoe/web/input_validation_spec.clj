@@ -161,6 +161,4 @@
     (let [board [0 1 2 3 "X" 5 6 7 8]
           current-player-is-ai true
           spot nil]
-        (should (spot-input-is-valid board spot current-player-is-ai))))
-
-)
+        (should (spot-input-is-valid board spot current-player-is-ai)))))

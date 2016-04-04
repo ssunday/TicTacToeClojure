@@ -1,12 +1,12 @@
 (ns -tictactoe.web.route_controller
-  (:require [-tictactoe.web.session_management :as session]
-            [-tictactoe.web.cookie_management :as cookie]
-            [stencil.core :as stencil]
+  (:require [stencil.core :as stencil]
             [-tictactoe.web.board_presenter :as board]
             [-tictactoe.web.play_game_functions :as play]
             [-tictactoe.web.game_settings :as settings]
             [-tictactoe.web.scores_presenter :as scores]
             [-tictactoe.web.input_validation :as validation]
+            [-tictactoe.web.session_management :as session]
+            [-tictactoe.web.cookie_management :as cookie]
             [-tictactoe.ttt.score_recording :as recording]
             [-tictactoe.ttt.score_reading :as reading])
   (:use [-tictactoe.ttt.localization :only (translate)]
