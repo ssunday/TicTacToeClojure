@@ -8,7 +8,7 @@
 
 (defn markers-map [selected-marker]
   (let [A-Z (get-A-Z-char)]
-    (map #(zipmap [:character :selected] [% (is-selected selected-marker %)]) A-Z)))
+    (map #(zipmap [:character :selected] [% (is-selected (.charAt selected-marker 0) %)]) A-Z)))
 
 (defn board-dimension-map [selected-dimension]
   (map #(zipmap [:dimension :selected] [% (is-selected selected-dimension %)]) ["3" "4"]))
@@ -21,10 +21,10 @@
   (map #(zipmap [:player-type :selected] [%1 (is-selected selected-type %1)]) ["AI" "Human"]))
 
 (defn default-settings [name]
-  {:player-one-name name
-   :player-two-name name
-   :player-one-marker \X
-   :player-two-marker \O
+  {:player-one-name (str name "1")
+   :player-two-name (str name "2")
+   :player-one-marker "X"
+   :player-two-marker "O"
    :player-one-type "Human"
    :player-two-type "AI"
    :board-dimension "3"

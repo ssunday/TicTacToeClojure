@@ -13,7 +13,7 @@
                    {:character \S :selected false} {:character \T :selected false} {:character \U :selected false}
                    {:character \V :selected false} {:character \W :selected false} {:character \X :selected true}
                    {:character \Y :selected false} {:character \Z :selected false})
-             (markers-map \X))))
+             (markers-map "X"))))
 
 (describe "board-dimension-map"
   (it "returns a hashamp of board dimensions with keys/values saying whether they have been selected"

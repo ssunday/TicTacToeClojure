@@ -1,5 +1,6 @@
 (ns -tictactoe.web.route_controller
-  (:require [noir.session :as session]
+  (:require [-tictactoe.web.session_management :as session]
+            [-tictactoe.web.cookie_management :as cookie]
             [stencil.core :as stencil]
             [-tictactoe.web.board_presenter :as board]
             [-tictactoe.web.play_game_functions :as play]
@@ -19,24 +20,23 @@
   (stencil/render-file (resource-file-path "home") {:header (translate (loc) :output/welcome-message)
                                                     :play-game (translate (loc) :menu/play-game)
                                                     :see-scores (translate (loc) :menu/see-scores)}))
-
-(defn- get-settings-from-previous-session []
-    {:player-one-name (session/get :player-one-name)
-     :player-two-name (session/get :player-two-name)
-     :player-one-marker (session/get :player-one-marker)
-     :player-two-marker (session/get :player-two-marker)
-     :player-one-type (session/get :player-one-type)
-     :player-two-type (session/get :player-two-type)
-     :board-dimension (session/get :board-dimension)
-     :first-player (session/get :first-player)})
+(defn- session-params [params]
+  {:player-one-name (:player-one-name params)
+   :player-two-name (:player-two-name params)
+   :player-one-marker (:player-one-marker params)
+   :player-two-marker (:player-two-marker params)
+   :player-one-is-ai (validation/player-is-ai (:player-one-type params) (:board-dimension params))
+   :player-two-is-ai (validation/player-is-ai (:player-two-type params) (:board-dimension params))
+   :current-player ((keyword (:first-player params)) params)
+   :board (play/make-board (convert-string-to-number (:board-dimension params)))})
 
 (defn- preloaded-settings []
-  (if (nil? (session/get :player-one-name))
-      (settings/default-settings (translate (loc) :web/name))
-      (get-settings-from-previous-session)))
+  (if (cookie/cookie-exists)
+      (cookie/get-cookie-params)
+      (settings/default-settings (translate (loc) :web/name))))
 
 (defn settings-page [bad-input]
-  (let [base-settings (settings/default-settings (translate (loc) :web/name))
+  (let [base-settings (preloaded-settings)
         board-dimension (settings/board-dimension-map (:board-dimension base-settings))
         first-player (settings/first-player-map (:first-player base-settings) (translate (loc) :web/player-one) (translate (loc) :web/player-two))
         player-one-type (settings/player-type-map (:player-one-type base-settings))
@@ -60,24 +60,25 @@
                                                          :choose-player-that-goes-first (translate (loc) :web/choose-player-that-goes-first)
                                                          :first-player first-player
                                                          :next (translate (loc) :web/next)})))
+(defn- is-current-player-ai []
+  (play/current-player-is-ai {:player-one-marker (session/get-session-value :player-one-marker)
+                              :player-two-marker (session/get-session-value :player-two-marker)
+                              :player-one-is-ai (session/get-session-value :player-one-is-ai)
+                              :player-two-is-ai (session/get-session-value :player-two-is-ai)
+                              :current-player (session/get-session-value :current-player)}))
 
 (defn- play-game-page []
-  (let [current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
-                                                         :player-two-marker (session/get :player-two-marker)
-                                                         :player-one-is-ai (session/get :player-one-is-ai)
-                                                         :player-two-is-ai (session/get :player-two-is-ai)
-                                                         :current-player (session/get :current-player)})]
-    (stencil/render-file (resource-file-path "play_game")
-                         {:header (translate (loc) :menu/play-game)
-                          :current-player-is-ai current-player-is-ai
-                          :board (board/parse-board-for-display (session/get :board))
-                          :next (translate (loc) :web/next)
-                          :current-marker-message (translate (loc) :output/current-player-marker (session/get :current-player))})))
+  (stencil/render-file (resource-file-path "play_game")
+                       {:header (translate (loc) :menu/play-game)
+                        :current-player-is-ai (is-current-player-ai)
+                        :board (board/parse-board-for-display (session/get-session-value :board))
+                        :next (translate (loc) :web/next)
+                        :current-marker-message (translate (loc) :output/current-player-marker (session/get-session-value :current-player))}))
 
 (defn- game-over-message []
-  (let [board (session/get :board)]
-    (cond (play/player-won board (session/get :player-one-marker)) (translate (loc) :output/player-one-has-won)
-          (play/player-won board (session/get :player-two-marker)) (translate (loc) :output/player-two-has-won)
+  (let [board (session/get-session-value :board)]
+    (cond (play/player-won board (session/get-session-value :player-one-marker)) (translate (loc) :output/player-one-has-won)
+          (play/player-won board (session/get-session-value :player-two-marker)) (translate (loc) :output/player-two-has-won)
           (play/game-tied board) (translate (loc) :output/game-has-been-tied))))
 
 (defn- game-over-page []
@@ -87,50 +88,33 @@
                         :play-again (translate (loc) :web/play-again)
                         :see-scores (translate (loc) :menu/see-scores)}))
 
-(defn- create-initial-session [params]
-  (session/put! :player-one-name (:player-one-name params))
-  (session/put! :player-two-name (:player-two-name params))
-  (session/put! :player-one-marker (:player-one-marker params))
-  (session/put! :player-two-marker (:player-two-marker params))
-  (session/put! :player-one-type (:player-one-type params))
-  (session/put! :player-two-type (:player-two-type params))
-  (session/put! :player-one-is-ai (validation/player-is-ai (:player-one-type params) (:board-dimension params)))
-  (session/put! :player-two-is-ai (validation/player-is-ai (:player-two-type params) (:board-dimension params)))
-  (session/put! :current-player ((keyword (:first-player params)) params))
-  (session/put! :first-player (:first-player params))
-  (session/put! :board-dimension (:board-dimension params))
-  (session/put! :board (play/make-board (convert-string-to-number (:board-dimension params)))))
-
 (defn post-settings [params]
   (let [input-is-valid (validation/input-sanitation params)
         bad-input (not input-is-valid)]
     (if input-is-valid
-        (do (create-initial-session params)
+        (do (session/create-initial-session (session-params params))
+            (cookie/create-initial-cookie params)
             (play-game-page))
         (settings-page bad-input))))
 
 (defn- game-turn [spot]
-  (let [current-player (session/get :current-player)
+  (let [current-player (session/get-session-value :current-player)
         other-player (play/switch-player current-player
-                                         (session/get :player-one-marker)
-                                         (session/get :player-two-marker))
-        marked-board (play/mark-board (session/get :board) spot current-player other-player)]
-    (session/put! :board marked-board)
-    (session/put! :current-player other-player)))
+                                         (session/get-session-value :player-one-marker)
+                                         (session/get-session-value :player-two-marker))
+        marked-board (play/mark-board (session/get-session-value :board) spot current-player other-player)]
+    (session/set-session-value :board marked-board)
+    (session/set-session-value :current-player other-player)))
 
 (defn play-game [params data-storage]
-  (let [spot (convert-string-to-number (:spot params))
-        current-player-is-ai (play/current-player-is-ai {:player-one-marker (session/get :player-one-marker)
-                                                         :player-two-marker (session/get :player-two-marker)
-                                                         :player-one-is-ai (session/get :player-one-is-ai)
-                                                         :player-two-is-ai (session/get :player-two-is-ai)
-                                                         :current-player (session/get :current-player)})]
-    (if (validation/spot-input-is-valid (session/get :board) spot current-player-is-ai)
+  (let [spot (convert-string-to-number (:spot params))]
+    (if (validation/spot-input-is-valid (session/get-session-value :board) spot (is-current-player-ai))
         (do (game-turn spot)
-            (if (play/game-is-over (session/get :board))
-                (do (recording/record-tally @data-storage (play/score-game-round (session/get :player-one-name) (session/get :player-two-name)
-                                                                                 (session/get :player-one-marker) (session/get :player-two-marker)
-                                                                                 (session/get :board)))
+            (if (play/game-is-over (session/get-session-value :board))
+                (do (recording/record-tally @data-storage
+                                            (play/score-game-round (session/get-session-value :player-one-name) (session/get-session-value :player-two-name)
+                                                                   (session/get-session-value :player-one-marker) (session/get-session-value :player-two-marker)
+                                                                   (session/get-session-value :board)))
                     (game-over-page))
                 (play-game-page)))
         (play-game-page))))

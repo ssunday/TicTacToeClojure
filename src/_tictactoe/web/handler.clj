@@ -3,8 +3,9 @@
             [compojure.route :as route]
             [compojure.handler :as handler]
             [ring.adapter.jetty :refer :all]
-            [noir.session :as session]
-            [-tictactoe.web.route_controller :refer :all]))
+            [-tictactoe.web.route_controller :refer :all])
+  (:use [noir.cookies :only (wrap-noir-cookies)]
+        [noir.session :only (wrap-noir-session)]))
 
 (def data-storage (atom nil))
 
@@ -18,7 +19,10 @@
   (route/not-found (not-found-page)))
 
 (def app
-  (session/wrap-noir-session (handler/site app-routes)))
+  (-> app-routes
+      handler/site
+      wrap-noir-session
+      wrap-noir-cookies))
 
 (defn run [data]
   (reset! data-storage data)
