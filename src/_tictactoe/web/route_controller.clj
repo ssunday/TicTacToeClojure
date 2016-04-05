@@ -39,8 +39,8 @@
   (let [base-settings (preloaded-settings)
         board-dimension (settings/board-dimension-map (:board-dimension base-settings))
         first-player (settings/first-player-map (:first-player base-settings) (translate (loc) :web/player-one) (translate (loc) :web/player-two))
-        player-one-type (settings/player-type-map (:player-one-type base-settings))
-        player-two-type (settings/player-type-map (:player-two-type base-settings))
+        player-one-type (settings/player-type-map (:player-one-type base-settings) (translate (loc) :web/ai-player) (translate (loc) :web/human-player))
+        player-two-type (settings/player-type-map (:player-two-type base-settings) (translate (loc) :web/ai-player) (translate (loc) :web/human-player))
         markers-player-one (settings/markers-map (:player-one-marker base-settings))
         markers-player-two (settings/markers-map (:player-two-marker base-settings))]
   (stencil/render-file (resource-file-path "settings")  {:header (translate (loc) :web/game-settings)
