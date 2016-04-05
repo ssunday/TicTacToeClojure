@@ -73,7 +73,7 @@
                          :board-dimension "3"})
 
     (it "fulfills response"
-      (let [response (app (mock/request :post "/settings" valid-params))]
+      (let [response (run-ring-app app (mock/request :post "/settings" valid-params))]
         (should= 200 (:status response))))
 
     (it "when settings are good enters the play game page"
@@ -82,9 +82,20 @@
         (should (clojure.string/includes? (:body response) message))))
 
     (it "does show bad-marker-input error message when markers are the name"
-      (let [response (app (mock/request :post "/settings" invalid-params))
+      (let [response (run-ring-app app (mock/request :post "/settings" invalid-params))
             message (translate (loc) :web/input-error)]
-        (should (clojure.string/includes? (:body response) message))))))
+        (should (clojure.string/includes? (:body response) message)))))
+
+  (context "RETAIN SETTINGS"
+    (it "settings page defaults to previous parameters player one name"
+      (let [response (run-ring-app app (mock/request :post "/settings" valid-params)
+                                  (mock/request :get "/settings"))]
+        (should (clojure.string/includes? (:body response) (:player-one-name valid-params)))))
+
+    (it "settings page defaults to previous parameters player two name"
+      (let [response (run-ring-app app (mock/request :post "/settings" valid-params)
+                                  (mock/request :get "/settings"))]
+        (should (clojure.string/includes? (:body response) (:player-two-name valid-params)))))))
 
 (describe "/play_game"
 
@@ -110,29 +121,28 @@
             message (translate (loc) :output/current-player-marker (:player-two-marker param1))]
         (should (clojure.string/includes? (:body response) message))))
 
-    (it "no longer has an open 0 spot when it has been selected by a player"
-      (let [response (run-ring-app app (mock/request :post "/settings" param1)
-                                       (mock/request :post "/play_game" {:spot 0}))]
-        (should-not (clojure.string/includes? (:body response) "<td style='padding:0 15px 0 15px;'>0</td>"))))
-
-    (it "AI chooses spot with parameter input"
-      (let [response (run-ring-app app (mock/request :post "/settings" param1)
-                                       (mock/request :post "/play_game" {:spot 4})
-                                       (mock/request :post "/play_game"))]
-        (should-not (clojure.string/includes? (:body response) "<td style='padding:0 15px 0 15px;'>8</td>"))))
-
-    (it "first selected spot is replaced by the first player marker"
-      (let [response (run-ring-app app (mock/request :post "/settings" param1)
-                                       (mock/request :post "/play_game" {:spot 0}))]
-        (should-not (clojure.string/includes? (:body response) (str "<td style='padding:0 15px 0 15px;'>" (:first-player param1)"</td>")))))
-
     (it "shows current marker message of the first player after two turns"
       (let [response (run-ring-app app (mock/request :post "/settings" param1)
                                        (mock/request :post "/play_game" {:spot 0})
                                        (mock/request :post "/play_game"))
             message (translate (loc) :output/current-player-marker (:player-one-marker param1))]
-        (should (clojure.string/includes? (:body response) message)))))
+        (should (clojure.string/includes? (:body response) message))))
 
+    (it "no longer has an open 0 spot when it has been selected by a player"
+      (let [response (run-ring-app app (mock/request :post "/settings" param1)
+                                       (mock/request :post "/play_game" {:spot 0}))]
+        (should-not (clojure.string/includes? (:body response) "<h5>0</h5>"))))
+
+    (it "AI chooses spot without input"
+      (let [response (run-ring-app app (mock/request :post "/settings" param1)
+                                       (mock/request :post "/play_game" {:spot 4})
+                                       (mock/request :post "/play_game"))]
+        (should-not (clojure.string/includes? (:body response) "<h5>8</h5>"))))
+
+    (it "first selected spot is replaced by the first player marker"
+      (let [response (run-ring-app app (mock/request :post "/settings" param1)
+                                       (mock/request :post "/play_game" {:spot 0}))]
+        (should-not (clojure.string/includes? (:body response) (str "<h5>" (:first-player param1) "</h5>"))))))
 
   (context "game over"
 

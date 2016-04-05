@@ -1,11 +1,14 @@
 ;Responsible for input and output for playing the tic tac toe game
 
 (ns -tictactoe.console.game_play_io
-  (:require [-tictactoe.console.input_validation :as validation]
+  (:require [-tictactoe.ttt.validation :as validation]
             [-tictactoe.console.message_writer :as writer])
   (:use [-tictactoe.ttt.localization :only (translate)]
         [-tictactoe.ttt.locale :only (loc)]
         [-tictactoe.ttt.convert_string_to_number :only (convert-string-to-number)]))
+
+(defn- y-or-n-response-is-invalid [response y n]
+  (every? #(not= response %) [y n]))
 
 (def colors {:end-marker "\u001b[0m"
              :default "\u001b[39m"
@@ -50,7 +53,7 @@
 (defn get-player-one-name []
   (writer/write (translate (loc) :input/player-one-name))
     (loop [player-one-name (read-line)]
-      (cond (clojure.string/blank? player-one-name)
+      (cond (not (validation/name-exists player-one-name))
             (do
                 (writer/write (translate (loc) :error-messages/name-must-not-be-blank))
                 (recur (read-line)))
@@ -59,7 +62,7 @@
 (defn get-player-two-name [player-one-name]
   (writer/write (translate (loc) :input/player-two-name))
   (loop [player-two-name (read-line)]
-    (cond (clojure.string/blank? player-two-name)
+    (cond (not (validation/name-exists player-two-name))
             (do
                 (writer/write (translate (loc) :error-messages/name-must-not-be-blank))
                 (recur (read-line)))
@@ -71,27 +74,27 @@
 
 (defn get-player-one-marker []
   (writer/write (translate (loc) :input/player-one-marker))
-  (loop [player-one-marker (read-line)]
-    (if (validation/marker-is-invalid player-one-marker)
+  (loop [player-one-marker (clojure.string/upper-case (read-line))]
+    (if (not (validation/marker-is-valid player-one-marker))
         (do
           (writer/write (translate (loc) :error-messages/bad-player-one-marker))
           (recur (read-line)))
-        (clojure.string/upper-case player-one-marker))))
+        player-one-marker)))
 
 (defn get-player-two-marker [player-one-marker]
   (writer/write (translate (loc) :input/player-two-marker))
-  (loop [player-two-marker (read-line)]
+  (loop [player-two-marker (clojure.string/upper-case (read-line))]
     (if (or  (= player-two-marker player-one-marker)
-             (validation/marker-is-invalid player-two-marker))
+             (not (validation/marker-is-valid player-two-marker)))
         (do
           (writer/write (translate (loc) :error-messages/bad-player-two-marker))
           (recur (read-line)))
-        (clojure.string/upper-case player-two-marker))))
+        player-two-marker)))
 
 (defn get-first-player [player-one-marker player-two-marker]
   (writer/write (translate (loc) :input/player-going-first player-one-marker player-two-marker))
   (loop [first-player-marker (clojure.string/upper-case (read-line))]
-    (if (validation/first-player-marker-is-invalid first-player-marker player-one-marker player-two-marker)
+    (if (validation/first-player-invalid first-player-marker player-one-marker player-two-marker)
         (do
           (writer/write (translate (loc) :error-messages/invalid-player-going-first player-one-marker player-two-marker))
           (recur (read-line)))
@@ -108,7 +111,7 @@
 
 (defn yes-or-no-response []
   (loop [y-or-n (read-line)]
-    (if (validation/y-or-n-response-is-invalid y-or-n (translate (loc) :input/yes-option) (translate (loc) :input/no-option))
+    (if (y-or-n-response-is-invalid y-or-n (translate (loc) :input/yes-option) (translate (loc) :input/no-option))
         (do
              (writer/write (translate (loc) :error-messages/bad-y-or-n-option))
              (recur (read-line)))

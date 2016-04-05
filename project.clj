@@ -1,4 +1,4 @@
-(defproject -tictactoe "1.7.0-SNAPSHOT"
+(defproject -tictactoe "1.7.1-SNAPSHOT"
   :description "Tic Tac Toe Command line game written in Clojure"
   :url "https://github.com/ssunday/TicTacToeClojure"
   :dependencies [[org.clojure/clojure "1.8.0"]
@@ -16,7 +16,8 @@
   :main -tictactoe.core
   :plugins [[speclj "3.3.1"]
             [lein-environ "1.0.2"]
-            [lein-ring "0.9.7"]]
+            [lein-ring "0.9.7"]
+            [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
   :aliases { "spec" ["with-profile" "+test" "spec"]
              "eastwood" ["with-profile" "+test" "eastwood"] }
   :test-paths ["spec"]
