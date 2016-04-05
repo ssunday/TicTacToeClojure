@@ -18,8 +18,8 @@
             [lein-environ "1.0.2"]
             [lein-ring "0.9.7"]
             [lein-ns-dep-graph "0.1.0-SNAPSHOT"]]
-  :aliases { "spec" ["with-profile" "+test" "spec"]
-             "eastwood" ["with-profile" "+test" "eastwood"] }
+  :aliases {"spec" ["with-profile" "+test" "spec"]
+            "eastwood" ["with-profile" "+test" "eastwood"]}
   :test-paths ["spec"]
   :jvm-opts ~(vec (map (fn [[p v]] (str "-D" (name p) "=" v))
                        {"com.mchange.v2.log.MLog" "com.mchange.v2.log.FallbackMLog"

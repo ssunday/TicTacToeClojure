@@ -5,8 +5,7 @@
             [compojure.handler :as handler]
             [ring.mock.request :as mock]
             [-tictactoe.web.session_management :refer :all])
-  (:use [noir.session :only (wrap-noir-session)]
-        [ring-test.core :only (run-ring-app)]))
+  (:use [ring-test.core :only (run-ring-app)]))
 
 (compojure/defroutes test-app-routes
   (compojure/GET "/create" request (create-initial-session (:params request)))
@@ -16,7 +15,7 @@
   (compojure/GET "/create-test" [] {:status 200 :body (get-session-value :board)})
   (compojure/GET "/get" request {:status 200 :body (get-session-value (:key (:params request)))}))
 
-(def app (wrap-noir-session (handler/site test-app-routes)))
+(def app (session/wrap-noir-session (handler/site test-app-routes)))
 
 (def params1
   {:player-one-name "Sarah"

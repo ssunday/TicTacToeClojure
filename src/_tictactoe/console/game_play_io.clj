@@ -24,17 +24,17 @@
 (defn display-current-player-marker [current-player-marker]
   (writer/write (translate (loc) :output/current-player-marker current-player-marker)))
 
-(defn colorize-markers [row player-one-marker]
+(defn- colorize-markers [row player-one-marker]
   (map (fn [spot]
         (cond (number? spot) (str (get colors :yellow) spot (get colors :end-marker))
               (= player-one-marker spot) (str (get colors :red) spot (get colors :end-marker))
               :else (str (get colors :cyan) spot (get colors :end-marker))))
         row))
 
-(defn print-row [row player-one-marker]
+(defn- print-row [row player-one-marker]
   (writer/write (clojure.string/join "\t" (colorize-markers row player-one-marker))))
 
-(defn board-rows [board]
+(defn- board-rows [board]
   (let [board-spaces (count board)
         board-dimension (-> board-spaces Math/sqrt int)
         spots (take board-spaces (iterate (partial + 1) 0))]
@@ -109,7 +109,7 @@
           (recur (convert-string-to-number (read-line))))
         board-dimension)))
 
-(defn yes-or-no-response []
+(defn- yes-or-no-response []
   (loop [y-or-n (read-line)]
     (if (y-or-n-response-is-invalid y-or-n (translate (loc) :input/yes-option) (translate (loc) :input/no-option))
         (do

@@ -8,4 +8,4 @@
 (defmethod menu/do-menu-option :see-scores [args]
   (-> (:data args)
       scores/read-total-tally
-      (display/display-tally)))
+      display/display-tally))

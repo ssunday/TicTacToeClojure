@@ -5,19 +5,15 @@
             [compojure.handler :as handler]
             [ring.mock.request :as mock]
             [-tictactoe.web.cookie_management :refer :all])
-  (:use [noir.cookies :only (wrap-noir-cookies)]
-        [ring-test.core :only (run-ring-app)]))
-
-(defn set-cookie []
-  (cookies/put! :data "value"))
+  (:use [ring-test.core :only (run-ring-app)]))
 
 (compojure/defroutes test-app-routes
-  (compojure/GET "/set" [] (set-cookie))
+  (compojure/GET "/set" [] (cookies/put! :data "value"))
   (compojure/GET "/create" request (create-initial-cookie (:params request)))
   (compojure/GET "/exists" [] {:status 200 :body (cookie-exists)})
   (compojure/GET "/get" [] {:status 200 :body (get-cookie-params)}))
 
-(def app (wrap-noir-cookies (handler/site test-app-routes)))
+(def app (cookies/wrap-noir-cookies (handler/site test-app-routes)))
 
 (def params1
   {:player-one-name "Sarah"

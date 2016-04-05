@@ -54,18 +54,3 @@
       (should= dimension
         (with-in-str (str dimension)
          (ask-for-board-dimension))))))
-
-(describe "yes-or-no-response"
-
-  (around [it]
-    (with-out-str (it)))
-
-  (it "returns true if response is y"
-    (let [response "y"]
-      (should (with-in-str response
-         (yes-or-no-response)))))
-
-  (it "returns false if response is n"
-    (let [response "n"]
-      (should-not (with-in-str response
-         (yes-or-no-response))))))
