@@ -1,16 +1,32 @@
-(ns -tictactoe.web.play_game_functions-spec
+(ns -tictactoe.console.play_game_functions-spec
   (:require [speclj.core :refer :all]
-            [-tictactoe.web.play_game_functions :refer :all]
+            [-tictactoe.ttt.play_game_functions :refer :all]
             [-tictactoe.ttt.scoring_schema :as schema]))
 
 (def pl "X")
 
 (def op "O")
 
-(describe "switch-player"
-  (it "returns the not current player"
-    (let [current-player pl]
-      (should= op (switch-player current-player pl op)))))
+(describe "get-other-player-marker"
+  (it "returns the marker that does not equal the supplied first player marker"
+    (let [player-one-marker pl
+          player-two-marker op
+          first-player player-one-marker]
+      (should= player-two-marker (get-other-player-marker first-player player-one-marker player-two-marker)))
+
+  (it "returns the marker that does not equal the supplied first player marker"
+    (let [player-one-marker pl
+          player-two-marker op
+          first-player player-two-marker]
+      (should= player-one-marker (get-other-player-marker first-player player-one-marker player-two-marker))))))
+
+(describe "mark-board"
+
+  (it "returns board marked with spot with particular marker"
+    (let [spot 0
+          board [0 1 2 3 4 5 6 7 8]
+          current-player pl]
+      (should= [pl 1 2 3 4 5 6 7 8] (mark-board board spot current-player)))))
 
 (describe "game-is-over"
 
@@ -71,9 +87,9 @@
 
 (describe "current-player-is-ai"
   (it "returns true if the current player is an AI"
-    (let [info {:player-one-marker "X"
-                :player-two-marker "O"
-                :current-player "X"
+    (let [info {:player-one-marker pl
+                :player-two-marker op
+                :current-player pl
                 :player-one-is-ai true
                 :player-two-is-ai false}]
       (should (current-player-is-ai info))))
@@ -86,21 +102,9 @@
                 :player-two-is-ai false}]
       (should-not (current-player-is-ai info)))))
 
-(describe "mark-board"
-
-  (it "returns board marked with spot if spot is supplied"
-    (let [spot 0
-          board [0 1 2 3 4 5 6 7 8]
-          current-player pl
-          other-player op]
-      (should= [pl 1 2 3 4 5 6 7 8] (mark-board board spot current-player other-player))))
-
-  (it "returns board marked with ai spot if spot is nil"
-    (let [spot nil
-          board [0 1 2 3 4 5 6 7 8]
-          current-player pl
-          other-player op]
-      (should= [0 1 2 3 4 5 6 7 pl] (mark-board board spot current-player other-player)))))
+(describe "ai-move"
+  (it "returns AI best move of 8 for default board"
+    (should= 8 (ai-move [0 1 2 3 4 5 6 7 8] pl op))))
 
 (describe "make-board"
 
@@ -119,7 +123,11 @@
                  pl op op
                  pl pl op]]
       (should= [[pl-name {schema/wins 1 schema/losses 0 schema/draws 0}]
-                [op-name {schema/wins 0 schema/losses 1 schema/draws 0}]] (score-game-round pl-name op-name pl op board))))
+                [op-name {schema/wins 0 schema/losses 1 schema/draws 0}]] (score-game-round {:player-one-name pl-name
+                                                                                             :player-two-name op-name
+                                                                                             :player-one-marker pl
+                                                                                             :player-two-marker op
+                                                                                             :board board}))))
 
   (it "when player two won returns a vector of both names with 0/1/0 and 1/0/0"
     (let [pl-name "Bob"
@@ -128,7 +136,11 @@
                  op pl pl
                  op op pl]]
       (should= [[pl-name {schema/wins 0 schema/losses 1 schema/draws 0}]
-                [op-name {schema/wins 1 schema/losses 0 schema/draws 0}]] (score-game-round pl-name op-name pl op board))))
+                [op-name {schema/wins 1 schema/losses 0 schema/draws 0}]] (score-game-round {:player-one-name pl-name
+                                                                                             :player-two-name op-name
+                                                                                             :player-one-marker pl
+                                                                                             :player-two-marker op
+                                                                                             :board board}))))
 
   (it "when game is tied returns vector with names and scores of 0/0/1 and 0/0/1"
     (let [pl-name "Bob"
@@ -137,4 +149,8 @@
                  op op pl
                  pl pl op]]
       (should= [[pl-name {schema/wins 0 schema/losses 0 schema/draws 1}]
-                [op-name {schema/wins 0 schema/losses 0 schema/draws 1}]] (score-game-round pl-name op-name pl op board)))))
+                [op-name {schema/wins 0 schema/losses 0 schema/draws 1}]] (score-game-round {:player-one-name pl-name
+                                                                                             :player-two-name op-name
+                                                                                             :player-one-marker pl
+                                                                                             :player-two-marker op
+                                                                                             :board board})))))
